@@ -36,6 +36,10 @@ All Sprint 1 and Sprint 2 goals (infrastructure setup, workspaces, shared packag
 - Added an interactive **Rescheduling Modal overlay** triggering a POST request to a new API endpoint [/api/admin/reschedule](file:///c:/Users/kbrou/Pictures/Saved%20Pictures/MUSIC%20SCHOOL/apps/web/src/app/api/admin/reschedule/route.ts) that updates Prisma database slot parameters.
   - The calendar cohort blocks are fully interactive: clicking any scheduled cohort block card directly opens the overlay modal containing the **alphabetically-sorted list of enrolled student members**, showing their name, instrument, and age.
 - Implemented a mock email dispatcher in [email.ts](file:///c:/Users/kbrou/Pictures/Saved%20Pictures/MUSIC%20SCHOOL/apps/web/src/lib/email.ts) logging rescheduling notifications to console and appending payloads to `rehearsal_emails.log` at the project root.
+- **Global Theme Overhaul**:
+  - Implemented global **hard corners** across the entire UI by overriding `border-radius` to `0px !important` for all elements in [globals.css](file:///c:/Users/kbrou/Pictures/Saved%20Pictures/MUSIC%20SCHOOL/apps/web/src/app/globals.css).
+  - Added custom high-fidelity **stock band and lesson images** (`band_rockers.png`, `band_teens.png`, `band_adults.png`, `band_juniors.png`, `lesson_private.png`) generated using the image generation tool.
+  - Configured active calendar cells (cohort and private lesson blocks) and student roster cards to display matching **fixed-attachment parallax backgrounds** with semi-transparent glassmorphic overlays for high text readability.
 
 ---
 
@@ -64,8 +68,8 @@ npm run build
 > web@0.1.0 build
 > next build
 ▲ Next.js 16.2.9 (Turbopack)
-✓ Compiled successfully in 4.6s
-Finished TypeScript in 5.8s ...
+✓ Compiled successfully in 4.3s
+Finished TypeScript in 4.8s ...
 Generating static pages (15/15) ...
 Finalizing page optimization ...
 
