@@ -34,6 +34,7 @@ All Sprint 1 and Sprint 2 goals (infrastructure setup, workspaces, shared packag
   - Search filtering by student details.
   - A visual **Weekly Master Calendar Grid** displaying slot allocations (Tuesday & Wednesday cohorts and private lessons).
 - Added an interactive **Rescheduling Modal overlay** triggering a POST request to a new API endpoint [/api/admin/reschedule](file:///c:/Users/kbrou/Pictures/Saved%20Pictures/MUSIC%20SCHOOL/apps/web/src/app/api/admin/reschedule/route.ts) that updates Prisma database slot parameters.
+  - The calendar cohort blocks are fully interactive: clicking any scheduled cohort block card directly opens the overlay modal containing the **alphabetically-sorted list of enrolled student members**, showing their name, instrument, and age.
 - Implemented a mock email dispatcher in [email.ts](file:///c:/Users/kbrou/Pictures/Saved%20Pictures/MUSIC%20SCHOOL/apps/web/src/lib/email.ts) logging rescheduling notifications to console and appending payloads to `rehearsal_emails.log` at the project root.
 
 ---
@@ -63,8 +64,8 @@ npm run build
 > web@0.1.0 build
 > next build
 ▲ Next.js 16.2.9 (Turbopack)
-✓ Compiled successfully in 4.8s
-Finished TypeScript in 5.9s ...
+✓ Compiled successfully in 4.6s
+Finished TypeScript in 5.8s ...
 Generating static pages (15/15) ...
 Finalizing page optimization ...
 

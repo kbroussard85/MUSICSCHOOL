@@ -212,7 +212,20 @@ export default function AdminDashboardClient({
                 {cohortSlots.map(slot => {
                   const cohort = getCohortForGrid('Tuesday', slot);
                   return (
-                    <div key={slot} className="p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left h-[130px] flex flex-col justify-between">
+                    <div 
+                      key={slot} 
+                      onClick={cohort ? () => setEditingEvent({
+                        type: 'cohort',
+                        id: cohort.id,
+                        name: cohort.name,
+                        currentSchedule: `Tuesday @ ${slot}`,
+                        day: 'Tuesday',
+                        slot: slot
+                      }) : undefined}
+                      className={`p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left h-[130px] flex flex-col justify-between transition-all duration-200 ${
+                        cohort ? 'cursor-pointer hover:border-violet-500/30 hover:bg-slate-900/60 hover:shadow-lg hover:shadow-violet-950/10' : ''
+                      }`}
+                    >
                       <div>
                         <div className="text-[10px] text-slate-500 uppercase font-semibold">{slot}</div>
                         {cohort ? (
@@ -225,19 +238,9 @@ export default function AdminDashboardClient({
                         )}
                       </div>
                       {cohort && (
-                        <button
-                          onClick={() => setEditingEvent({
-                            type: 'cohort',
-                            id: cohort.id,
-                            name: cohort.name,
-                            currentSchedule: `Tuesday @ ${slot}`,
-                            day: 'Tuesday',
-                            slot: slot
-                          })}
-                          className="text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right cursor-pointer"
-                        >
-                          <i className="fa-solid fa-clock mr-1"></i> Reschedule Cohort
-                        </button>
+                        <div className="text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right flex items-center justify-end gap-1">
+                          <i className="fa-solid fa-users text-[9px]"></i> View Roster & Edit
+                        </div>
                       )}
                     </div>
                   );
@@ -282,7 +285,20 @@ export default function AdminDashboardClient({
                 {cohortSlots.map(slot => {
                   const cohort = getCohortForGrid('Wednesday', slot);
                   return (
-                    <div key={slot} className="p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left h-[130px] flex flex-col justify-between">
+                    <div 
+                      key={slot} 
+                      onClick={cohort ? () => setEditingEvent({
+                        type: 'cohort',
+                        id: cohort.id,
+                        name: cohort.name,
+                        currentSchedule: `Wednesday @ ${slot}`,
+                        day: 'Wednesday',
+                        slot: slot
+                      }) : undefined}
+                      className={`p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left h-[130px] flex flex-col justify-between transition-all duration-200 ${
+                        cohort ? 'cursor-pointer hover:border-violet-500/30 hover:bg-slate-900/60 hover:shadow-lg hover:shadow-violet-950/10' : ''
+                      }`}
+                    >
                       <div>
                         <div className="text-[10px] text-slate-500 uppercase font-semibold">{slot}</div>
                         {cohort ? (
@@ -295,19 +311,9 @@ export default function AdminDashboardClient({
                         )}
                       </div>
                       {cohort && (
-                        <button
-                          onClick={() => setEditingEvent({
-                            type: 'cohort',
-                            id: cohort.id,
-                            name: cohort.name,
-                            currentSchedule: `Wednesday @ ${slot}`,
-                            day: 'Wednesday',
-                            slot: slot
-                          })}
-                          className="text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right cursor-pointer"
-                        >
-                          <i className="fa-solid fa-clock mr-1"></i> Reschedule Cohort
-                        </button>
+                        <div className="text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right flex items-center justify-end gap-1">
+                          <i className="fa-solid fa-users text-[9px]"></i> View Roster & Edit
+                        </div>
                       )}
                     </div>
                   );
@@ -367,17 +373,47 @@ export default function AdminDashboardClient({
       </div>
 
       {/* Reschedule Overlay Modal */}
-      {editingEvent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="w-full max-w-md p-6 rounded-2xl border border-white/5 bg-[#0b0e14] shadow-2xl relative animate-fade-in font-sans">
-            <h3 className="font-heading text-lg font-bold text-slate-100 mb-1">
-              Reschedule Event
-            </h3>
-            <p className="text-xs text-slate-400 mb-4 truncate">
-              Target: {editingEvent.name}
-            </p>
+      {editingEvent && (() => {
+        const cohortStudents = editingEvent.type === 'cohort'
+          ? students
+              .filter(s => s.cohortName === editingEvent.name)
+              .sort((a, b) => a.name.localeCompare(b.name))
+          : [];
 
-            <form onSubmit={handleRescheduleSubmit} className="flex flex-col gap-4">
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div className="w-full max-w-md p-6 rounded-2xl border border-white/5 bg-[#0b0e14] shadow-2xl relative animate-fade-in font-sans">
+              <h3 className="font-heading text-lg font-bold text-slate-100 mb-1">
+                {editingEvent.type === 'cohort' ? 'Cohort Roster & Reschedule' : 'Reschedule Event'}
+              </h3>
+              <p className="text-xs text-slate-400 mb-4 truncate">
+                Target: {editingEvent.name}
+              </p>
+
+              {editingEvent.type === 'cohort' && (
+                <div className="mb-4 p-4 rounded-xl border border-white/5 bg-slate-900/40">
+                  <div className="flex justify-between items-center text-xs font-semibold text-violet-400 mb-2 border-b border-white/5 pb-1.5">
+                    <span>Enrolled Cohort Members</span>
+                    <span>{cohortStudents.length} Students</span>
+                  </div>
+                  <div className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-1">
+                    {cohortStudents.map(student => (
+                      <div key={student.id} className="flex justify-between items-center text-xs py-1 border-b border-white/5 last:border-b-0">
+                        <div>
+                          <span className="font-bold text-slate-200">{student.name}</span>
+                          <span className="text-[10px] text-slate-400 block">{student.instrument}</span>
+                        </div>
+                        <span className="text-[10px] text-slate-500">Age: {student.age}</span>
+                      </div>
+                    ))}
+                    {cohortStudents.length === 0 && (
+                      <div className="text-xs text-slate-500 italic py-1">No students enrolled.</div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleRescheduleSubmit} className="flex flex-col gap-4">
               <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-xs text-slate-400">
                 <span className="font-bold block text-slate-300 mb-0.5">Current Slot:</span>
                 {editingEvent.currentSchedule}
@@ -451,7 +487,8 @@ export default function AdminDashboardClient({
             </form>
           </div>
         </div>
-      )}
+      );
+    })()}
     </div>
   );
 }
