@@ -94,7 +94,8 @@ export async function getIAMProfile(): Promise<IAMProfile | null> {
     if (process.env.NODE_ENV === 'development') {
       let role: 'STUDENT' | 'ADMIN' | 'DIRECTOR' = 'STUDENT';
       let name = 'Alex Broussard';
-      if (emailLower.includes('admin')) {
+      
+      if (emailLower === 'kencarlbroussard@gmail.com') {
         role = 'ADMIN';
         name = 'System Administrator';
       } else if (emailLower.includes('director') || emailLower.includes('teacher')) {
@@ -118,7 +119,8 @@ export async function getIAMProfile(): Promise<IAMProfile | null> {
     if (process.env.NODE_ENV === 'development') {
       let role: 'STUDENT' | 'ADMIN' | 'DIRECTOR' = 'STUDENT';
       let name = 'Alex Broussard';
-      if (emailLower.includes('admin')) {
+      
+      if (emailLower === 'kencarlbroussard@gmail.com') {
         role = 'ADMIN';
         name = 'System Administrator';
       } else if (emailLower.includes('director') || emailLower.includes('teacher')) {
