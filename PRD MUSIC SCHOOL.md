@@ -138,52 +138,83 @@ Sally, Winston, and Bob are standing by to layer in the user journeys, deep-tech
 
 ### **Document ID: bmm-prd-performance-music-school | Author: John (Product Manager)**
 
-### **1\. Executive Summary & Core Value Proposition**
+### **Document Control**
+* **Document ID:** PRD-2026-HYBRID-MUSIC  
+* **Project Name:** Scale-Adaptive Performance Music Academy Platform  
+* **Author:** John, Product Manager  
+* **Status:** Draft - Pending Architecture Finalization  
+* **Target Core Stack:** Next.js 15, PostgreSQL, Prisma, WebRTC (Opus Edge)
 
-The platform is a custom, highly optimized hybrid business management engine and low-latency digital portal for a premium, cohort-based performance music school. Unlike standard passive software frameworks or generic standalone CRMs, this platform couples a high-retention membership management suite with a proprietary, sub-500-mile real-time browser audio workspace. The architecture forces operational discipline (enforcing clear demographic segmentation, tight room capacity limits, and seasonal lock-ins) while driving lifetime value (LTV) through an irresistible milestone: getting students out of their bedrooms and onto live, physical stages.
+### **1. Executive Summary & Core Value Proposition**
 
-### **2\. Demographic & Class Schedule Taxonomy**
+#### **1.1 Objective**
+To develop a cohesive full-stack web software environment and integrated CRM that handles local, hyper-focused operations alongside real-time online virtual tools for a high-retention performance music academy. The software must maintain operational control over automated cohort scheduling and multi-location infrastructure expansions while providing an immersive digital curriculum hub.
 
-The application database constraints must strictly enforce the following group logic to prevent scheduling collisions and maximize the rental space utilization:
+#### **1.2 The Performance-Based Learning Standard**
+Unlike legacy online lesson platforms or localized un-integrated matching tools, this product serves a performance-based model built entirely around seasonal 13-week quarters culminating in multi-band live music spectacles. The platform operates as a retention mechanism by legally and programmatically binding entries to fixed terms and demographic caps to ensure group continuity.
 
-* **Operating Window Constraint:** Real-world physical hubs only execute on **Tuesdays and Wednesdays** between **4:00 PM and 8:30 PM**.  
-* **Rehearsal Slot Structure:** Each cohort session is strictly **1.5 hours** in duration, allowing exactly 3 consecutive slots per room per day:  
-  * *Slot 1:* 4:00 PM – 5:30 PM  
-  * *Slot 2:* 5:30 PM – 7:00 PM  
-  * *Slot 3:* 7:00 PM – 8:30 PM  
-* **Demographic Tiers & Max Cap Limits:**  
-  * **Group 1 (9–12 Age Bracket):** Managed to 5–10 students maximum per band.  
-  * **Group 2 (13–17 Age Bracket):** Managed to 5–10 students maximum per band.  
-  * **Group 3 (18+ Adult Bracket):** Managed to 5–10 students maximum per band.  
-  * *Hub Capacity Baseline:* Exactly **6 active bands per hub** across the two operating days (totaling 9 weekly rehearsal hours of room rental).
+### **2. Roster Rules & Schedule Taxonomy**
+The database layer and API controllers must programmatically lock out entries that violate these specific operational boundaries:
 
-### **3\. Subscription Architecture & Enrollment Guardrails**
+#### **2.1 Hub Operating Windows**
+* **Physical Hub Rehearsal Days:** Restricted to Tuesdays and Wednesdays exclusively.  
+* **Operating Hours:** 4:00 PM to 8:30 PM total operational envelope.  
+* **Roster Block Duration:** Exactly 1.5-hour scheduled increments per band cohort.  
+* **Daily Scheduling Slots Grid:**
+  * **Slot 1:** 4:00 PM – 5:30 PM  
+  * **Slot 2:** 5:30 PM – 7:00 PM  
+  * **Slot 3:** 7:00 PM – 8:30 PM  
 
-* **The 90-Day Structural Moat:** Standard month-to-month open cancellations are disallowed at the payment gateway routing level. All new student enrollments require a mandatory, legally binding **90-day minimum commitment**.  
-* **Seasonal Cohort Cycle:** The program operates on explicit **13-week performance seasons** matching the academic/calendar grid:  
-  * *Spring Season* | *Summer Season* | *Fall Season* | *Winter Season*.  
-* **Monthly Membership Bundle Deliverables (Included in $\\$299/\\text{month}$):**  
-  * **4 × Physical Rehearsals:** 1.5 hours each, fully directed on-site by a designated Band Director.  
-  * **2 × Online Private Lessons:** 45-minute customized one-on-one virtual technical sessions with an assigned instructor.  
-  * **2 × Online Group Classes:** Multi-tenant interactive online clinics focused on music theory, stage presence, and genre histories.
+#### **2.2 Cohort Demographics & Capacity Limits**
+* **Age-Bracket Taxonomies:**
+  * **Junior Tier:** Ages 9–12  
+  * **Varsity Tier:** Ages 13–17  
+  * **Masters Tier:** Ages 18+ (Adult Bracket)  
+* **Roster Capping Metrics:**
+  * **Absolute Minimum Density:** 5 students linked per active band.  
+  * **Target State Density:** 7.5 students average.  
+  * **Hard System Maximum Ceiling:** Exactly 10 students maximum per band cohort entity.  
+  * **Baseline Site Limit:** Exactly 6 bands maximum per single hub deployment to maintain space efficiency.  
 
-### **4\. Functional Requirements Matrix (Epic Breakdown)**
+### **3. Subscription Architecture & Enrollment Guardrails**
 
-#### **Epic 1: Multi-Hub CRM & Automated Scheduling Engine**
+#### **3.1 Financial Parameters**
+* **Core Fee:** Baseline pricing is set to an invariant $299/month subscription tier.  
+* **Deliverable Bundle (Programmatic Entitlements Per Month):**
+  * 4 × 1.5-hour on-site directed band rehearsals.  
+  * 2 × 45-minute online virtual private lessons.  
+  * 2 × 1-hour online virtual group masterclasses.  
+  * Unlimited access to the side-by-side video instructional tablature engine.  
 
-* **FR-1.1 (Hub Sharding):** System must segment all users, schedules, rosters, and financial tracking by physical "Hub" entities to allow friction-free scaling from 1 to 4 locations.  
-* **FR-1.2 (Roster Threshold Capping):** The enrollment workflow must auto-lock a band cohort the millisecond it hits 10 students, automatically shifting subsequent applicants to a prioritized regional waitlist state.  
-* **FR-1.3 (Ressource Conflict Prevention):** Scheduling UI must block double-bookings of Band Directors (capped at $\\$30/\\text{hr}$ allocations) and Private Instructors ($\\$26/\\text{hr}$ allocations) across physical and virtual spaces.
+#### **3.2 System Enrollment Locks**
+* **The 90-Day Structural Moat:** Checkout flows must dynamically configure Stripe Billing targets to force a mandatory minimum 90-day contractual block. Early dropouts are locked out at the subscription routing layer.  
+* **Macro Grid Seasonal Logic:** Calendaring entities operate on fixed, recurring 13-week quarters:  
+  * Spring Season  
+  * Summer Season  
+  * Fall Season  
+  * Winter Season  
 
-#### **Epic 2: The Ultra-Low-Latency Online Rehearsal Workspace**
+### **4. Functional Requirements Matrix (Epic Breakdown)**
 
-* **FR-2.1 (P2P Audio Stream):** System must establish high-fidelity WebRTC peer connections optimized purely for raw audio packet propagation, targeting sub-$25\\text{ms}$ network latency within a 500-mile radius.  
-* **FR-2.2 (Multi-Room Scaling):** Virtual classrooms must scale dynamically to host concurrent 1-on-1 private lessons and group masterclasses throughout Monday–Thursday off-peak windows.
+#### **Epic 1: Multi-Hub CRM & Roster Management Engine**
+* **FR-1.1 (Multi-Hub Data Isolation):** The application architecture must structurally shard student lists, rosters, scheduling calendars, and ledger reporting tables by physical regional "Hub" entities to enable linear, low-overhead scaling from 1 to 4 hub arrays over a 2-year timeline.  
+* **FR-1.2 (Roster Capacity Gatekeeper):** The system checkout and manual admin assignment endpoints must implement atomic transactions that evaluate current band density; the precise millisecond a band hits 10 active student allocations, the group state turns to LOCKED, and subsequent requests are seamlessly routed to a prioritized waitlist queue.  
+* **FR-1.3 (Resource Conflict Check Engine):** The calendaring portal must apply real-time double-booking checks to lock staff accounts out of concurrent slots, tracking resource rates natively ($30/hour for Band Directors; $26/hour for Private Instructors) to log pro-rated session allocations.  
+* **FR-1.4 (Performance Venue Allocation Tracker):** Sinking fund scheduling algorithms must manage the explicit provisioning of exactly 8 calendar days per year for physical venue leases, tracking rent parameters between $1,000 and $1,500 per venue layout.  
+* **FR-1.5 (Phase 2 Practice Room Upsell Extension):** System must support an optional secondary scheduling schema for localized in-person private lesson upsells, adding a $150/month room optimization transaction tier mapping back to fixed room operational logs (Monday–Thursday).  
 
-#### **Epic 3: Interactive Video Curriculum & Licensed Media Vault**
+#### **Epic 2: Real-Time Audio Workspace Portal (The Latency Moat)**
+* **FR-2.1 (Sub-25ms Peer Connection):** The virtual workspace engine must construct peer-to-peer streaming audio channels optimized via custom signaling logic to guarantee sub-25ms round-trip network performance boundaries within a 500-mile geographical operational loop.  
+* **FR-2.2 (Multi-Tenant Scale Expansion):** Real-time signaling arrays must scale natively to handle independent, concurrent virtual execution instances for 1-on-1 private lessons and group classrooms throughout off-peak times (Monday–Thursday).  
 
-* **FR-3.1 (Tablature Synced Video player):** Media vault must stream high-definition instructional video content side-by-side with a vector-rendered music tablature engine.  
-* **FR-3.2 (Licensed Tablature Integration):** Tablature components must enforce digital rights management (DRM) configurations to legally host and render popular licensed track arrangements.
+#### **Epic 3: HD Video Curriculum & Tablature Engine**
+* **FR-3.1 (Side-by-Side Synced Interface):** The portal interface must render an advanced media layout placing high-definition video streaming containers directly alongside an interactive vector-rendered tablature component.  
+* **FR-3.2 (DRM Media Access Control):** The video and tablature delivery API must check active student billing parameters and metadata flags, locking out unauthenticated traffic to protect licensed musical assets from unauthorized piracy.  
+
+### **5. Non-Functional Requirements & Safety Controls**
+* **NFR-5.1 (Latency Budget Performance):** WebRTC audio packetization frameworks must maintain an end-to-end performance latency under 25ms, using Constant Bit Rate parameters and high-frequency FEC allocations to bypass packet dropped gaps.  
+* **NFR-5.2 (Stripe Billing Integration Safeguards):** Subscription webhook handlers must capture payment failures, unauthorized gateway updates, chargebacks, and active cancellations, programmatically flagging the target account entity to lock user credentials instantly.  
+* **NFR-5.3 (Scalable Multi-Location Hierarchy):** Database schema relational indexing must allow seamless instantiation of new hub arrays, supporting an initial target capacity run rate of 45 students per hub climbing to a hard max run rate ceiling of 60 active students.
 
 **Winston (Architect):** "Excellent baseline, John. Now let's open up the engine bay. To support John's PRD and handle that unyielding peer-to-peer audio requirement within our exact operational budget, we need a pristine technical architecture."
 
