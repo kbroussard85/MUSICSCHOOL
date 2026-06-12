@@ -16,6 +16,7 @@ export default function Sidebar({ profile }: SidebarProps) {
     { name: 'Practice Jam Room', path: '/practice-room', icon: 'fa-cubes', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
     { name: 'Instructional Lessons', path: '/lessons', icon: 'fa-graduation-cap', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
     { name: 'Schedule Slots', path: '/schedule', icon: 'fa-calendar-days', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
+    { name: 'Admin Dashboard', path: '/admin', icon: 'fa-sliders', roles: ['ADMIN'] },
   ];
 
   // Add Admin-only tools if user is an ADMIN

@@ -37,6 +37,8 @@ model Student {
   stripeCustomerId   String?         @map("stripe_customer_id")
   subscriptionStatus String?         @map("subscription_status")
   commitmentEndDate  DateTime?       @map("commitment_end_date") // 90-day minimum lock
+  age                Int?            @default(12)
+  instrument         String?         @default("Keyboard")
   practiceLogs       PracticeLog[]
   privateLessons     PrivateLesson[]
   paymentLogs        PaymentLog[]
