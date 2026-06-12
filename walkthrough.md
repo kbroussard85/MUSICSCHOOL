@@ -41,6 +41,9 @@ All Sprint 1 and Sprint 2 goals (infrastructure setup, workspaces, shared packag
   - Added custom high-fidelity **stock band and lesson images** (`band_rockers.png`, `band_teens.png`, `band_adults.png`, `band_juniors.png`, `lesson_private.png`) generated using the image generation tool.
   - Configured active calendar cells (cohort and private lesson blocks) and student roster cards to display matching **fixed-attachment parallax backgrounds** with semi-transparent glassmorphic overlays for high text readability.
 - **Student Schedule Popups**: Clicking on a student card in the roster displays a dedicated calendar popup modal showing their full profile and a weekly Tuesday/Wednesday schedule of their rehearsal band rehearsals and private lessons.
+- **Separated Scheduling Sections**: Redesigned the calendar layout into two distinct dashboard panels:
+  1. *Online Private Lessons & Master Classes* (focused on 3:00 - 4:00 PM individual sessions).
+  2. *Band Rehearsal Blocks* (focused on 4:00 - 8:30 PM group rehearsals).
 
 ---
 
