@@ -183,55 +183,123 @@ export default function AdminDashboardClient({
       {/* Grid: Calendar & Student List */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
         
-        {/* Left column (7 cols): Master Calendar Editor */}
-        <div className="xl:col-span-7 flex flex-col gap-6">
-          <Card title="Master Rehearsal Calendar" subtitle="Interactive calendar slot manager" badge="Tue/Wed Only" badgeColor="indigo">
+        {/* Left column (7 cols): Two Scheduling Sections */}
+        <div className="xl:col-span-7 flex flex-col gap-8">
+          
+          {/* Section 1: Online Private Lessons & Master Classes */}
+          <Card 
+            title="Online Private Lessons & Master Classes" 
+            subtitle="Manage scheduled private sessions and master classes" 
+            badge="3:00 PM - 4:00 PM" 
+            badgeColor="indigo"
+          >
             <div className="grid grid-cols-2 gap-4 mt-4 text-center">
               
-              {/* Tuesday Column */}
+              {/* Tuesday Lessons */}
               <div className="flex flex-col gap-4">
-                <div className="p-3 bg-violet-500/10 border border-violet-500/25 rounded-xl font-bold text-violet-400">
-                  Tuesday Slot Allocations
+                <div className="p-2.5 bg-violet-500/10 border border-violet-500/25 font-bold text-xs text-violet-400 uppercase tracking-wider">
+                  Tuesday Sessions
                 </div>
-
-                 {/* Lesson Slots (3:00 - 4:00 PM) */}
-                <div className="p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left min-h-[100px]">
-                  <div className="text-[10px] text-slate-500 uppercase font-semibold mb-2">Private Lesson Block (3:00 - 4:00)</div>
-                  <div className="flex flex-col gap-2">
-                    {getLessonsForGrid('Tuesday').map(l => (
-                      <div 
-                        key={l.id} 
-                        className="p-2.5 rounded-lg bg-slate-800/60 border border-white/5 flex flex-col justify-between transition-all duration-200"
-                        style={{
-                          backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url('/lesson_private.png')`,
-                          backgroundAttachment: 'fixed',
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                        }}
-                      >
+                <div className="flex flex-col gap-2 min-h-[100px]">
+                  {getLessonsForGrid('Tuesday').map(l => (
+                    <div 
+                      key={l.id} 
+                      className="p-3 border border-white/5 bg-slate-900/40 text-left flex flex-col justify-between transition-all duration-200"
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url('/lesson_private.png')`,
+                        backgroundAttachment: 'fixed',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    >
+                      <div>
                         <div className="text-xs font-bold text-slate-200">{l.studentName}</div>
                         <div className="text-[10px] text-slate-400">Instructor: {l.instructorName}</div>
-                        <button 
-                          onClick={() => setEditingEvent({
-                            type: 'lesson',
-                            id: l.id,
-                            name: `Private Lesson for ${l.studentName}`,
-                            currentSchedule: new Date(l.scheduledAt).toLocaleString(),
-                            dateTime: l.scheduledAt
-                          })}
-                          className="mt-2 text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right"
-                        >
-                          <i className="fa-solid fa-pen-to-square mr-1"></i> Reschedule
-                        </button>
+                        <span className="mt-1.5 inline-block text-[9px] px-1.5 py-0.5 bg-violet-600/20 text-violet-400 border border-violet-500/25 uppercase font-bold tracking-wider">
+                          {l.type.replace(/_/g, ' ')}
+                        </span>
                       </div>
-                    ))}
-                    {getLessonsForGrid('Tuesday').length === 0 && (
-                      <div className="text-xs text-slate-600 italic">No scheduled lessons</div>
-                    )}
-                  </div>
+                      <button 
+                        onClick={() => setEditingEvent({
+                          type: 'lesson',
+                          id: l.id,
+                          name: `Private Lesson for ${l.studentName}`,
+                          currentSchedule: new Date(l.scheduledAt).toLocaleString(),
+                          dateTime: l.scheduledAt
+                        })}
+                        className="mt-3 text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right cursor-pointer"
+                      >
+                        <i className="fa-solid fa-pen-to-square mr-1"></i> Reschedule
+                      </button>
+                    </div>
+                  ))}
+                  {getLessonsForGrid('Tuesday').length === 0 && (
+                    <div className="text-xs text-slate-600 italic py-6">No lessons scheduled</div>
+                  )}
                 </div>
+              </div>
 
-                {/* Cohort Slots */}
+              {/* Wednesday Lessons */}
+              <div className="flex flex-col gap-4">
+                <div className="p-2.5 bg-violet-500/10 border border-violet-500/25 font-bold text-xs text-violet-400 uppercase tracking-wider">
+                  Wednesday Sessions
+                </div>
+                <div className="flex flex-col gap-2 min-h-[100px]">
+                  {getLessonsForGrid('Wednesday').map(l => (
+                    <div 
+                      key={l.id} 
+                      className="p-3 border border-white/5 bg-slate-900/40 text-left flex flex-col justify-between transition-all duration-200"
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url('/lesson_private.png')`,
+                        backgroundAttachment: 'fixed',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    >
+                      <div>
+                        <div className="text-xs font-bold text-slate-200">{l.studentName}</div>
+                        <div className="text-[10px] text-slate-400">Instructor: {l.instructorName}</div>
+                        <span className="mt-1.5 inline-block text-[9px] px-1.5 py-0.5 bg-violet-600/20 text-violet-400 border border-violet-500/25 uppercase font-bold tracking-wider">
+                          {l.type.replace(/_/g, ' ')}
+                        </span>
+                      </div>
+                      <button 
+                        onClick={() => setEditingEvent({
+                          type: 'lesson',
+                          id: l.id,
+                          name: `Private Lesson for ${l.studentName}`,
+                          currentSchedule: new Date(l.scheduledAt).toLocaleString(),
+                          dateTime: l.scheduledAt
+                        })}
+                        className="mt-3 text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right cursor-pointer"
+                      >
+                        <i className="fa-solid fa-pen-to-square mr-1"></i> Reschedule
+                      </button>
+                    </div>
+                  ))}
+                  {getLessonsForGrid('Wednesday').length === 0 && (
+                    <div className="text-xs text-slate-600 italic py-6">No lessons scheduled</div>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          </Card>
+
+          {/* Section 2: Rehearsal Blocks */}
+          <Card 
+            title="Band Rehearsal Blocks" 
+            subtitle="Manage scheduled group band rehearsals and weekly cohort times" 
+            badge="4:00 PM - 8:30 PM" 
+            badgeColor="emerald"
+          >
+            <div className="grid grid-cols-2 gap-4 mt-4 text-center">
+              
+              {/* Tuesday Rehearsals */}
+              <div className="flex flex-col gap-4">
+                <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/25 font-bold text-xs text-emerald-400 uppercase tracking-wider">
+                  Tuesday Blocks
+                </div>
                 {cohortSlots.map(slot => {
                   const cohort = getCohortForGrid('Tuesday', slot);
                   return (
@@ -276,50 +344,11 @@ export default function AdminDashboardClient({
                 })}
               </div>
 
-              {/* Wednesday Column */}
+              {/* Wednesday Rehearsals */}
               <div className="flex flex-col gap-4">
-                <div className="p-3 bg-violet-500/10 border border-violet-500/25 rounded-xl font-bold text-violet-400">
-                  Wednesday Slot Allocations
+                <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/25 font-bold text-xs text-emerald-400 uppercase tracking-wider">
+                  Wednesday Blocks
                 </div>
-
-                {/* Lesson Slots (3:00 - 4:00 PM) */}
-                <div className="p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left min-h-[100px]">
-                  <div className="text-[10px] text-slate-500 uppercase font-semibold mb-2">Private Lesson Block (3:00 - 4:00)</div>
-                  <div className="flex flex-col gap-2">
-                    {getLessonsForGrid('Wednesday').map(l => (
-                      <div 
-                        key={l.id} 
-                        className="p-2.5 rounded-lg bg-slate-800/60 border border-white/5 flex flex-col justify-between transition-all duration-200"
-                        style={{
-                          backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url('/lesson_private.png')`,
-                          backgroundAttachment: 'fixed',
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                        }}
-                      >
-                        <div className="text-xs font-bold text-slate-200">{l.studentName}</div>
-                        <div className="text-[10px] text-slate-400">Instructor: {l.instructorName}</div>
-                        <button 
-                          onClick={() => setEditingEvent({
-                            type: 'lesson',
-                            id: l.id,
-                            name: `Private Lesson for ${l.studentName}`,
-                            currentSchedule: new Date(l.scheduledAt).toLocaleString(),
-                            dateTime: l.scheduledAt
-                          })}
-                          className="mt-2 text-[10px] text-violet-400 hover:text-violet-300 font-semibold text-right"
-                        >
-                          <i className="fa-solid fa-pen-to-square mr-1"></i> Reschedule
-                        </button>
-                      </div>
-                    ))}
-                    {getLessonsForGrid('Wednesday').length === 0 && (
-                      <div className="text-xs text-slate-600 italic">No scheduled lessons</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Cohort Slots */}
                 {cohortSlots.map(slot => {
                   const cohort = getCohortForGrid('Wednesday', slot);
                   return (
