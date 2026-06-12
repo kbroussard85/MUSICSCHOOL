@@ -40,6 +40,7 @@ All Sprint 1 and Sprint 2 goals (infrastructure setup, workspaces, shared packag
   - Implemented global **hard corners** across the entire UI by overriding `border-radius` to `0px !important` for all elements in [globals.css](file:///c:/Users/kbrou/Pictures/Saved%20Pictures/MUSIC%20SCHOOL/apps/web/src/app/globals.css).
   - Added custom high-fidelity **stock band and lesson images** (`band_rockers.png`, `band_teens.png`, `band_adults.png`, `band_juniors.png`, `lesson_private.png`) generated using the image generation tool.
   - Configured active calendar cells (cohort and private lesson blocks) and student roster cards to display matching **fixed-attachment parallax backgrounds** with semi-transparent glassmorphic overlays for high text readability.
+- **Student Schedule Popups**: Clicking on a student card in the roster displays a dedicated calendar popup modal showing their full profile and a weekly Tuesday/Wednesday schedule of their rehearsal band rehearsals and private lessons.
 
 ---
 
