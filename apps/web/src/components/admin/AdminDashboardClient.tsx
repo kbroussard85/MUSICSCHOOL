@@ -74,6 +74,7 @@ export default function AdminDashboardClient({
     slot?: string;
     dateTime?: string;
   } | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiMessage, setApiMessage] = useState<{ text: string; success: boolean } | null>(null);
@@ -388,7 +389,8 @@ export default function AdminDashboardClient({
               {filteredStudents.map(student => (
                 <div 
                   key={student.id}
-                  className="p-4 rounded-xl border border-white/5 bg-slate-900/30 hover:border-violet-500/20 hover:bg-slate-900/50 transition-all flex flex-col gap-1.5 duration-200"
+                  onClick={() => setSelectedStudent(student)}
+                  className="p-4 rounded-xl border border-white/5 bg-slate-900/30 hover:border-violet-500/20 hover:bg-slate-900/50 transition-all flex flex-col gap-1.5 duration-200 cursor-pointer"
                   style={{
                     backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.82), rgba(11, 14, 20, 0.88)), url(${getCohortImage(student.cohortName)})`,
                     backgroundAttachment: 'fixed',
@@ -538,6 +540,136 @@ export default function AdminDashboardClient({
         </div>
       );
     })()}
+
+      {/* Student Calendar View Modal */}
+      {selectedStudent && (() => {
+        const studentLessons = lessons.filter(l => l.studentEmail === selectedStudent.email);
+        
+        // Helper to check if a specific day and slot has an event for this student
+        const getStudentEventForSlot = (day: string, slot: string) => {
+          // Check if cohort rehearsal matches
+          const studentCohort = cohorts.find(c => c.name === selectedStudent.cohortName);
+          if (studentCohort && studentCohort.scheduleDay === day && studentCohort.scheduleSlot === slot) {
+            return {
+              type: 'cohort',
+              name: studentCohort.name,
+              detail: `Director: Prof. ${studentCohort.directorName}`,
+              color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+            };
+          }
+          return null;
+        };
+
+        // Check if there is a private lesson on a specific day
+        const getStudentLessonForDay = (day: string) => {
+          const lesson = studentLessons.find(l => {
+            const d = new Date(l.scheduledAt);
+            const dayName = d.toLocaleDateString('en-US', { weekday: 'long' });
+            return dayName === day;
+          });
+          if (lesson) {
+            const timeStr = new Date(lesson.scheduledAt).toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            return {
+              type: 'lesson',
+              name: `Private Lesson w/ ${lesson.instructorName}`,
+              detail: `Time: ${timeStr} (${lesson.status})`,
+              color: 'bg-violet-500/10 border-violet-500/30 text-violet-400'
+            };
+          }
+          return null;
+        };
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div 
+              className="w-full max-w-2xl p-6 border border-white/5 bg-[#0b0e14] shadow-2xl relative animate-fade-in font-sans"
+              style={{
+                backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.92)), url(${getCohortImage(selectedStudent.cohortName)})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              {/* Header */}
+              <div className="flex justify-between items-start border-b border-white/5 pb-4 mb-4">
+                <div>
+                  <span className="text-[10px] font-bold text-violet-400 uppercase tracking-wider">Candidate Profile & Schedule</span>
+                  <h3 className="font-heading text-2xl font-bold text-slate-100 mt-0.5">{selectedStudent.name}</h3>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 mt-1.5">
+                    <span><i className="fa-solid fa-envelope mr-1.5 text-slate-500"></i>{selectedStudent.email}</span>
+                    <span><i className="fa-solid fa-child mr-1.5 text-slate-500"></i>Age {selectedStudent.age}</span>
+                    <span><i className="fa-solid fa-guitar mr-1.5 text-slate-500"></i>{selectedStudent.instrument}</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedStudent(null)}
+                  className="p-1 px-3 border border-white/10 hover:bg-white/5 text-slate-400 transition-all font-bold text-xs cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+
+              {/* Weekly Schedule Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {['Tuesday', 'Wednesday'].map(day => {
+                  const lesson = getStudentLessonForDay(day);
+
+                  return (
+                    <div key={day} className="flex flex-col gap-3">
+                      <div className="p-2.5 bg-white/5 border border-white/5 font-bold text-xs text-slate-300 text-center uppercase tracking-wider">
+                        {day} Schedule
+                      </div>
+
+                      {/* Private Lesson Block */}
+                      <div className="p-3 border border-white/5 bg-slate-900/40 min-h-[72px] flex flex-col justify-center">
+                        <div className="text-[9px] text-slate-500 uppercase font-semibold mb-1">Private Lesson Slot (3:00 - 4:00)</div>
+                        {lesson ? (
+                          <div className={`p-2 border ${lesson.color} text-xs`}>
+                            <div className="font-bold">{lesson.name}</div>
+                            <div className="text-[10px] opacity-80 mt-0.5">{lesson.detail}</div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-slate-600 italic">No lesson scheduled</div>
+                        )}
+                      </div>
+
+                      {/* Cohort Slots */}
+                      <div className="flex flex-col gap-2">
+                        {cohortSlots.map(slot => {
+                          const event = getStudentEventForSlot(day, slot);
+                          return (
+                            <div key={slot} className="p-3 border border-white/5 bg-slate-900/40 min-h-[72px] flex flex-col justify-center">
+                              <div className="text-[9px] text-slate-500 uppercase font-semibold mb-1">{slot}</div>
+                              {event ? (
+                                <div className={`p-2 border ${event.color} text-xs`}>
+                                  <div className="font-bold">{event.name} Rehearsal</div>
+                                  <div className="text-[10px] opacity-80 mt-0.5">{event.detail}</div>
+                                </div>
+                              ) : (
+                                <div className="text-xs text-slate-600 italic">Unassigned / Free</div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Bottom bar */}
+              <div className="mt-6 border-t border-white/5 pt-4 flex justify-between items-center text-[10px] text-slate-500">
+                <span>Band Cohort: {selectedStudent.cohortName}</span>
+                <span>Instructor: {selectedStudent.directorName}</span>
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
