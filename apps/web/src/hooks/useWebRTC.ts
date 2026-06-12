@@ -81,7 +81,7 @@ export const useWebRTC = (
       // Await their offer (they will initiate if they joined after, or vice versa)
     });
 
-    socket.on('signal-offer', async ({ senderSocketId, offer }) => {
+    socket.on('signal-offer', async ({ senderSocketId, offer }: { senderSocketId: string; offer: RTCSessionDescriptionInit }) => {
       console.log(`[WebRTC] Received offer from ${senderSocketId}`);
       let pc = peerConnectionsRef.current.get(senderSocketId);
       if (!pc) {
@@ -103,7 +103,7 @@ export const useWebRTC = (
       });
     });
 
-    socket.on('signal-answer', async ({ senderSocketId, answer }) => {
+    socket.on('signal-answer', async ({ senderSocketId, answer }: { senderSocketId: string; answer: RTCSessionDescriptionInit }) => {
       console.log(`[WebRTC] Received answer from ${senderSocketId}`);
       const pc = peerConnectionsRef.current.get(senderSocketId);
       if (pc) {
@@ -111,7 +111,7 @@ export const useWebRTC = (
       }
     });
 
-    socket.on('ice-candidate', async ({ senderSocketId, candidate }) => {
+    socket.on('ice-candidate', async ({ senderSocketId, candidate }: { senderSocketId: string; candidate: RTCIceCandidateInit }) => {
       const pc = peerConnectionsRef.current.get(senderSocketId);
       if (pc) {
         await pc.addIceCandidate(new RTCIceCandidate(candidate));
@@ -127,7 +127,7 @@ export const useWebRTC = (
       });
     });
 
-    socket.on('peer-left', ({ socketId }) => {
+    socket.on('peer-left', ({ socketId }: { socketId: string }) => {
       console.log(`[WebRTC] Peer left: ${socketId}`);
       closePeerConnection(socketId);
       setPeers(prev => prev.filter(p => p.socketId !== socketId));
@@ -141,7 +141,7 @@ export const useWebRTC = (
       }
     }, 2000);
 
-    socket.on('latency-pong', ({ timestamp }) => {
+    socket.on('latency-pong', ({ timestamp }: { timestamp: number }) => {
       const rtt = Date.now() - timestamp;
       setLatency(rtt);
       socket.emit('latency-report', { cohortId, latencyMs: rtt });
