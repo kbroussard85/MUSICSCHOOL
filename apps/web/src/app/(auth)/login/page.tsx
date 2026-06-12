@@ -1,11 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function LoginPage() {
+  const [email, setEmail] = useState('alex@broussard.com');
+  const [password, setPassword] = useState('');
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // In development mode, set a mock email cookie to simulate successful authentication
+    document.cookie = `mock_user_email=${encodeURIComponent(email)}; path=/`;
     window.location.href = '/practice-room'; // Redirect to student dashboard
   };
 
@@ -30,6 +35,8 @@ export default function LoginPage() {
             <input 
               id="email" 
               type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@broussard.com" 
               required
               className="w-full px-4 py-3 bg-black/30 border border-white/5 rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:border-violet-500 focus:bg-black/50 focus:outline-none transition-all"
@@ -41,6 +48,8 @@ export default function LoginPage() {
             <input 
               id="pass" 
               type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••" 
               required
               className="w-full px-4 py-3 bg-black/30 border border-white/5 rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:border-violet-500 focus:bg-black/50 focus:outline-none transition-all"
