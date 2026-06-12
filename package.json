@@ -1,8 +1,24 @@
 {
-  "devDependencies": {
-    "prisma": "^6.19.3"
+  "name": "my-hybrid-music-school",
+  "version": "1.0.0",
+  "description": "Monorepo Workspace for Harmony Music School Platform",
+  "scripts": {
+    "postinstall": "npm install --prefix apps/web && npm install --prefix packages/webrtc-sfu",
+    "dev:web": "npm run dev --prefix apps/web",
+    "dev:sfu": "npm run dev --prefix packages/webrtc-sfu",
+    "dev": "concurrently --kill-others \"npm run dev:web\" \"npm run dev:sfu\"",
+    "build:web": "npm run build --prefix apps/web",
+    "build:sfu": "npm run build --prefix packages/webrtc-sfu",
+    "build": "npm run build:web && npm run build:sfu",
+    "start:web": "npm run start --prefix apps/web",
+    "start:sfu": "npm run start --prefix packages/webrtc-sfu",
+    "start": "concurrently --kill-others \"npm run start:web\" \"npm run start:sfu\""
   },
   "dependencies": {
     "@prisma/client": "^6.19.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prisma": "^6.19.3"
   }
 }
