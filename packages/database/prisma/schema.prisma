@@ -19,55 +19,62 @@ model Hub {
   staff        Staff[]
   students     Student[]
   spaceRentals SpaceRentalLog[]
+  venueLeases  VenueLease[]
+  waitlists    Waitlist[]
 
   @@map("hubs")
 }
 
 model Student {
-  id                 String        @id @default(uuid())
-  userId             String        @unique @map("user_id") // Auth0 sub identifier
-  email              String        @unique
+  id                 String          @id @default(uuid())
+  userId             String          @unique @map("user_id") // Auth0 sub identifier
+  email              String          @unique
   name               String
-  hubId              String        @map("hub_id")
-  hub                Hub           @relation(fields: [hubId], references: [id])
-  cohortId           String?       @map("cohort_id")
-  cohort             BandCohort?   @relation(fields: [cohortId], references: [id])
-  stripeCustomerId   String?       @map("stripe_customer_id")
-  subscriptionStatus String?       @map("subscription_status")
-  commitmentEndDate  DateTime?     @map("commitment_end_date") // 90-day minimum lock
+  hubId              String          @map("hub_id")
+  hub                Hub             @relation(fields: [hubId], references: [id])
+  cohortId           String?         @map("cohort_id")
+  cohort             BandCohort?     @relation(fields: [cohortId], references: [id])
+  stripeCustomerId   String?         @map("stripe_customer_id")
+  subscriptionStatus String?         @map("subscription_status")
+  commitmentEndDate  DateTime?       @map("commitment_end_date") // 90-day minimum lock
   practiceLogs       PracticeLog[]
-  createdAt          DateTime      @default(now()) @map("created_at")
+  privateLessons     PrivateLesson[]
+  paymentLogs        PaymentLog[]
+  attendances        Attendance[]
+  createdAt          DateTime        @default(now()) @map("created_at")
 
   @@map("students")
 }
 
 model Staff {
-  id              String       @id @default(uuid())
-  userId          String       @unique @map("user_id") // Auth0 sub identifier
-  email           String       @unique
+  id              String          @id @default(uuid())
+  userId          String          @unique @map("user_id") // Auth0 sub identifier
+  email           String          @unique
   name            String
-  role            String       // "DIRECTOR", "INSTRUCTOR", "ADMIN"
-  hourlyRate      Float        @map("hourly_rate") // $30 for directors, $26 for instructors
-  hubId           String       @map("hub_id")
-  hub             Hub          @relation(fields: [hubId], references: [id])
-  directedCohorts BandCohort[] @relation("DirectorRelation")
-  createdAt       DateTime     @default(now()) @map("created_at")
+  role            String          // "DIRECTOR", "INSTRUCTOR", "ADMIN"
+  hourlyRate      Float           @map("hourly_rate") // $30 for directors, $26 for instructors
+  hubId           String          @map("hub_id")
+  hub             Hub             @relation(fields: [hubId], references: [id])
+  directedCohorts BandCohort[]    @relation("DirectorRelation")
+  givenLessons    PrivateLesson[]
+  createdAt       DateTime        @default(now()) @map("created_at")
 
   @@map("staff")
 }
 
 model BandCohort {
-  id           String    @id @default(uuid())
+  id           String       @id @default(uuid())
   name         String
-  ageGroup     String    @map("age_group") // "9-12", "13-17", "18+"
-  scheduleDay  String    @map("schedule_day") // "Tuesday", "Wednesday"
-  scheduleSlot String    @map("schedule_slot") // "4:00 PM - 5:30 PM", "5:30 PM - 7:00 PM", "7:00 PM - 8:30 PM"
-  hubId        String    @map("hub_id")
-  hub          Hub       @relation(fields: [hubId], references: [id])
-  directorId   String?   @map("director_id")
-  director     Staff?    @relation("DirectorRelation", fields: [directorId], references: [id])
+  ageGroup     String       @map("age_group") // "9-12", "13-17", "18+"
+  scheduleDay  String       @map("schedule_day") // "Tuesday", "Wednesday"
+  scheduleSlot String       @map("schedule_slot") // "4:00 PM - 5:30 PM", "5:30 PM - 7:00 PM", "7:00 PM - 8:30 PM"
+  hubId        String       @map("hub_id")
+  hub          Hub          @relation(fields: [hubId], references: [id])
+  directorId   String?      @map("director_id")
+  director     Staff?       @relation("DirectorRelation", fields: [directorId], references: [id])
   students     Student[]
-  createdAt    DateTime  @default(now()) @map("created_at")
+  attendances  Attendance[]
+  createdAt    DateTime     @default(now()) @map("created_at")
 
   @@map("band_cohorts")
 }
@@ -84,6 +91,60 @@ model SpaceRentalLog {
   @@map("space_rental_logs")
 }
 
+model VenueLease {
+  id        String   @id @default(uuid())
+  hubId     String   @map("hub_id")
+  hub       Hub      @relation(fields: [hubId], references: [id])
+  name      String   @map("venue_name")
+  leaseDate DateTime @map("lease_date")
+  cost      Float    // Sinking fund rent tracking ($1,000–$1,500)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("venue_leases")
+}
+
+model PrivateLesson {
+  id              String   @id @default(uuid())
+  studentId       String   @map("student_id")
+  student         Student  @relation(fields: [studentId], references: [id])
+  instructorId    String   @map("instructor_id")
+  instructor      Staff    @relation(fields: [instructorId], references: [id])
+  scheduledAt     DateTime @map("scheduled_at")
+  durationMinutes Int      @default(45) @map("duration_minutes") // standard 45-min
+  type            String   // "ONLINE_STANDARD" or "IN_PERSON_UPSELL"
+  roomCost        Float?   @map("room_cost") // For Monday-Thursday private lesson upsells ($150/mo)
+  status          String   // "SCHEDULED", "COMPLETED", "CANCELED"
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("private_lessons")
+}
+
+model PaymentLog {
+  id              String   @id @default(uuid())
+  studentId       String   @map("student_id")
+  student         Student  @relation(fields: [studentId], references: [id])
+  stripeInvoiceId String?  @map("stripe_invoice_id")
+  amountPaid      Float    @map("amount_paid")
+  status          String   // "PAID", "FAILED", "CHARGED_BACK"
+  billingDate     DateTime @map("billing_date")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("payment_logs")
+}
+
+model Attendance {
+  id            String     @id @default(uuid())
+  studentId     String     @map("student_id")
+  student       Student    @relation(fields: [studentId], references: [id])
+  cohortId      String     @map("cohort_id")
+  cohort        BandCohort @relation(fields: [cohortId], references: [id])
+  rehearsalDate DateTime   @map("rehearsal_date")
+  present       Boolean    @default(true)
+  createdAt     DateTime   @default(now()) @map("created_at")
+
+  @@map("attendances")
+}
+
 model PracticeLog {
   id         String   @id @default(uuid())
   studentId  String   @map("student_id")
@@ -93,4 +154,18 @@ model PracticeLog {
   dateLogged DateTime @default(now()) @map("date_logged")
 
   @@map("practice_logs")
+}
+
+model Waitlist {
+  id           String   @id @default(uuid())
+  hubId        String   @map("hub_id")
+  hub          Hub      @relation(fields: [hubId], references: [id])
+  studentName  String   @map("student_name")
+  studentEmail String   @map("student_email")
+  age          Int
+  instrument   String
+  priority     Int      @default(0)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("waitlists")
 }
