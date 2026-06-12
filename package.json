@@ -2,16 +2,21 @@
   "name": "my-hybrid-music-school",
   "version": "1.0.0",
   "description": "Monorepo Workspace for Harmony Music School Platform",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "postinstall": "npm install --prefix apps/web && npm install --prefix packages/webrtc-sfu",
-    "dev:web": "npm run dev --prefix apps/web",
-    "dev:sfu": "npm run dev --prefix packages/webrtc-sfu",
+    "dev:web": "npm run dev --workspace=web",
+    "dev:sfu": "npm run dev --workspace=webrtc-sfu",
     "dev": "concurrently --kill-others \"npm run dev:web\" \"npm run dev:sfu\"",
-    "build:web": "npm run build --prefix apps/web",
-    "build:sfu": "npm run build --prefix packages/webrtc-sfu",
-    "build": "npm run build:web && npm run build:sfu",
-    "start:web": "npm run start --prefix apps/web",
-    "start:sfu": "npm run start --prefix packages/webrtc-sfu",
+    "build:deps": "npm run build --workspace=@harmony/audio-engine && npm run build --workspace=@harmony/ui",
+    "build:web": "npm run build --workspace=web",
+    "build:sfu": "npm run build --workspace=webrtc-sfu",
+    "build": "npm run build:deps && npm run build:web && npm run build:sfu",
+    "start:web": "npm run start --workspace=web",
+    "start:sfu": "npm run start --workspace=webrtc-sfu",
     "start": "concurrently --kill-others \"npm run start:web\" \"npm run start:sfu\""
   },
   "dependencies": {

@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.22.0",
-    "@prisma/client": "^7.8.0",
+    "@harmony/database": "*",
+    "@harmony/types": "*",
+    "@harmony/audio-engine": "*",
+    "@harmony/ui": "*",
+    "@prisma/client": "^6.19.3",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -24,7 +28,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
-    "prisma": "^7.8.0",
+    "prisma": "^6.19.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

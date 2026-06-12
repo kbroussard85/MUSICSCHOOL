@@ -19,6 +19,8 @@ export const useWebRTC = (
   const [peers, setPeers] = useState<WebRTCPeer[]>([]);
   const [latency, setLatency] = useState<number>(0);
   const [status, setStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');
+  const [isMicAllowed, setIsMicAllowed] = useState<boolean>(true);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   
   const socketRef = useRef<Socket | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
@@ -30,12 +32,10 @@ export const useWebRTC = (
     if (!cohortId) return;
 
     setStatus('connecting');
+    let socket: Socket | null = null;
+    let isCleanedUp = false;
 
-    // 1. Establish Signaling Socket Connection
-    const socket = io(SFU_URL, { transports: ['websocket'] });
-    socketRef.current = socket;
-
-    // 2. Setup Local Audio Stream
+    // 1. Setup Local Audio Stream first to avoid race conditions
     navigator.mediaDevices.getUserMedia({
       audio: {
         echoCancellation: true,
@@ -46,111 +46,136 @@ export const useWebRTC = (
       },
       video: false
     }).then((stream) => {
+      if (isCleanedUp) {
+        stream.getTracks().forEach(t => t.stop());
+        return;
+      }
+
       localStreamRef.current = stream;
+      setLocalStream(stream);
+      setIsMicAllowed(true);
 
-      // 3. Join Rehearsal Room
-      socket.emit('join-room', { cohortId, studentId, name: userName, role: userRole });
-    }).catch(err => {
-      console.error('[WebRTC] Microphone access denied', err);
-      setStatus('disconnected');
-    });
+      // 2. Establish Signaling Socket Connection
+      socket = io(SFU_URL, { transports: ['websocket'] });
+      socketRef.current = socket;
 
-    // 4. Socket Listeners
-    socket.on('connect', () => {
-      setStatus('connected');
-    });
-
-    socket.on('room-joined', async ({ peers: roomPeers }: { peers: Omit<WebRTCPeer, 'stream'>[] }) => {
-      console.log(`[WebRTC] Joined room. Found ${roomPeers.length} peers.`);
-      
-      const newPeers = roomPeers.map(p => ({ ...p, latencyMs: 0 }));
-      setPeers(newPeers);
-
-      // Create WebRTC connections for each existing peer
-      for (const peer of newPeers) {
-        await createPeerConnection(peer.socketId, true);
-      }
-    });
-
-    socket.on('peer-joined', async (peer: Omit<WebRTCPeer, 'stream'>) => {
-      console.log(`[WebRTC] Peer joined: ${peer.name}`);
-      setPeers(prev => {
-        if (prev.some(p => p.socketId === peer.socketId)) return prev;
-        return [...prev, { ...peer, latencyMs: 0 }];
-      });
-      // Await their offer (they will initiate if they joined after, or vice versa)
-    });
-
-    socket.on('signal-offer', async ({ senderSocketId, offer }: { senderSocketId: string; offer: RTCSessionDescriptionInit }) => {
-      console.log(`[WebRTC] Received offer from ${senderSocketId}`);
-      let pc = peerConnectionsRef.current.get(senderSocketId);
-      if (!pc) {
-        pc = await createPeerConnection(senderSocketId, false);
-      }
-      
-      await pc.setRemoteDescription(new RTCSessionDescription(offer));
-      const answer = await pc.createAnswer();
-      
-      // Inject SDP parameters: Opus, 48kHz, FEC, CBR (Constant Bit Rate)
-      const tunedSDP = tuneSDP(answer.sdp || '');
-      const tunedAnswer = new RTCSessionDescription({ type: 'answer', sdp: tunedSDP });
-      
-      await pc.setLocalDescription(tunedAnswer);
-      
-      socket.emit('signal-answer', {
-        targetSocketId: senderSocketId,
-        answer: tunedAnswer
-      });
-    });
-
-    socket.on('signal-answer', async ({ senderSocketId, answer }: { senderSocketId: string; answer: RTCSessionDescriptionInit }) => {
-      console.log(`[WebRTC] Received answer from ${senderSocketId}`);
-      const pc = peerConnectionsRef.current.get(senderSocketId);
-      if (pc) {
-        await pc.setRemoteDescription(new RTCSessionDescription(answer));
-      }
-    });
-
-    socket.on('ice-candidate', async ({ senderSocketId, candidate }: { senderSocketId: string; candidate: RTCIceCandidateInit }) => {
-      const pc = peerConnectionsRef.current.get(senderSocketId);
-      if (pc) {
-        await pc.addIceCandidate(new RTCIceCandidate(candidate));
-      }
-    });
-
-    socket.on('room-stats', ({ peers: roomStats }: { peers: WebRTCPeer[] }) => {
-      setPeers(prev => {
-        return prev.map(p => {
-          const stat = roomStats.find(s => s.socketId === p.socketId);
-          return stat ? { ...p, latencyMs: stat.latencyMs } : p;
+      // 3. Socket Listeners
+      socket.on('connect', () => {
+        setStatus('connected');
+        // Once connected, join the cohort room
+        socket?.emit('join-room', {
+          cohortId,
+          studentId,
+          name: userName,
+          role: userRole
         });
       });
-    });
 
-    socket.on('peer-left', ({ socketId }: { socketId: string }) => {
-      console.log(`[WebRTC] Peer left: ${socketId}`);
-      closePeerConnection(socketId);
-      setPeers(prev => prev.filter(p => p.socketId !== socketId));
-    });
+      socket.on('room-joined', async ({ peers: roomPeers }: { peers: Omit<WebRTCPeer, 'stream'>[] }) => {
+        console.log(`[WebRTC] Joined room. Found ${roomPeers.length} peers.`);
+        
+        const newPeers = roomPeers.map(p => ({ ...p, latencyMs: 0 }));
+        setPeers(newPeers);
 
-    // 5. RTT Latency Diagnostic Loop
-    const latencyInterval = setInterval(() => {
-      if (socket.connected) {
-        const pingTime = Date.now();
-        socket.emit('latency-ping', { cohortId, timestamp: pingTime });
-      }
-    }, 2000);
+        // Create WebRTC connections for each existing peer
+        for (const peer of newPeers) {
+          await createPeerConnection(peer.socketId, true);
+        }
+      });
 
-    socket.on('latency-pong', ({ timestamp }: { timestamp: number }) => {
-      const rtt = Date.now() - timestamp;
-      setLatency(rtt);
-      socket.emit('latency-report', { cohortId, latencyMs: rtt });
+      socket.on('peer-joined', async (peer: Omit<WebRTCPeer, 'stream'>) => {
+        console.log(`[WebRTC] Peer joined: ${peer.name}`);
+        setPeers(prev => {
+          if (prev.some(p => p.socketId === peer.socketId)) return prev;
+          return [...prev, { ...peer, latencyMs: 0 }];
+        });
+        // Await their offer
+      });
+
+      socket.on('signal-offer', async ({ senderSocketId, offer }: { senderSocketId: string; offer: RTCSessionDescriptionInit }) => {
+        console.log(`[WebRTC] Received offer from ${senderSocketId}`);
+        let pc = peerConnectionsRef.current.get(senderSocketId);
+        if (!pc) {
+          pc = await createPeerConnection(senderSocketId, false);
+        }
+        
+        await pc.setRemoteDescription(new RTCSessionDescription(offer));
+        const answer = await pc.createAnswer();
+        
+        // Inject SDP parameters: Opus, 48kHz, FEC, CBR (Constant Bit Rate)
+        const tunedSDP = tuneSDP(answer.sdp || '');
+        const tunedAnswer = new RTCSessionDescription({ type: 'answer', sdp: tunedSDP });
+        
+        await pc.setLocalDescription(tunedAnswer);
+        
+        socket?.emit('signal-answer', {
+          targetSocketId: senderSocketId,
+          answer: tunedAnswer
+        });
+      });
+
+      socket.on('signal-answer', async ({ senderSocketId, answer }: { senderSocketId: string; answer: RTCSessionDescriptionInit }) => {
+        console.log(`[WebRTC] Received answer from ${senderSocketId}`);
+        const pc = peerConnectionsRef.current.get(senderSocketId);
+        if (pc) {
+          await pc.setRemoteDescription(new RTCSessionDescription(answer));
+        }
+      });
+
+      socket.on('ice-candidate', async ({ senderSocketId, candidate }: { senderSocketId: string; candidate: RTCIceCandidateInit }) => {
+        const pc = peerConnectionsRef.current.get(senderSocketId);
+        if (pc) {
+          await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        }
+      });
+
+      socket.on('room-stats', ({ peers: roomStats }: { peers: WebRTCPeer[] }) => {
+        setPeers(prev => {
+          return prev.map(p => {
+            const stat = roomStats.find(s => s.socketId === p.socketId);
+            return stat ? { ...p, latencyMs: stat.latencyMs } : p;
+          });
+        });
+      });
+
+      socket.on('peer-left', ({ socketId }: { socketId: string }) => {
+        console.log(`[WebRTC] Peer left: ${socketId}`);
+        closePeerConnection(socketId);
+        setPeers(prev => prev.filter(p => p.socketId !== socketId));
+      });
+
+      // 4. RTT Latency Diagnostic Loop
+      const latencyInterval = setInterval(() => {
+        if (socket?.connected) {
+          const pingTime = Date.now();
+          socket.emit('latency-ping', { cohortId, timestamp: pingTime });
+        }
+      }, 2000);
+
+      socket.on('latency-pong', ({ timestamp }: { timestamp: number }) => {
+        const rtt = Date.now() - timestamp;
+        setLatency(rtt);
+        socket?.emit('latency-report', { cohortId, latencyMs: rtt });
+      });
+
+      // Store interval on socket ref for cleanup
+      (socket as any)._latencyInterval = latencyInterval;
+
+    }).catch(err => {
+      console.error('[WebRTC] Microphone access denied or dismissed', err);
+      setStatus('disconnected');
+      setIsMicAllowed(false);
     });
 
     // Cleanup
     return () => {
-      clearInterval(latencyInterval);
-      socket.disconnect();
+      isCleanedUp = true;
+      if (socket) {
+        if ((socket as any)._latencyInterval) {
+          clearInterval((socket as any)._latencyInterval);
+        }
+        socket.disconnect();
+      }
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach(track => track.stop());
       }
@@ -230,10 +255,7 @@ export const useWebRTC = (
     let lines = sdp.split('\r\n');
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].includes('a=rtpmap:') && lines[i].includes('opus/48000')) {
-        // Found the Opus definition line
-        // Inject parameters: maxaveragebitrate=128000, useinbandfec=1, cbr=1
         const payloadType = lines[i].split('a=rtpmap:')[1].split(' ')[0];
-        // Look for fmtp description line matching this payload type
         const fmtpIndex = lines.findIndex(l => l.includes(`a=fmtp:${payloadType}`));
         if (fmtpIndex !== -1) {
           lines[fmtpIndex] = lines[fmtpIndex] + ';maxaveragebitrate=128000;useinbandfec=1;cbr=1';
@@ -243,5 +265,5 @@ export const useWebRTC = (
     return lines.join('\r\n');
   };
 
-  return { peers, localLatency: latency, connectionStatus: status };
+  return { peers, localLatency: latency, connectionStatus: status, isMicAllowed, localStream };
 };

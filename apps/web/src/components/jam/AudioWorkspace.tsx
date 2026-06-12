@@ -4,6 +4,37 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useWebRTC } from '../../hooks/useWebRTC';
 import { JitterBuffer } from './JitterBuffer';
 
+// Dedicated Remote Audio Player component to resolve NotSupportedError
+const AudioPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+
+    // Bind media stream source
+    el.srcObject = stream;
+
+    const playAudio = async () => {
+      try {
+        await el.play();
+      } catch (err) {
+        console.warn('[WebRTC] Autoplay or play blocked:', err);
+      }
+    };
+
+    playAudio();
+
+    return () => {
+      if (el) {
+        el.srcObject = null;
+      }
+    };
+  }, [stream]);
+
+  return <audio ref={audioRef} playsInline className="hidden" />;
+};
+
 interface AudioWorkspaceProps {
   cohortId: string;
   studentId: string;
@@ -17,7 +48,7 @@ export const AudioWorkspace: React.FC<AudioWorkspaceProps> = ({
   userName,
   userRole
 }) => {
-  const { peers, localLatency, connectionStatus } = useWebRTC(
+  const { peers, localLatency, connectionStatus, isMicAllowed, localStream } = useWebRTC(
     cohortId,
     studentId,
     userName,
@@ -31,69 +62,86 @@ export const AudioWorkspace: React.FC<AudioWorkspaceProps> = ({
   const micSourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
-  // Toggle local mute
+  // Toggle local mute directly on active stream tracks (no duplicate getUserMedia prompt)
   const handleMuteToggle = () => {
     setIsMuted(prev => {
       const next = !prev;
-      // Get local stream track and toggle enabled state
-      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        stream.getAudioTracks().forEach(track => {
+      if (localStream) {
+        localStream.getAudioTracks().forEach(track => {
           track.enabled = !next;
         });
-      });
+      }
       return next;
     });
   };
 
-  // Local audio input volume levels analyzer
+  // Local audio input volume levels analyzer consuming localStream directly
   useEffect(() => {
-    if (connectionStatus === 'connected') {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-          const audioCtx = new AudioContextClass();
-          const analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 256;
-          
-          const source = audioCtx.createMediaStreamSource(stream);
-          source.connect(analyser);
+    if (localStream) {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      const audioCtx = new AudioContextClass();
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      
+      const source = audioCtx.createMediaStreamSource(localStream);
+      source.connect(analyser);
 
-          audioContextRef.current = audioCtx;
-          analyserRef.current = analyser;
-          micSourceRef.current = source;
+      audioContextRef.current = audioCtx;
+      analyserRef.current = analyser;
+      micSourceRef.current = source;
 
-          const bufferLength = analyser.frequencyBinCount;
-          const dataArray = new Uint8Array(bufferLength);
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
 
-          const updateVolume = () => {
-            if (!analyserRef.current || isMuted) {
-              setActiveVolume(0);
-              animationFrameRef.current = requestAnimationFrame(updateVolume);
-              return;
-            }
-            analyserRef.current.getByteFrequencyData(dataArray);
-            let sum = 0;
-            for (let i = 0; i < bufferLength; i++) {
-              sum += dataArray[i];
-            }
-            const average = sum / bufferLength;
-            setActiveVolume(Math.min((average / 128) * 100, 100)); // Map to percentage scale
-            animationFrameRef.current = requestAnimationFrame(updateVolume);
-          };
+      const updateVolume = () => {
+        if (!analyserRef.current || isMuted) {
+          setActiveVolume(0);
+          animationFrameRef.current = requestAnimationFrame(updateVolume);
+          return;
+        }
+        analyserRef.current.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          sum += dataArray[i];
+        }
+        const average = sum / bufferLength;
+        setActiveVolume(Math.min((average / 128) * 100, 100)); // Map to percentage scale
+        animationFrameRef.current = requestAnimationFrame(updateVolume);
+      };
 
-          updateVolume();
-        })
-        .catch(err => console.warn('Audio analyzer could not initialize:', err));
+      updateVolume();
     }
 
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (audioContextRef.current) audioContextRef.current.close();
     };
-  }, [connectionStatus, isMuted]);
+  }, [localStream, isMuted]);
+
+  // Render glassmorphic banner if microphone permission is denied or dismissed
+  if (!isMicAllowed) {
+    return (
+      <div className="p-8 rounded-2xl border border-rose-500/20 bg-[#0b0e14]/80 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center text-center max-w-lg mx-auto my-12 font-sans">
+        <div className="p-4 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 mb-4 animate-pulse">
+          <i className="fa-solid fa-microphone-slash text-4xl"></i>
+        </div>
+        <h3 className="font-heading text-2xl font-bold text-slate-100 mb-2">Microphone Access Denied</h3>
+        <p className="text-sm text-slate-400 mb-6 leading-relaxed">
+          To join the low-latency rehearsal room, you must allow access to your microphone.
+          Please click the lock or settings icon in your browser's address bar, enable microphone permissions, and refresh the page.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-3 rounded-xl font-semibold bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+        >
+          <i className="fa-solid fa-rotate-right mr-2"></i> Reload Page
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 font-sans">
       {/* Latency Stats Overlay */}
       <JitterBuffer latencyMs={localLatency} />
 
@@ -116,7 +164,7 @@ export const AudioWorkspace: React.FC<AudioWorkspaceProps> = ({
           <div className="flex items-center gap-4">
             <button 
               onClick={handleMuteToggle}
-              className={`p-3 rounded-xl border flex items-center justify-center transition-all ${
+              className={`p-3 rounded-xl border flex items-center justify-center transition-all cursor-pointer ${
                 isMuted 
                   ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' 
                   : 'bg-violet-500/10 border-violet-500/30 text-violet-400 hover:bg-violet-500/20'
@@ -126,7 +174,7 @@ export const AudioWorkspace: React.FC<AudioWorkspaceProps> = ({
               <i className={`fa-solid ${isMuted ? 'fa-microphone-slash' : 'fa-microphone'}`}></i>
             </button>
 
-            {/* Volume indicator waveform mock */}
+            {/* Volume indicator waveform */}
             <div className="flex-1 flex gap-1 items-end h-[24px]">
               {[...Array(10)].map((_, i) => {
                 const heightVal = activeVolume > (i * 10) ? Math.max(20 - (i * 1.5), 4) : 4;
@@ -166,14 +214,9 @@ export const AudioWorkspace: React.FC<AudioWorkspaceProps> = ({
                   <i className={`fa-solid ${isPeerMuted ? 'fa-volume-xmark' : 'fa-volume-high'}`}></i>
                 </div>
 
-                {/* Auto audio tag that plays peer stream */}
+                {/* Play remote peer stream programmatically */}
                 {peer.stream && (
-                  <audio 
-                    autoPlay 
-                    ref={(el) => {
-                      if (el && peer.stream) el.srcObject = peer.stream;
-                    }}
-                  />
+                  <AudioPlayer stream={peer.stream} />
                 )}
 
                 <div className="flex-1 text-xs text-slate-400 italic">
