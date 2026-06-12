@@ -42,6 +42,19 @@ interface AdminDashboardClientProps {
   initialLessons: LessonData[];
 }
 
+const cohortImages: Record<string, string> = {
+  'Thornton Rockers': '/band_rockers.png',
+  'Westminster Teens': '/band_teens.png',
+  'Adult Ensemble': '/band_adults.png',
+  'Broomfield Juniors': '/band_juniors.png',
+  'Thornton Teens II': '/band_teens.png',
+  'Adult Blues Hub': '/band_adults.png',
+};
+
+const getCohortImage = (name: string) => {
+  return cohortImages[name] || '/band_rockers.png';
+};
+
 export default function AdminDashboardClient({
   initialStudents,
   initialCohorts,
@@ -180,12 +193,21 @@ export default function AdminDashboardClient({
                   Tuesday Slot Allocations
                 </div>
 
-                {/* Lesson Slots (3:00 - 4:00 PM) */}
+                 {/* Lesson Slots (3:00 - 4:00 PM) */}
                 <div className="p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left min-h-[100px]">
                   <div className="text-[10px] text-slate-500 uppercase font-semibold mb-2">Private Lesson Block (3:00 - 4:00)</div>
                   <div className="flex flex-col gap-2">
                     {getLessonsForGrid('Tuesday').map(l => (
-                      <div key={l.id} className="p-2.5 rounded-lg bg-slate-800/60 border border-white/5 flex flex-col justify-between">
+                      <div 
+                        key={l.id} 
+                        className="p-2.5 rounded-lg bg-slate-800/60 border border-white/5 flex flex-col justify-between transition-all duration-200"
+                        style={{
+                          backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url('/lesson_private.png')`,
+                          backgroundAttachment: 'fixed',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
                         <div className="text-xs font-bold text-slate-200">{l.studentName}</div>
                         <div className="text-[10px] text-slate-400">Instructor: {l.instructorName}</div>
                         <button 
@@ -225,6 +247,12 @@ export default function AdminDashboardClient({
                       className={`p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left h-[130px] flex flex-col justify-between transition-all duration-200 ${
                         cohort ? 'cursor-pointer hover:border-violet-500/30 hover:bg-slate-900/60 hover:shadow-lg hover:shadow-violet-950/10' : ''
                       }`}
+                      style={cohort ? {
+                        backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url(${getCohortImage(cohort.name)})`,
+                        backgroundAttachment: 'fixed',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      } : undefined}
                     >
                       <div>
                         <div className="text-[10px] text-slate-500 uppercase font-semibold">{slot}</div>
@@ -258,7 +286,16 @@ export default function AdminDashboardClient({
                   <div className="text-[10px] text-slate-500 uppercase font-semibold mb-2">Private Lesson Block (3:00 - 4:00)</div>
                   <div className="flex flex-col gap-2">
                     {getLessonsForGrid('Wednesday').map(l => (
-                      <div key={l.id} className="p-2.5 rounded-lg bg-slate-800/60 border border-white/5 flex flex-col justify-between">
+                      <div 
+                        key={l.id} 
+                        className="p-2.5 rounded-lg bg-slate-800/60 border border-white/5 flex flex-col justify-between transition-all duration-200"
+                        style={{
+                          backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url('/lesson_private.png')`,
+                          backgroundAttachment: 'fixed',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
                         <div className="text-xs font-bold text-slate-200">{l.studentName}</div>
                         <div className="text-[10px] text-slate-400">Instructor: {l.instructorName}</div>
                         <button 
@@ -298,6 +335,12 @@ export default function AdminDashboardClient({
                       className={`p-4 rounded-xl border border-white/5 bg-slate-900/40 text-left h-[130px] flex flex-col justify-between transition-all duration-200 ${
                         cohort ? 'cursor-pointer hover:border-violet-500/30 hover:bg-slate-900/60 hover:shadow-lg hover:shadow-violet-950/10' : ''
                       }`}
+                      style={cohort ? {
+                        backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.8), rgba(11, 14, 20, 0.85)), url(${getCohortImage(cohort.name)})`,
+                        backgroundAttachment: 'fixed',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      } : undefined}
                     >
                       <div>
                         <div className="text-[10px] text-slate-500 uppercase font-semibold">{slot}</div>
@@ -345,7 +388,13 @@ export default function AdminDashboardClient({
               {filteredStudents.map(student => (
                 <div 
                   key={student.id}
-                  className="p-4 rounded-xl border border-white/5 bg-slate-900/30 hover:border-violet-500/10 hover:bg-slate-900/50 transition-all flex flex-col gap-1.5"
+                  className="p-4 rounded-xl border border-white/5 bg-slate-900/30 hover:border-violet-500/20 hover:bg-slate-900/50 transition-all flex flex-col gap-1.5 duration-200"
+                  style={{
+                    backgroundImage: `linear-gradient(rgba(11, 14, 20, 0.82), rgba(11, 14, 20, 0.88)), url(${getCohortImage(student.cohortName)})`,
+                    backgroundAttachment: 'fixed',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
                 >
                   <div className="flex justify-between items-start">
                     <h4 className="text-sm font-bold text-slate-100">{student.name}</h4>
