@@ -43,6 +43,8 @@ export async function getIAMProfile(): Promise<IAMProfile | null> {
     return null;
   }
 
+  const emailLower = email.toLowerCase();
+
   try {
     // 1. Check if user is staff (ADMIN, DIRECTOR, INSTRUCTOR)
     let staff = await prisma.staff.findUnique({
@@ -92,10 +94,10 @@ export async function getIAMProfile(): Promise<IAMProfile | null> {
     if (process.env.NODE_ENV === 'development') {
       let role: 'STUDENT' | 'ADMIN' | 'DIRECTOR' = 'STUDENT';
       let name = 'Alex Broussard';
-      if (email.includes('admin')) {
+      if (emailLower.includes('admin')) {
         role = 'ADMIN';
         name = 'System Administrator';
-      } else if (email.includes('director') || email.includes('teacher')) {
+      } else if (emailLower.includes('director') || emailLower.includes('teacher')) {
         role = 'DIRECTOR';
         name = 'Band Director';
       }
@@ -114,12 +116,22 @@ export async function getIAMProfile(): Promise<IAMProfile | null> {
 
     // In development, return mock details even if database connection fails
     if (process.env.NODE_ENV === 'development') {
+      let role: 'STUDENT' | 'ADMIN' | 'DIRECTOR' = 'STUDENT';
+      let name = 'Alex Broussard';
+      if (emailLower.includes('admin')) {
+        role = 'ADMIN';
+        name = 'System Administrator';
+      } else if (emailLower.includes('director') || emailLower.includes('teacher')) {
+        role = 'DIRECTOR';
+        name = 'Band Director';
+      }
+
       return {
-        id: 'mock-student-id',
+        id: `mock-${role.toLowerCase()}-id`,
         userId: sub || 'mock-sub',
         email: email || 'alex@broussard.com',
-        name: 'Alex Broussard',
-        role: 'STUDENT',
+        name,
+        role,
         hubId: 'mock-hub-id'
       };
     }
