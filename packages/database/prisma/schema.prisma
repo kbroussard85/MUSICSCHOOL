@@ -1,0 +1,96 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Hub {
+  id           String           @id @default(uuid())
+  name         String
+  city         String
+  address      String
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  cohorts      BandCohort[]
+  staff        Staff[]
+  students     Student[]
+  spaceRentals SpaceRentalLog[]
+
+  @@map("hubs")
+}
+
+model Student {
+  id                 String        @id @default(uuid())
+  userId             String        @unique @map("user_id") // Auth0 sub identifier
+  email              String        @unique
+  name               String
+  hubId              String        @map("hub_id")
+  hub                Hub           @relation(fields: [hubId], references: [id])
+  cohortId           String?       @map("cohort_id")
+  cohort             BandCohort?   @relation(fields: [cohortId], references: [id])
+  stripeCustomerId   String?       @map("stripe_customer_id")
+  subscriptionStatus String?       @map("subscription_status")
+  commitmentEndDate  DateTime?     @map("commitment_end_date") // 90-day minimum lock
+  practiceLogs       PracticeLog[]
+  createdAt          DateTime      @default(now()) @map("created_at")
+
+  @@map("students")
+}
+
+model Staff {
+  id              String       @id @default(uuid())
+  userId          String       @unique @map("user_id") // Auth0 sub identifier
+  email           String       @unique
+  name            String
+  role            String       // "DIRECTOR", "INSTRUCTOR", "ADMIN"
+  hourlyRate      Float        @map("hourly_rate") // $30 for directors, $26 for instructors
+  hubId           String       @map("hub_id")
+  hub             Hub          @relation(fields: [hubId], references: [id])
+  directedCohorts BandCohort[] @relation("DirectorRelation")
+  createdAt       DateTime     @default(now()) @map("created_at")
+
+  @@map("staff")
+}
+
+model BandCohort {
+  id           String    @id @default(uuid())
+  name         String
+  ageGroup     String    @map("age_group") // "9-12", "13-17", "18+"
+  scheduleDay  String    @map("schedule_day") // "Tuesday", "Wednesday"
+  scheduleSlot String    @map("schedule_slot") // "4:00 PM - 5:30 PM", "5:30 PM - 7:00 PM", "7:00 PM - 8:30 PM"
+  hubId        String    @map("hub_id")
+  hub          Hub       @relation(fields: [hubId], references: [id])
+  directorId   String?   @map("director_id")
+  director     Staff?    @relation("DirectorRelation", fields: [directorId], references: [id])
+  students     Student[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@map("band_cohorts")
+}
+
+model SpaceRentalLog {
+  id          String   @id @default(uuid())
+  hubId       String   @map("hub_id")
+  hub         Hub      @relation(fields: [hubId], references: [id])
+  date        DateTime
+  hoursLogged Float    @map("hours_logged") // 9 hours/week total
+  cost        Float    @map("cost") // $40/hour
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("space_rental_logs")
+}
+
+model PracticeLog {
+  id         String   @id @default(uuid())
+  studentId  String   @map("student_id")
+  student    Student  @relation(fields: [studentId], references: [id])
+  duration   Float    // duration in hours
+  notes      String   // piece/notes practiced
+  dateLogged DateTime @default(now()) @map("date_logged")
+
+  @@map("practice_logs")
+}
