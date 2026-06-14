@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b0e14;
-  --foreground: #f8fafc;
+  --background: #06040a; /* Deep space purple/black */
+  --foreground: #f1ecff;
+  
+  /* Retro-futuristic cyberpunk accents */
+  --cyber-pink: #ff007f;
+  --cyber-cyan: #00f0ff;
+  --cyber-purple: #9d00ff;
+  --cyber-yellow: #ffea00;
+  
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
 }
 
 @theme inline {
@@ -13,16 +22,224 @@
 }
 
 body {
-  background: var(--background);
+  background-color: #06040a;
+  background-image: 
+    linear-gradient(rgba(6, 4, 10, 0.88), rgba(6, 4, 10, 0.94)),
+    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    url('/band_adults.png');
+  background-size: auto, 36px 36px, 36px 36px, cover;
+  background-attachment: fixed;
+  background-position: center;
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), sans-serif;
+  letter-spacing: 0.05em;
 }
 
-/* Force hard corners globally */
+/* Force hard corners globally as required */
 *, *::before, *::after {
   border-radius: 0px !important;
 }
+
+/* Parallax scroll stock image cell container */
+.parallax-cell {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Futuristic CRT Scanline overlay */
+.cyber-scanlines {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.45;
+}
+
+/* Retro-futuristic cyberpunk card styling */
+.cyber-card {
+  background: rgba(11, 8, 20, 0.85) !important;
+  border: 1px solid rgba(0, 240, 255, 0.25) !important;
+  box-shadow: 0 0 20px rgba(157, 0, 255, 0.15), inset 0 0 10px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+.cyber-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--cyber-pink), var(--cyber-purple), var(--cyber-cyan));
+}
+
+/* Button neon glow animations */
+.cyber-btn-pink {
+  background: linear-gradient(135deg, var(--cyber-pink), var(--cyber-purple));
+  border: 1px solid var(--cyber-cyan);
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.cyber-btn-pink:hover {
+  box-shadow: 0 0 22px rgba(0, 240, 255, 0.65), 0 0 10px rgba(255, 0, 127, 0.65);
+  transform: translateY(-2px);
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+}
+
+.cyber-btn-cyan {
+  background: transparent;
+  border: 1px solid var(--cyber-cyan);
+  color: var(--cyber-cyan);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  transition: all 0.25s ease;
+}
+
+.cyber-btn-cyan:hover {
+  background: rgba(0, 240, 255, 0.15);
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.cyber-btn-border {
+  border: 1px dashed rgba(157, 0, 255, 0.4);
+  background: rgba(11, 8, 20, 0.5);
+  color: var(--cyber-cyan);
+  transition: all 0.25s ease;
+}
+
+.cyber-btn-border:hover {
+  border-color: var(--cyber-cyan);
+  background: rgba(0, 240, 255, 0.05);
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+/* Neon glow animations */
+.glow-pulse-pink {
+  animation: pink-glow-anim 2s infinite alternate;
+}
+
+.glow-pulse-cyan {
+  animation: cyan-glow-anim 2s infinite alternate;
+}
+
+@keyframes pink-glow-anim {
+  from {
+    text-shadow: 0 0 4px var(--cyber-pink), 0 0 8px var(--cyber-purple);
+  }
+  to {
+    text-shadow: 0 0 8px var(--cyber-pink), 0 0 16px var(--cyber-pink), 0 0 25px var(--cyber-purple);
+  }
+}
+
+@keyframes cyan-glow-anim {
+  from {
+    text-shadow: 0 0 4px var(--cyber-cyan), 0 0 8px rgba(0, 240, 255, 0.5);
+  }
+  to {
+    text-shadow: 0 0 8px var(--cyber-cyan), 0 0 16px var(--cyber-cyan), 0 0 25px rgba(0, 240, 255, 0.8);
+  }
+}
+
+/* Cyber telemetry badge */
+.cyber-badge-cyan {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--cyber-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+}
+
+.cyber-badge-pink {
+  background: rgba(255, 0, 127, 0.1);
+  color: var(--cyber-pink);
+  border: 1px solid rgba(255, 0, 127, 0.35);
+}
+
+.cyber-badge-emerald {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+/* Blinking terminal cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.terminal-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+/* Cyber text glow styling */
+.text-cyber-glow-cyan {
+  text-shadow: 0 0 8px var(--cyber-cyan), 0 0 15px rgba(0, 240, 255, 0.4);
+}
+.text-cyber-glow-pink {
+  text-shadow: 0 0 8px var(--cyber-pink), 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+/* Custom indicator dots */
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--cyber-cyan);
+  box-shadow: 0 0 8px var(--cyber-cyan);
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+}
+
+.indicator-dot-pink {
+  width: 8px;
+  height: 8px;
+  background-color: var(--cyber-pink);
+  box-shadow: 0 0 8px var(--cyber-pink);
+  display: inline-block;
+  animation: pulse-pink 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px var(--cyber-cyan); }
+  50% { opacity: 1; box-shadow: 0 0 12px var(--cyber-cyan); }
+}
+
+@keyframes pulse-pink {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px var(--cyber-pink); }
+  50% { opacity: 1; box-shadow: 0 0 12px var(--cyber-pink); }
+}
+
+/* Cyber grid utility */
+.cyber-grid-overlay {
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Parallax panel container */
+.parallax-bg-section {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: background-image 0.5s ease-in-out;
+}
+

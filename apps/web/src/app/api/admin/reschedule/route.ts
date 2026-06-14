@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getIAMProfile } from '@/lib/iam';
 import prisma from '@/lib/prisma';
-import { sendRescheduleEmail } from '@/lib/email';
+import { publishSchedulingEvent } from '@/lib/redis';
+import { decryptText } from '@/lib/encryption';
 
 export async function POST(request: NextRequest) {
   // 1. Authenticate and authorize ADMIN role
@@ -48,33 +49,37 @@ export async function POST(request: NextRequest) {
         }
       });
 
-      // Dispatch notifications to all students and the director
+      // Dispatch notifications to all students and the director via Redis Pub/Sub
       const instructorName = cohort.director?.name || 'Unassigned Instructor';
       const instructorEmail = cohort.director?.email || 'admin@harmony.com';
 
       for (const student of cohort.students) {
-        await sendRescheduleEmail({
+        publishSchedulingEvent({
+          type: 'COHORT_RESCHEDULE',
           studentName: student.name,
-          studentEmail: student.email,
+          studentEmail: decryptText(student.emailEncrypted),
+          parentEmail: student.parentEmailEnc ? decryptText(student.parentEmailEnc) : undefined,
           instructorName,
           instructorEmail,
           eventName: `${cohort.name} Band Cohort`,
           oldSchedule,
-          newSchedule
+          newSchedule,
+          timestamp: new Date().toISOString()
         });
       }
 
       // Handle case when there are no students yet
       if (cohort.students.length === 0 && cohort.director) {
-        // Send a single notification specifically to director
-        await sendRescheduleEmail({
+        publishSchedulingEvent({
+          type: 'COHORT_RESCHEDULE',
           studentName: 'No Students Enrolled',
           studentEmail: 'admin@harmony.com',
           instructorName,
           instructorEmail,
           eventName: `${cohort.name} Band Cohort`,
           oldSchedule,
-          newSchedule
+          newSchedule,
+          timestamp: new Date().toISOString()
         });
       }
 
@@ -109,15 +114,18 @@ export async function POST(request: NextRequest) {
         }
       });
 
-      // Dispatch notifications
-      await sendRescheduleEmail({
+      // Dispatch notifications via Redis Pub/Sub
+      publishSchedulingEvent({
+        type: 'LESSON_RESCHEDULE',
         studentName: lesson.student.name,
-        studentEmail: lesson.student.email,
+        studentEmail: decryptText(lesson.student.emailEncrypted),
+        parentEmail: lesson.student.parentEmailEnc ? decryptText(lesson.student.parentEmailEnc) : undefined,
         instructorName: lesson.instructor.name,
         instructorEmail: lesson.instructor.email,
         eventName: `Private Lesson (${lesson.type})`,
         oldSchedule,
-        newSchedule
+        newSchedule,
+        timestamp: new Date().toISOString()
       });
 
       return NextResponse.json({ success: true, message: 'Private lesson rescheduled successfully and notification logged.' });

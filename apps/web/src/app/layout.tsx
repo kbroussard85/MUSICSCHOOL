@@ -13,9 +13,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Harmony Music School | Elevate Your Musical Journey",
-  description: "Unlock your musical potential at Harmony Music School. We offer professional training in Piano, Guitar, Violin, Voice, and Drums. Explore our interactive courses and schedule a lesson today.",
-  keywords: "music school, learn music, piano lessons, guitar lessons, violin lessons, singing voice training, drum lessons, music dashboard",
+  title: "Stage Music Academy | The Future of Live Jam Telemetry",
+  description: "Stage Music Academy fuses retro-futuristic live performance coaching with next-gen regional jam capabilities. Plug into professional backlines, join a real rock band, and perform live on stage.",
+  keywords: "music school, learn music, rock band, jam session, stage music academy, cyber music, live music lessons, piano lessons, guitar lessons, violin lessons",
 };
 
 export default function RootLayout({
@@ -32,7 +32,10 @@ export default function RootLayout({
         {/* FontAwesome for Icons */}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#0b0e14] text-[#f8fafc]">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#0b0e14] text-[#f8fafc]">
+        <div className="cyber-scanlines" />
+        {children}
+      </body>
     </html>
   );
 }

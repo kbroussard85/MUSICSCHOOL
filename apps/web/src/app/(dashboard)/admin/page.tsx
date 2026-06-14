@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getIAMProfile } from '@/lib/iam';
 import prisma from '@/lib/prisma';
 import AdminDashboardClient, { StudentData, CohortData, LessonData } from '@/components/admin/AdminDashboardClient';
+import { decryptText } from '@/lib/encryption';
 
 export default async function AdminDashboardPage() {
   // 1. Authorize: user must be ADMIN
@@ -41,7 +42,7 @@ export default async function AdminDashboardPage() {
     students = dbStudents.map(s => ({
       id: s.id,
       name: s.name,
-      email: s.email,
+      email: decryptText(s.emailEncrypted),
       age: s.age || 14,
       instrument: s.instrument || 'Guitar',
       cohortName: s.cohort?.name || 'Unassigned Cohort',
@@ -54,7 +55,7 @@ export default async function AdminDashboardPage() {
     lessons = dbLessons.map(l => ({
       id: l.id,
       studentName: l.student.name,
-      studentEmail: l.student.email,
+      studentEmail: decryptText(l.student.emailEncrypted),
       instructorName: l.instructor.name,
       instructorEmail: l.instructor.email,
       scheduledAt: l.scheduledAt.toISOString(),

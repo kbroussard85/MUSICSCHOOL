@@ -9,18 +9,20 @@ generator client {
 }
 
 model Hub {
-  id           String           @id @default(uuid())
-  name         String
-  city         String
-  address      String
-  createdAt    DateTime         @default(now()) @map("created_at")
-  updatedAt    DateTime         @updatedAt @map("updated_at")
-  cohorts      BandCohort[]
-  staff        Staff[]
-  students     Student[]
-  spaceRentals SpaceRentalLog[]
-  venueLeases  VenueLease[]
-  waitlists    Waitlist[]
+  id              String           @id @default(uuid())
+  name            String
+  city            String
+  address         String
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  cohorts         BandCohort[]
+  staff           Staff[]          // Legacy direct relation
+  staffAssignments StaffAssignment[] // Winston multi-tenant assignments
+  students        Student[]
+  spaceRentals    SpaceRentalLog[]
+  venueLeases     VenueLease[]
+  waitlists       Waitlist[]
+  crmLeads        CRMLead[]
 
   @@map("hubs")
 }
@@ -28,13 +30,17 @@ model Hub {
 model Student {
   id                 String          @id @default(uuid())
   userId             String          @unique @map("user_id") // Auth0 sub identifier
-  email              String          @unique
-  name               String
+  firstName          String          @default("") @map("first_name")
+  lastName           String          @default("") @map("last_name")
+  name               String          // Plain fallback full name
+  emailEncrypted     String          @map("email_encrypted") // Encrypted application-side via AES-256-GCM
+  emailHash          String          @unique @map("email_hash") // Deterministic blind index for fast DB indexing/lookups
+  parentEmailEnc     String?         @map("parent_email_enc") // Encrypted parent email string
   hubId              String          @map("hub_id")
   hub                Hub             @relation(fields: [hubId], references: [id])
   cohortId           String?         @map("cohort_id")
   cohort             BandCohort?     @relation(fields: [cohortId], references: [id])
-  stripeCustomerId   String?         @map("stripe_customer_id")
+  stripeCustomerId   String?         @unique @map("stripe_customer_id")
   subscriptionStatus String?         @map("subscription_status")
   commitmentEndDate  DateTime?       @map("commitment_end_date") // 90-day minimum lock
   age                Int?            @default(12)
@@ -43,6 +49,8 @@ model Student {
   privateLessons     PrivateLesson[]
   paymentLogs        PaymentLog[]
   attendances        Attendance[]
+  bandAssignments    BandMember[]
+  masterClasses      MasterClassAttendee[]
   createdAt          DateTime        @default(now()) @map("created_at")
 
   @@map("students")
@@ -53,12 +61,17 @@ model Staff {
   userId          String          @unique @map("user_id") // Auth0 sub identifier
   email           String          @unique
   name            String
+  firstName       String          @default("") @map("first_name")
+  lastName        String          @default("") @map("last_name")
   role            String          // "DIRECTOR", "INSTRUCTOR", "ADMIN"
   hourlyRate      Float           @map("hourly_rate") // $30 for directors, $26 for instructors
+  isActive        Boolean         @default(true) @map("is_active")
   hubId           String          @map("hub_id")
   hub             Hub             @relation(fields: [hubId], references: [id])
   directedCohorts BandCohort[]    @relation("DirectorRelation")
   givenLessons    PrivateLesson[]
+  assignments     StaffAssignment[]
+  masterClasses   MasterClassInstructor[]
   createdAt       DateTime        @default(now()) @map("created_at")
 
   @@map("staff")
@@ -76,6 +89,7 @@ model BandCohort {
   director     Staff?       @relation("DirectorRelation", fields: [directorId], references: [id])
   students     Student[]
   attendances  Attendance[]
+  members      BandMember[]
   createdAt    DateTime     @default(now()) @map("created_at")
 
   @@map("band_cohorts")
@@ -108,7 +122,7 @@ model VenueLease {
 model PrivateLesson {
   id              String   @id @default(uuid())
   studentId       String   @map("student_id")
-  student         Student  @relation(fields: [studentId], references: [id])
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   instructorId    String   @map("instructor_id")
   instructor      Staff    @relation(fields: [instructorId], references: [id])
   scheduledAt     DateTime @map("scheduled_at")
@@ -116,6 +130,7 @@ model PrivateLesson {
   type            String   // "ONLINE_STANDARD" or "IN_PERSON_UPSELL"
   roomCost        Float?   @map("room_cost") // For Monday-Thursday private lesson upsells ($150/mo)
   status          String   // "SCHEDULED", "COMPLETED", "CANCELED"
+  isCompleted     Boolean  @default(false) @map("is_completed")
   createdAt       DateTime @default(now()) @map("created_at")
 
   @@map("private_lessons")
@@ -170,4 +185,104 @@ model Waitlist {
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("waitlists")
+}
+
+model StaffAssignment {
+  id        String   @id @default(uuid())
+  staffId   String   @map("staff_id")
+  hubId     String   @map("hub_id")
+  staff     Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  hub       Hub      @relation(fields: [hubId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, hubId])
+  @@map("staff_assignments")
+}
+
+model BandMember {
+  id        String     @id @default(uuid())
+  studentId String     @map("student_id")
+  cohortId  String     @map("cohort_id")
+  student   Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  cohort    BandCohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, cohortId])
+  @@map("band_members")
+}
+
+model CRMLead {
+  id                  String             @id @default(uuid())
+  hubId               String             @map("hub_id")
+  status              LeadStatus         @default(INQUIRY_RECEIVED)
+  parentNameEncrypted String?            @map("parent_name_encrypted")
+  studentName         String             @map("student_name")
+  phoneEncrypted      String             @map("phone_encrypted")
+  phoneHash           String             @unique @map("phone_hash") // Blind index hash for secure phone searches
+  notesEncrypted      String?            @map("notes_encrypted") @db.Text
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
+  hub                 Hub                @relation(fields: [hubId], references: [id])
+  communications      CommunicationLog[]
+
+  @@map("crm_leads")
+}
+
+model CommunicationLog {
+  id               String            @id @default(uuid())
+  leadId           String            @map("lead_id")
+  type             CommunicationType
+  agentStaffId     String            @map("agent_staff_id")
+  summaryEncrypted String            @map("summary_encrypted") @db.Text
+  timestamp        DateTime          @default(now())
+  lead             CRMLead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("communication_logs")
+}
+
+model MasterClass {
+  id              String                  @id @default(uuid())
+  topic           String
+  scheduledAt     DateTime                @map("scheduled_at")
+  durationMinutes Int                     @default(60) @map("duration_minutes")
+  maxSeats        Int                     @default(25) @map("max_seats")
+  instructors     MasterClassInstructor[]
+  attendees       MasterClassAttendee[]
+
+  @@map("master_classes")
+}
+
+model MasterClassInstructor {
+  id            String      @id @default(uuid())
+  masterClassId String      @map("master_class_id")
+  instructorId  String      @map("instructor_id")
+  masterClass   MasterClass @relation(fields: [masterClassId], references: [id], onDelete: Cascade)
+  instructor    Staff       @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@unique([masterClassId, instructorId])
+  @@map("master_class_instructors")
+}
+
+model MasterClassAttendee {
+  id            String      @id @default(uuid())
+  masterClassId String      @map("master_class_id")
+  studentId     String      @map("student_id")
+  attendedAt    DateTime    @default(now()) @map("attended_at")
+  masterClass   MasterClass @relation(fields: [masterClassId], references: [id], onDelete: Cascade)
+  student       Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([masterClassId, studentId])
+  @@map("master_class_attendees")
+}
+
+enum CommunicationType {
+  EMAIL
+  SMS
+  PHONE_CALL
+}
+
+enum LeadStatus {
+  INQUIRY_RECEIVED
+  TRIAL_SCHEDULED
+  TRIED_NOT_ENROLLED
+  CONVERTED_ACTIVE
+  WAITLISTED
 }

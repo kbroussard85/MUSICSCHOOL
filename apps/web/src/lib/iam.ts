@@ -1,6 +1,7 @@
 import { auth0 } from './auth0';
 import prisma from './prisma';
 import { cookies } from 'next/headers';
+import { getBlindIndex, decryptText } from './encryption';
 
 export interface IAMProfile {
   id: string;
@@ -68,22 +69,26 @@ export async function getIAMProfile(): Promise<IAMProfile | null> {
       };
     }
 
-    // 2. Check if user is student
+    // 2. Check if user is student using emailHash blind index
+    const emailHash = getBlindIndex(emailLower);
     let student = await prisma.student.findUnique({
-      where: { email }
+      where: { emailHash }
     });
 
     if (student) {
       if (student.userId !== sub) {
         student = await prisma.student.update({
-          where: { email },
+          where: { emailHash },
           data: { userId: sub }
         });
       }
+      
+      const decryptedEmail = decryptText(student.emailEncrypted);
+      
       return {
         id: student.id,
         userId: student.userId,
-        email: student.email,
+        email: decryptedEmail || email,
         name: student.name,
         role: 'STUDENT',
         hubId: student.hubId

@@ -15,23 +15,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080a0f] text-slate-100 flex items-center justify-center p-6 relative font-sans">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.08),transparent_60%)] pointer-events-none" />
+    <div className="min-h-screen bg-[#06040a] text-slate-100 flex items-center justify-center p-6 relative font-sans">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.05),transparent_60%)] pointer-events-none" />
 
-      <div className="w-full max-w-md p-8 rounded-2xl border border-white/5 bg-[#0b0e14]/60 backdrop-blur-md shadow-2xl relative">
+      <div className="w-full max-w-md p-8 cyber-card shadow-2xl relative bg-[#0b0813]/85">
         {/* Logo Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-2xl font-extrabold tracking-widest bg-gradient-to-r from-violet-400 to-pink-500 bg-clip-text text-transparent">
-            <i className="fa-solid fa-music"></i>
-            <span>HARMONY</span>
+          <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black tracking-widest text-[#f1ecff]">
+            <i className="fa-solid fa-music text-pink-500 glow-pulse-pink"></i>
+            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase">Stage Music</span>
           </Link>
-          <p className="text-xs text-slate-400 mt-2">Sign in to your learning dashboard portal</p>
+          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1 glow-pulse-cyan leading-none">Academy</div>
+          <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-wider">Sign in to your learning dashboard portal</p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-xs font-semibold text-slate-400">Email Address</label>
+            <label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-slate-400">Email Address</label>
             <input 
               id="email" 
               type="email" 
@@ -39,12 +40,12 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="alex@broussard.com" 
               required
-              className="w-full px-4 py-3 bg-black/30 border border-white/5 rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:border-violet-500 focus:bg-black/50 focus:outline-none transition-all"
+              className="w-full px-4 py-3 bg-black/40 border border-cyan-500/20 text-slate-200 placeholder-slate-700 text-xs focus:border-pink-500 focus:outline-none transition-all"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="pass" className="text-xs font-semibold text-slate-400">Password</label>
+            <label htmlFor="pass" className="text-xs font-black uppercase tracking-wider text-slate-400">Password</label>
             <input 
               id="pass" 
               type="password" 
@@ -52,21 +53,21 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••" 
               required
-              className="w-full px-4 py-3 bg-black/30 border border-white/5 rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:border-violet-500 focus:bg-black/50 focus:outline-none transition-all"
+              className="w-full px-4 py-3 bg-black/40 border border-cyan-500/20 text-slate-200 placeholder-slate-700 text-xs focus:border-pink-500 focus:outline-none transition-all"
             />
           </div>
 
           <button 
             type="submit" 
-            className="w-full py-3 bg-gradient-to-r from-violet-500 to-violet-600 hover:from-violet-600 hover:to-violet-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-violet-500/10 transition-all mt-4 hover:-translate-y-0.5"
+            className="w-full py-3 cyber-btn-pink text-xs font-black tracking-widest shadow-lg mt-4 cursor-pointer"
           >
             Authenticate Portal
           </button>
         </form>
 
-        <div className="text-center mt-6 text-xs text-slate-500">
+        <div className="text-center mt-6 text-xs text-slate-500 uppercase tracking-wider">
           <span>Don't have an account? </span>
-          <Link href="/signup" className="text-violet-400 font-semibold hover:underline">Register cohort</Link>
+          <Link href="/signup" className="text-cyan-400 font-bold hover:underline">Register cohort</Link>
         </div>
       </div>
     </div>
