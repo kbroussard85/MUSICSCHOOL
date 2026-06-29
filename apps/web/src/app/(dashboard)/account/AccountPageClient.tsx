@@ -88,8 +88,8 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
     <div className="space-y-8 font-sans pb-10 max-w-3xl">
       
       {/* Header */}
-      <div className="border-b border-cyan-500/10 pb-6">
-        <span className="text-[10px] font-black text-pink-500 uppercase tracking-widest block mb-1">Configuration</span>
+      <div className="border-b border-white/5 pb-6">
+        <span className="text-[10px] font-black text-pink-400 uppercase tracking-widest block mb-1">Configuration</span>
         <h1 className="text-3xl font-heading font-black uppercase tracking-wider text-slate-100">
           Account Settings
         </h1>
@@ -117,8 +117,8 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
       <form onSubmit={handleSave} className="space-y-6">
         
         {/* Personal Details */}
-        <div className="cyber-card p-6 bg-[#0b0813]/85 border-cyan-500/15 space-y-4">
-          <h2 className="text-sm font-black uppercase tracking-widest text-slate-200 border-b border-cyan-500/5 pb-2 mb-2">
+        <div className="stitch-card p-6 space-y-4">
+          <h2 className="text-sm font-black uppercase tracking-widest text-slate-200 border-b border-white/5 pb-2 mb-2">
             Personal Information
           </h2>
 
@@ -130,7 +130,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 type="text" 
                 readOnly
                 value={initialData.email}
-                className="w-full bg-slate-900/50 border border-cyan-500/5 px-3 py-2.5 text-xs text-slate-500 font-mono focus:outline-none"
+                className="w-full bg-slate-900/50 border border-white/5 px-3 py-2.5 text-xs text-slate-500 font-mono focus:outline-none"
               />
             </div>
 
@@ -142,7 +142,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               />
             </div>
 
@@ -152,7 +152,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
               <select
                 value={instrument}
                 onChange={(e) => setInstrument(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               >
                 {instruments.map(inst => (
                   <option key={inst} value={inst}>{inst}</option>
@@ -169,15 +169,15 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 placeholder="(555) 555-5555"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               />
             </div>
           </div>
         </div>
 
         {/* Physical Address */}
-        <div className="cyber-card p-6 bg-[#0b0813]/85 border-cyan-500/15 space-y-4">
-          <h2 className="text-sm font-black uppercase tracking-widest text-slate-200 border-b border-cyan-500/5 pb-2 mb-2">
+        <div className="stitch-card p-6 space-y-4">
+          <h2 className="text-sm font-black uppercase tracking-widest text-slate-200 border-b border-white/5 pb-2 mb-2">
             Billing & Mailing Address
           </h2>
 
@@ -189,7 +189,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 required
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               />
             </div>
 
@@ -200,7 +200,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 required
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               />
             </div>
 
@@ -213,7 +213,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                   maxLength={2}
                   value={stateCode}
                   onChange={(e) => setStateCode(e.target.value)}
-                  className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono text-center"
+                  className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono text-center"
                 />
               </div>
               <div>
@@ -223,7 +223,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                   required
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
-                  className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono text-center"
+                  className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono text-center"
                 />
               </div>
             </div>
@@ -231,8 +231,8 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
         </div>
 
         {/* Payment Credentials */}
-        <div className="cyber-card p-6 bg-[#0b0813]/85 border-cyan-500/15 space-y-4">
-          <h2 className="text-sm font-black uppercase tracking-widest text-slate-200 border-b border-cyan-500/5 pb-2 mb-2">
+        <div className="stitch-card p-6 space-y-4">
+          <h2 className="text-sm font-black uppercase tracking-widest text-slate-200 border-b border-white/5 pb-2 mb-2">
             Active Payment Method
           </h2>
 
@@ -243,7 +243,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 type="text" 
                 value={cardNum}
                 onChange={(e) => setCardNum(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               />
             </div>
             <div>
@@ -252,7 +252,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
                 type="text" 
                 value={cardExp}
                 onChange={(e) => setCardExp(e.target.value)}
-                className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                className="w-full bg-slate-950 border border-white/10 px-3 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
               />
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function AccountPageClient({ initialData }: AccountPageClientProp
           <button
             type="submit"
             disabled={isSaving}
-            className="w-full sm:w-auto py-3 px-8 cyber-btn-pink text-xs font-black uppercase tracking-widest cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto py-3 px-8 stitch-btn-violet text-xs font-black uppercase tracking-widest cursor-pointer disabled:opacity-50"
           >
             {isSaving ? 'Saving Changes...' : 'Save Profile Settings'}
           </button>

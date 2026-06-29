@@ -243,3 +243,41 @@ h1, h2, h3, h4, h5, h6 {
   transition: background-image 0.5s ease-in-out;
 }
 
+/* Stitch design system utility classes */
+.stitch-card {
+  background: rgba(18, 23, 34, 0.65) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s ease;
+}
+
+.stitch-card:hover {
+  border-color: rgba(139, 92, 246, 0.3) !important;
+  box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.08);
+}
+
+.stitch-badge-violet {
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
+}
+
+.stitch-badge-pink {
+  background: rgba(236, 72, 153, 0.15);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  color: #f472b6;
+}
+
+.stitch-btn-violet {
+  background: #8b5cf6;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.stitch-btn-violet:hover {
+  background: #7c3aed;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+

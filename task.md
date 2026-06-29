@@ -94,6 +94,18 @@
   - [x] Implement "We don't just teach notes. We teach the ecosystem of music" three-pillar layout
   - [x] Resolve Prisma database initialization by pushing schema and creating PostgreSQL `harmony_db`
   - [x] Verify compilation and connection integrity
+- [x] 19. Above-The-Fold Realignment, Card Imagery, and Student Portal Rebuild (Dashboard, Vault, Gear, Account)
+  - [x] Raise landing page layout elements and shorten copy to ensure CTAs are visible above the fold on immediate load
+  - [x] Add demographic-appropriate images to Teen Rock (`/band_teens.png`), All Stars (`/band_rockers.png`), and Adult Jam (`/band_adults.png`) cards
+  - [x] Delete all legacy WebRTC virtual practice room and lessons pages and remove packages (`webrtc-sfu` and `audio-engine`) from package.json and project workspace structure
+  - [x] Update redirection paths (login, signup, checkout api, admin panel) to route users to `/dashboard`
+  - [x] Add models for `VaultItem`, `GearItem`, `BulletinNote`, and `SetlistSong` to Prisma schema and perform a schema push
+  - [x] Rebuild Dashboard page with assigned director, showcase setlist progress bars, calendar schedules, and interactive note-pinning bulletin board
+  - [x] Rebuild Vault page with search queries, instrument categories, and streaming lesson play modal
+  - [x] Rebuild Gear shop page with equipment dropdowns, quantities cart panel, and transactional stock updates
+  - [x] Rebuild Account page with name, phone, instrument, address, card billing, and password resets
+  - [x] Verify complete production compilation safety with `npm run build`
+
 
 
 

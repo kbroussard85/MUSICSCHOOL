@@ -125,9 +125,9 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
     <div className="space-y-8 font-sans pb-10 relative">
       
       {/* Header */}
-      <div className="border-b border-cyan-500/10 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="border-b border-white/5 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="text-[10px] font-black text-pink-500 uppercase tracking-widest block mb-1">Academy Pro Shop</span>
+          <span className="text-[9px] font-black text-pink-400 uppercase tracking-widest block mb-1">Academy Pro Shop</span>
           <h1 className="text-3xl font-heading font-black uppercase tracking-wider text-slate-100">
             Academy Gear Marketplace
           </h1>
@@ -143,7 +143,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
             <select
               value={category}
               onChange={handleCategoryChange}
-              className="w-full md:w-56 bg-[#0b0813] border border-cyan-500/20 px-4 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 transition-all font-mono"
+              className="w-full md:w-56 bg-[#121722]/50 border border-white/10 px-4 py-2.5 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 transition-all font-mono"
             >
               {categories.map((c) => (
                 <option key={c.value} value={c.value}>
@@ -164,23 +164,23 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
         </div>
       </div>
 
-      <div className="flex gap-8 items-start">
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
         
         {/* Marketplace Grid */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {initialItems.map((item) => (
             <div 
               key={item.id} 
-              className="cyber-card bg-[#0b0813]/85 border-cyan-500/15 overflow-hidden flex flex-col justify-between group hover:border-pink-500/30 transition-all"
+              className="stitch-card overflow-hidden flex flex-col justify-between group hover:border-violet-500/30 transition-all"
             >
               {/* Product Image */}
-              <div className="h-44 bg-slate-900 relative overflow-hidden shrink-0 border-b border-cyan-500/10">
+              <div className="h-44 bg-slate-900 relative overflow-hidden shrink-0 border-b border-white/5">
                 <img 
                   src={item.image} 
                   alt={item.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102" 
                 />
-                <span className="absolute top-3 right-3 text-[9px] font-mono font-black text-cyan-400 bg-[#06040a]/90 px-2 py-0.5 border border-cyan-400/30">
+                <span className="absolute top-3 right-3 text-[9px] font-mono font-black text-violet-400 bg-[#0c0e14]/90 px-2 py-0.5 border border-violet-500/30">
                   ${item.price.toFixed(2)}
                 </span>
               </div>
@@ -207,7 +207,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                   {item.stock > 0 ? (
                     <button
                       onClick={() => addToCart(item)}
-                      className="py-2 px-4 cyber-btn-cyan text-[9px] font-black uppercase tracking-widest cursor-pointer"
+                      className="py-2 px-4 border border-violet-500/30 hover:border-violet-500 text-violet-400 hover:text-white text-[9px] font-black uppercase tracking-widest cursor-pointer transition-all"
                     >
                       Add To Cart
                     </button>
@@ -224,14 +224,14 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
 
         {/* Sidebar Shopping Cart Panel */}
         {isCartOpen && (
-          <div className="w-80 cyber-card p-6 bg-[#0b0813] border-pink-500/25 shrink-0 sticky top-28 self-start shadow-xl">
-            <div className="flex items-center justify-between border-b border-cyan-500/10 pb-4 mb-4">
+          <div className="w-full lg:w-80 stitch-card p-6 sticky top-28 self-start shadow-xl">
+            <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-4">
               <h3 className="font-heading text-sm font-black uppercase tracking-wider text-slate-200">
                 Shopping Cart
               </h3>
               <button 
                 onClick={() => setIsCartOpen(false)}
-                className="text-slate-500 hover:text-pink-400 text-xs font-mono uppercase"
+                className="text-slate-500 hover:text-pink-400 text-xs font-mono uppercase cursor-pointer"
               >
                 Close
               </button>
@@ -245,7 +245,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
               <div className="space-y-4">
                 <div className="max-h-60 overflow-y-auto space-y-3 pr-1">
                   {cart.map((c) => (
-                    <div key={c.item.id} className="text-xs flex justify-between gap-2 border-b border-cyan-500/5 pb-2">
+                    <div key={c.item.id} className="text-xs flex justify-between gap-2 border-b border-white/5 pb-2">
                       <div className="flex-1">
                         <p className="font-black text-slate-200 uppercase truncate max-w-[130px]">{c.item.name}</p>
                         <p className="text-[9px] text-slate-500">${c.item.price.toFixed(2)} x {c.quantity}</p>
@@ -270,15 +270,15 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                   ))}
                 </div>
 
-                <div className="border-t border-cyan-500/10 pt-4 space-y-4">
+                <div className="border-t border-white/5 pt-4 space-y-4">
                   <div className="flex justify-between font-mono text-xs uppercase font-black">
                     <span className="text-slate-400">Subtotal:</span>
-                    <span className="text-cyan-400">${subtotal.toFixed(2)}</span>
+                    <span className="text-violet-400">${subtotal.toFixed(2)}</span>
                   </div>
 
                   <button
                     onClick={() => setIsCheckoutOpen(true)}
-                    className="w-full py-3 cyber-btn-pink text-xs font-black uppercase tracking-widest cursor-pointer text-center"
+                    className="w-full py-3 stitch-btn-violet text-xs font-black uppercase tracking-widest cursor-pointer text-center"
                   >
                     Proceed to Checkout
                   </button>
@@ -292,7 +292,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
       {/* Checkout Modal */}
       {isCheckoutOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-[#0b0813] border border-pink-500/35 p-6 shadow-2xl relative">
+          <div className="w-full max-w-md bg-[#0c0e14] border border-pink-500/35 p-6 shadow-2xl relative">
             <button 
               onClick={() => { setIsCheckoutOpen(false); setCheckoutSuccess(false); }}
               className="absolute top-4 right-4 text-slate-500 hover:text-pink-400 text-xs font-mono uppercase cursor-pointer"
@@ -313,7 +313,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                 </p>
                 <button
                   onClick={() => { setIsCheckoutOpen(false); setCheckoutSuccess(false); window.location.reload(); }}
-                  className="mt-6 py-2 px-6 cyber-btn-cyan text-[10px] font-black uppercase tracking-widest"
+                  className="mt-6 py-2 px-6 stitch-btn-violet text-[10px] font-black uppercase tracking-widest"
                 >
                   Return to Pro Shop
                 </button>
@@ -323,11 +323,11 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                 <span className="text-[9px] font-black text-pink-500 uppercase tracking-widest block mb-1">
                   Pro Shop Checkout
                 </span>
-                <h3 className="text-xl font-heading font-black uppercase text-slate-100 tracking-wider mb-4 border-b border-cyan-500/10 pb-2">
+                <h3 className="text-xl font-heading font-black uppercase text-slate-100 tracking-wider mb-4 border-b border-white/5 pb-2">
                   Order Summary
                 </h3>
 
-                <div className="max-h-28 overflow-y-auto space-y-2 border-b border-cyan-500/5 pb-2 pr-1 font-mono text-[10px] uppercase text-slate-400">
+                <div className="max-h-28 overflow-y-auto space-y-2 border-b border-white/5 pb-2 pr-1 font-mono text-[10px] uppercase text-slate-400">
                   {cart.map(c => (
                     <div key={c.item.id} className="flex justify-between">
                       <span className="truncate max-w-[200px]">{c.item.name} x{c.quantity}</span>
@@ -338,7 +338,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
 
                 <div className="flex justify-between font-mono text-xs uppercase font-black py-2">
                   <span className="text-slate-400">Total Due:</span>
-                  <span className="text-cyan-400">${subtotal.toFixed(2)}</span>
+                  <span className="text-violet-400">${subtotal.toFixed(2)}</span>
                 </div>
 
                 {/* Credit Card form inputs */}
@@ -348,10 +348,10 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                     <input 
                       type="text" 
                       required
-                      placeholder="4111 2222 3333 4444"
+                      placeholder="4111 2222 3333 4242"
                       value={ccNumber}
                       onChange={(e) => setCcNumber(e.target.value)}
-                      className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                      className="w-full bg-slate-950 border border-white/10 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
@@ -363,7 +363,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                         placeholder="MM/YY"
                         value={ccExpiry}
                         onChange={(e) => setCcExpiry(e.target.value)}
-                        className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                        className="w-full bg-slate-950 border border-white/10 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
                       />
                     </div>
                     <div>
@@ -375,7 +375,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                         placeholder="***"
                         value={ccCvv}
                         onChange={(e) => setCcCvv(e.target.value)}
-                        className="w-full bg-[#06040a] border border-cyan-500/15 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-cyan-400 font-mono"
+                        className="w-full bg-slate-950 border border-white/10 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono"
                       />
                     </div>
                   </div>
@@ -384,7 +384,7 @@ export default function GearPageClient({ initialItems, initialCategory }: GearPa
                 <button
                   type="submit"
                   disabled={isCheckingOut}
-                  className="w-full mt-6 py-3 cyber-btn-pink text-xs font-black uppercase tracking-widest disabled:opacity-50 cursor-pointer text-center"
+                  className="w-full mt-6 py-3 stitch-btn-violet text-xs font-black uppercase tracking-widest disabled:opacity-50 cursor-pointer text-center"
                 >
                   {isCheckingOut ? 'Authorizing Payment...' : `Pay $${subtotal.toFixed(2)}`}
                 </button>
