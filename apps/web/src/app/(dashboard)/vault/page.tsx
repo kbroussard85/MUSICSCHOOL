@@ -2,6 +2,7 @@ import React from 'react';
 import prisma from '@/lib/prisma';
 import { getIAMProfile } from '@/lib/iam';
 import VaultPageClient from './VaultPageClient';
+import VaultAdminClient from './VaultAdminClient';
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -49,6 +50,19 @@ export default async function VaultPage({ searchParams }: PageProps) {
     thumbnail: item.thumbnail || '',
     description: item.description || ''
   }));
+
+  const isAdminOrDirector = profile.role === 'ADMIN' || profile.role === 'DIRECTOR';
+
+  if (isAdminOrDirector) {
+    return (
+      <VaultAdminClient 
+        initialItems={formattedItems}
+        initialSearch={search || ''}
+        initialCategory={category || 'all'}
+        initialType={type || 'all'}
+      />
+    );
+  }
 
   return (
     <VaultPageClient 

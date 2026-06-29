@@ -86,9 +86,9 @@ interface DashboardClientProps {
 export default function DashboardClient({ 
   studentInfo, 
   profileName, 
-  allHubs, 
-  allCohorts, 
-  initialSelectedHubCity 
+  allHubs = [], 
+  allCohorts = [], 
+  initialSelectedHubCity = 'Thornton' 
 }: DashboardClientProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [bulletinNotes, setBulletinNotes] = useState<BulletinNote[]>(studentInfo.bulletinNotes);

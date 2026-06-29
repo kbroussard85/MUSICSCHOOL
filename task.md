@@ -105,6 +105,15 @@
   - [x] Rebuild Gear shop page with equipment dropdowns, quantities cart panel, and transactional stock updates
   - [x] Rebuild Account page with name, phone, instrument, address, card billing, and password resets
   - [x] Verify complete production compilation safety with `npm run build`
+- [x] 20. Studio Locations & Roster Slot Enrollment Wizard
+  - [x] Add "Our Locations" list on landing page showing Thornton, Westminster, and Broomfield studio hubs
+  - [x] Implement location selector modal popup on the signup page (`/signup`) pre-populating location preferences
+  - [x] Expand `dbSeeder.ts` to pre-seed the three hubs and active band cohorts (Teen Rock, Adult Jam, All Stars) for each location
+  - [x] Integrate Roster Enrollment Wizard in `DashboardClient.tsx` for unassigned students, featuring a live database availability table
+  - [x] Implement `/api/student/enroll` endpoint ensuring a strict 10-student capacity cap
+  - [x] Add interactive success banners and reload routing upon successful enrollment
+  - [x] Verify compile safety with `npm run build`
+
 
 
 

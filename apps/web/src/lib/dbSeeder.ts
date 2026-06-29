@@ -301,14 +301,21 @@ export async function seedIfNeeded(studentId: string, selectedHubCity = 'Thornto
     }
 
     // 7. Ensure Student details exist in the database (Self-healing mock login creation)
+    const email = studentId.includes('@') ? studentId : 'alex@broussard.com';
+    const emailHash = getBlindIndex(email.toLowerCase());
+    const emailEnc = encryptText(email.toLowerCase());
+
     let student = await prisma.student.findUnique({
       where: { id: studentId }
     });
 
     if (!student) {
-      const email = studentId.includes('@') ? studentId : 'alex@broussard.com';
-      const emailHash = getBlindIndex(email.toLowerCase());
-      const emailEnc = encryptText(email.toLowerCase());
+      student = await prisma.student.findUnique({
+        where: { emailHash: emailHash }
+      });
+    }
+
+    if (!student) {
       const targetHub = await prisma.hub.findFirst({ where: { city: selectedHubCity } }) || thorntonHub;
 
       student = await prisma.student.create({

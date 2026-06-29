@@ -5,10 +5,10 @@ import { publishSchedulingEvent } from '@/lib/redis';
 import { decryptText } from '@/lib/encryption';
 
 export async function POST(request: NextRequest) {
-  // 1. Authenticate and authorize ADMIN role
+  // 1. Authenticate and authorize ADMIN or DIRECTOR role
   const profile = await getIAMProfile();
-  if (!profile || profile.role !== 'ADMIN') {
-    return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 403 });
+  if (!profile || (profile.role !== 'ADMIN' && profile.role !== 'DIRECTOR')) {
+    return NextResponse.json({ error: 'Unauthorized. Admin or Director access required.' }, { status: 403 });
   }
 
   try {

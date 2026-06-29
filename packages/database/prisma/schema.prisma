@@ -314,6 +314,7 @@ model GearItem {
   image       String   // image URL or asset path
   description String
   stock       Int      @default(10)
+  hyperlink   String?  // External affiliate or buy link
   createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("gear_items")
