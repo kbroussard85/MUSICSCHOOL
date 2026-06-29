@@ -45,6 +45,7 @@ model Student {
   commitmentEndDate  DateTime?       @map("commitment_end_date") // 90-day minimum lock
   age                Int?            @default(12)
   instrument         String?         @default("Keyboard")
+  phone              String?         @default("")
   practiceLogs       PracticeLog[]
   privateLessons     PrivateLesson[]
   paymentLogs        PaymentLog[]
@@ -78,19 +79,23 @@ model Staff {
 }
 
 model BandCohort {
-  id           String       @id @default(uuid())
-  name         String
-  ageGroup     String       @map("age_group") // "9-12", "13-17", "18+"
-  scheduleDay  String       @map("schedule_day") // "Tuesday", "Wednesday"
-  scheduleSlot String       @map("schedule_slot") // "4:00 PM - 5:30 PM", "5:30 PM - 7:00 PM", "7:00 PM - 8:30 PM"
-  hubId        String       @map("hub_id")
-  hub          Hub          @relation(fields: [hubId], references: [id])
-  directorId   String?      @map("director_id")
-  director     Staff?       @relation("DirectorRelation", fields: [directorId], references: [id])
-  students     Student[]
-  attendances  Attendance[]
-  members      BandMember[]
-  createdAt    DateTime     @default(now()) @map("created_at")
+  id            String        @id @default(uuid())
+  name          String
+  ageGroup      String        @map("age_group") // "9-12", "13-17", "18+"
+  scheduleDay   String        @map("schedule_day") // "Tuesday", "Wednesday"
+  scheduleSlot  String        @map("schedule_slot") // "4:00 PM - 5:30 PM", "5:30 PM - 7:00 PM", "7:00 PM - 8:30 PM"
+  hubId         String        @map("hub_id")
+  hub           Hub           @relation(fields: [hubId], references: [id])
+  directorId    String?       @map("director_id")
+  director      Staff?        @relation("DirectorRelation", fields: [directorId], references: [id])
+  students      Student[]
+  attendances   Attendance[]
+  members       BandMember[]
+  showcaseTheme String?       @map("showcase_theme")
+  showcaseVenue String?       @map("showcase_venue")
+  showcaseDate  DateTime?     @map("showcase_date")
+  setlistSongs  SetlistSong[]
+  createdAt     DateTime      @default(now()) @map("created_at")
 
   @@map("band_cohorts")
 }
@@ -285,4 +290,53 @@ enum LeadStatus {
   TRIED_NOT_ENROLLED
   CONVERTED_ACTIVE
   WAITLISTED
+}
+
+model VaultItem {
+  id          String   @id @default(uuid())
+  title       String
+  artist      String?
+  type        String   // "TAB", "VIDEO", "MASTERCLASS"
+  category    String   // "guitar", "bass", "synth/keys", "drums", "vocal", "all"
+  url         String   // link or file path
+  thumbnail   String?  // thumbnail preview image
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("vault_items")
+}
+
+model GearItem {
+  id          String   @id @default(uuid())
+  name        String
+  category    String   // "books", "guitar", "bass", "synth/keys", "drums", "audio production"
+  price       Float
+  image       String   // image URL or asset path
+  description String
+  stock       Int      @default(10)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("gear_items")
+}
+
+model BulletinNote {
+  id         String   @id @default(uuid())
+  authorName String   @map("author_name")
+  authorRole String   @map("author_role") // "STUDENT", "INSTRUCTOR", "DIRECTOR", "ADMIN"
+  content    String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("bulletin_notes")
+}
+
+model SetlistSong {
+  id        String     @id @default(uuid())
+  cohortId  String     @map("cohort_id")
+  cohort    BandCohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  title     String
+  artist    String
+  progress  Int        @default(0) // progress percentage e.g. 80 for 80%
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  @@map("setlist_songs")
 }

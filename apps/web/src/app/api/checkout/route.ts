@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         commitmentType: 'no-obligation-cancel-anytime',
         contractStartDate: new Date().toISOString(),
       },
-      success_url: `${req.headers.get('origin')}/practice-room?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.headers.get('origin')}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/signup`,
     });
 

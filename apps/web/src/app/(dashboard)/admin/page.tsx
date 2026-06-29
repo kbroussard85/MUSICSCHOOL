@@ -9,7 +9,7 @@ export default async function AdminDashboardPage() {
   // 1. Authorize: user must be ADMIN
   const profile = await getIAMProfile();
   if (!profile || profile.role !== 'ADMIN') {
-    redirect('/practice-room');
+    redirect('/dashboard');
   }
 
   // 2. Load CRM data with mock fallbacks in development

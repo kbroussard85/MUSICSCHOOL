@@ -14,7 +14,7 @@ export default function SignupPage() {
       return;
     }
     // Simulate payment checkout redirect
-    window.location.href = '/practice-room';
+    window.location.href = '/dashboard';
   };
 
   return (
@@ -36,14 +36,14 @@ export default function SignupPage() {
         <div className="flex flex-col gap-2.5 mb-6">
           <button 
             type="button"
-            onClick={() => { document.cookie = `mock_user_email=google-user@gmail.com; path=/`; window.location.href = '/practice-room'; }}
+            onClick={() => { document.cookie = `mock_user_email=google-user@gmail.com; path=/`; window.location.href = '/dashboard'; }}
             className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all cursor-pointer"
           >
             <i className="fa-brands fa-google text-pink-500"></i> Register with Google
           </button>
           <button 
             type="button"
-            onClick={() => { document.cookie = `mock_user_email=facebook-user@facebook.com; path=/`; window.location.href = '/practice-room'; }}
+            onClick={() => { document.cookie = `mock_user_email=facebook-user@facebook.com; path=/`; window.location.href = '/dashboard'; }}
             className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all cursor-pointer"
           >
             <i className="fa-brands fa-facebook text-cyan-400"></i> Register with Facebook

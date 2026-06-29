@@ -8,16 +8,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:web": "npm run dev --workspace=web",
-    "dev:sfu": "npm run dev --workspace=webrtc-sfu",
-    "dev": "concurrently --kill-others \"npm run dev:web\" \"npm run dev:sfu\"",
-    "build:deps": "npm run build --workspace=@harmony/audio-engine && npm run build --workspace=@harmony/ui",
+    "dev": "npm run dev --workspace=web",
+    "build:deps": "npm run build --workspace=@harmony/ui",
     "build:web": "npm run build --workspace=web",
-    "build:sfu": "npm run build --workspace=webrtc-sfu",
-    "build": "npm run build:deps && npm run build:web && npm run build:sfu",
-    "start:web": "npm run start --workspace=web",
-    "start:sfu": "npm run start --workspace=webrtc-sfu",
-    "start": "concurrently --kill-others \"npm run start:web\" \"npm run start:sfu\""
+    "build": "npm run build:deps && npm run build:web",
+    "start": "npm run start --workspace=web"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3"

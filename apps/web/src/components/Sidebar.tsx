@@ -13,11 +13,12 @@ export default function Sidebar({ profile }: SidebarProps) {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Practice Jam Room', path: '/practice-room', icon: 'fa-cubes', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
-    { name: 'Instructional Lessons', path: '/lessons', icon: 'fa-graduation-cap', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
-    { name: 'Schedule Slots', path: '/schedule', icon: 'fa-calendar-days', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
-    { name: 'Academy Catalog', path: '/catalog', icon: 'fa-music', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
-    { name: 'Admin Dashboard', path: '/admin', icon: 'fa-sliders', roles: ['ADMIN'] },
+    { name: 'Dashboard', path: '/dashboard', icon: 'fa-house-laptop', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
+    { name: 'The Vault', path: '/vault', icon: 'fa-vault', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
+    { name: 'Gear Shop', path: '/gear', icon: 'fa-guitar', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
+    { name: 'My Account', path: '/account', icon: 'fa-user-gear', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
+    { name: 'Admin Hub', path: '/admin', icon: 'fa-sliders', roles: ['ADMIN'] },
+    { name: 'Schedule Editor', path: '/schedule', icon: 'fa-calendar-days', roles: ['ADMIN'] },
   ];
 
   // Add Admin-only tools if user is an ADMIN
