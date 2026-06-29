@@ -23,10 +23,34 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black tracking-widest text-[#f1ecff]">
             <i className="fa-solid fa-music text-pink-500 glow-pulse-pink"></i>
-            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase">Stage Music</span>
+            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase">Next Stage</span>
           </Link>
-          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1 glow-pulse-cyan leading-none">Academy</div>
+          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1 glow-pulse-cyan leading-none">Music Academy</div>
           <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-wider">Sign in to your learning dashboard portal</p>
+        </div>
+
+        {/* OAuth Buttons */}
+        <div className="flex flex-col gap-2.5 mb-6">
+          <button 
+            type="button"
+            onClick={() => { document.cookie = `mock_user_email=google-user@gmail.com; path=/`; window.location.href = '/practice-room'; }}
+            className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+          >
+            <i className="fa-brands fa-google text-pink-500"></i> Continue with Google
+          </button>
+          <button 
+            type="button"
+            onClick={() => { document.cookie = `mock_user_email=facebook-user@facebook.com; path=/`; window.location.href = '/practice-room'; }}
+            className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+          >
+            <i className="fa-brands fa-facebook text-cyan-400"></i> Continue with Facebook
+          </button>
+        </div>
+
+        <div className="flex items-center gap-4 my-4">
+          <div className="h-[1px] bg-cyan-500/10 flex-1"></div>
+          <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">or email credentials</span>
+          <div className="h-[1px] bg-cyan-500/10 flex-1"></div>
         </div>
 
         {/* Form */}

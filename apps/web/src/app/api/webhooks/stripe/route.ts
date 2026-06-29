@@ -41,19 +41,15 @@ export async function POST(req: Request) {
         const subscriptionId = session.subscription;
 
         if (studentId) {
-          // Calculate 90 days from now for commitment contract lock
-          const commitmentEndDate = new Date();
-          commitmentEndDate.setDate(commitmentEndDate.getDate() + 90);
-
           await prisma.student.update({
             where: { id: studentId },
             data: {
               stripeCustomerId,
               subscriptionStatus: 'active',
-              commitmentEndDate,
+              commitmentEndDate: null, // Cancel anytime, no lock
             },
           });
-          console.log(`[Webhook Completed] Securing student: ${studentId} with 90-day lock until ${commitmentEndDate.toISOString()}`);
+          console.log(`[Webhook Completed] Securing student: ${studentId} with cancel-anytime active status.`);
         }
         break;
       }

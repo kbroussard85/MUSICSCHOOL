@@ -24,20 +24,20 @@ export async function POST(req: Request) {
             currency: 'usd',
             recurring: { interval: 'month' },
             product_data: {
-              name: 'Harmony Music School Enrollment',
-              description: 'Access to physical rehearsals, 1-on-1 private lessons, group classes, and low-latency jam engine.',
+              name: 'Stage Music Academy Enrollment',
+              description: 'Cancel anytime. Access to live rehearsals, 1-on-1 private lessons, and masterclasses.',
             },
             unit_amount: 29900, // $299.00
           },
           quantity: 1,
         },
       ],
-      // Enforce the 90-day commitment contract metadata
+      // Cancel anytime, no obligation contract metadata
       metadata: {
         studentId,
         studentName: name,
         instrumentChoice: instrument,
-        commitmentType: '90-day-minimum-lock',
+        commitmentType: 'no-obligation-cancel-anytime',
         contractStartDate: new Date().toISOString(),
       },
       success_url: `${req.headers.get('origin')}/practice-room?session_id={CHECKOUT_SESSION_ID}`,

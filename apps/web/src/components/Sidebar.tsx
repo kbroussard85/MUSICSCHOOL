@@ -16,6 +16,7 @@ export default function Sidebar({ profile }: SidebarProps) {
     { name: 'Practice Jam Room', path: '/practice-room', icon: 'fa-cubes', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
     { name: 'Instructional Lessons', path: '/lessons', icon: 'fa-graduation-cap', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
     { name: 'Schedule Slots', path: '/schedule', icon: 'fa-calendar-days', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
+    { name: 'Academy Catalog', path: '/catalog', icon: 'fa-music', roles: ['STUDENT', 'DIRECTOR', 'INSTRUCTOR', 'ADMIN'] },
     { name: 'Admin Dashboard', path: '/admin', icon: 'fa-sliders', roles: ['ADMIN'] },
   ];
 
@@ -39,12 +40,12 @@ export default function Sidebar({ profile }: SidebarProps) {
       <div>
         {/* Logo / Brand Header */}
         <div className="p-6 border-b border-cyan-500/10 flex flex-col gap-1.5 justify-start">
-          <Link href="/" className="flex items-center gap-2.5 text-lg font-black tracking-widest text-[#f1ecff]">
-            <i className="fa-solid fa-music text-pink-500 glow-pulse-pink"></i>
-            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-wider">Stage Music</span>
+          <Link href="/" className="flex items-center gap-2 text-base font-black tracking-widest text-[#f1ecff]">
+            <i className="fa-solid fa-music text-pink-500 glow-pulse-pink shrink-0"></i>
+            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-wider">Next Stage</span>
           </Link>
           <div className="flex justify-between items-center mt-1">
-            <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest glow-pulse-cyan">Academy</span>
+            <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest glow-pulse-cyan">Music Academy</span>
             <span className="text-[9px] px-1.5 py-0.5 bg-pink-500/10 border border-pink-500/30 text-pink-400 font-extrabold uppercase tracking-widest">
               {profile.role}
             </span>
