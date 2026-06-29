@@ -1,8 +1,121 @@
 import prisma from './prisma';
+import { getBlindIndex, encryptText } from './encryption';
 
-export async function seedIfNeeded(studentId: string) {
+export async function seedIfNeeded(studentId: string, selectedHubCity = 'Thornton', studentName = 'Alex Broussard') {
   try {
-    // 1. Seed Vault Items
+    // 1. Seed Hubs
+    let thorntonHub = await prisma.hub.findFirst({ where: { city: 'Thornton' } });
+    if (!thorntonHub) {
+      thorntonHub = await prisma.hub.create({
+        data: { name: 'Thornton Studio Hub', city: 'Thornton', address: '1280 Civic Center Dr' }
+      });
+    }
+
+    let westminsterHub = await prisma.hub.findFirst({ where: { city: 'Westminster' } });
+    if (!westminsterHub) {
+      westminsterHub = await prisma.hub.create({
+        data: { name: 'Westminster Studio Hub', city: 'Westminster', address: '8800 Sheridan Blvd' }
+      });
+    }
+
+    let broomfieldHub = await prisma.hub.findFirst({ where: { city: 'Broomfield' } });
+    if (!broomfieldHub) {
+      broomfieldHub = await prisma.hub.create({
+        data: { name: 'Broomfield Studio Hub', city: 'Broomfield', address: '3000 E 1st Ave' }
+      });
+    }
+
+    // 2. Seed Directors / Staff
+    let director = await prisma.staff.findFirst({ where: { role: 'DIRECTOR' } });
+    if (!director) {
+      director = await prisma.staff.create({
+        data: {
+          userId: 'mock-director-auth',
+          email: 'evelyn@nextstage.com',
+          name: 'Evelyn Pierce',
+          role: 'DIRECTOR',
+          hourlyRate: 30.0,
+          hubId: thorntonHub.id
+        }
+      });
+    }
+
+    let instructor = await prisma.staff.findFirst({ where: { role: 'INSTRUCTOR' } });
+    if (!instructor) {
+      instructor = await prisma.staff.create({
+        data: {
+          userId: 'mock-instructor-auth',
+          email: 'marcus@nextstage.com',
+          name: 'Marcus Vane',
+          role: 'INSTRUCTOR',
+          hourlyRate: 26.0,
+          hubId: thorntonHub.id
+        }
+      });
+    }
+
+    // 3. Seed Cohorts for all 3 hubs (each needs Teen Rock, All Stars, Adult Jam)
+    const hubs = [thorntonHub, westminsterHub, broomfieldHub];
+    for (const h of hubs) {
+      // Teen Rock
+      let teenRock = await prisma.bandCohort.findFirst({
+        where: { hubId: h.id, ageGroup: '13-17', name: `${h.city} Teen Rock` }
+      });
+      if (!teenRock) {
+        await prisma.bandCohort.create({
+          data: {
+            name: `${h.city} Teen Rock`,
+            ageGroup: '13-17',
+            scheduleDay: 'Tuesday',
+            scheduleSlot: '4:00 PM - 5:30 PM',
+            hubId: h.id,
+            directorId: director.id,
+            showcaseTheme: `${h.city} Summer Rock Showcase`,
+            showcaseVenue: `${h.city} Community Arena`
+          }
+        });
+      }
+
+      // All Stars
+      let allStars = await prisma.bandCohort.findFirst({
+        where: { hubId: h.id, ageGroup: '13-17', name: `${h.city} All Stars` }
+      });
+      if (!allStars) {
+        await prisma.bandCohort.create({
+          data: {
+            name: `${h.city} All Stars`,
+            ageGroup: '13-17',
+            scheduleDay: 'Wednesday',
+            scheduleSlot: '5:30 PM - 7:00 PM',
+            hubId: h.id,
+            directorId: director.id,
+            showcaseTheme: `${h.city} Regional Festival Set`,
+            showcaseVenue: 'Red Rocks Amphitheater'
+          }
+        });
+      }
+
+      // Adult Jam
+      let adultJam = await prisma.bandCohort.findFirst({
+        where: { hubId: h.id, ageGroup: '18+', name: `${h.city} Adult Jam` }
+      });
+      if (!adultJam) {
+        await prisma.bandCohort.create({
+          data: {
+            name: `${h.city} Adult Jam`,
+            ageGroup: '18+',
+            scheduleDay: 'Wednesday',
+            scheduleSlot: '7:00 PM - 8:30 PM',
+            hubId: h.id,
+            directorId: instructor.id,
+            showcaseTheme: `${h.city} Late Night Jam Session`,
+            showcaseVenue: `${h.city} Live Backline Studio`
+          }
+        });
+      }
+    }
+
+    // 4. Seed Vault Items
     const vaultCount = await prisma.vaultItem.count();
     if (vaultCount === 0) {
       await prisma.vaultItem.createMany({
@@ -74,7 +187,7 @@ export async function seedIfNeeded(studentId: string) {
       });
     }
 
-    // 2. Seed Gear Items
+    // 5. Seed Gear Items
     const gearCount = await prisma.gearItem.count();
     if (gearCount === 0) {
       await prisma.gearItem.createMany({
@@ -163,7 +276,7 @@ export async function seedIfNeeded(studentId: string) {
       });
     }
 
-    // 3. Seed Bulletin Notes
+    // 6. Seed Bulletin Notes
     const bulletinCount = await prisma.bulletinNote.count();
     if (bulletinCount === 0) {
       await prisma.bulletinNote.createMany({
@@ -187,52 +300,64 @@ export async function seedIfNeeded(studentId: string) {
       });
     }
 
-    // 4. Ensure Showcase info & Setlist songs for the student's cohort
-    const student = await prisma.student.findUnique({
-      where: { id: studentId },
-      include: { cohort: { include: { setlistSongs: true } } }
+    // 7. Ensure Student details exist in the database (Self-healing mock login creation)
+    let student = await prisma.student.findUnique({
+      where: { id: studentId }
     });
 
-    if (student && student.cohortId) {
-      const cohort = student.cohort;
-      if (cohort) {
-        // Update Showcase details if not set
-        if (!cohort.showcaseTheme || !cohort.showcaseVenue) {
-          await prisma.bandCohort.update({
-            where: { id: cohort.id },
-            data: {
-              showcaseTheme: "Summer Arena Rock Showcase",
-              showcaseVenue: "The Filmore Auditorium",
-              showcaseDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
-            }
-          });
-        }
+    if (!student) {
+      const email = studentId.includes('@') ? studentId : 'alex@broussard.com';
+      const emailHash = getBlindIndex(email.toLowerCase());
+      const emailEnc = encryptText(email.toLowerCase());
+      const targetHub = await prisma.hub.findFirst({ where: { city: selectedHubCity } }) || thorntonHub;
 
-        // Seed setlist songs if none exist
-        if (cohort.setlistSongs.length === 0) {
-          await prisma.setlistSong.createMany({
-            data: [
-              {
-                cohortId: cohort.id,
-                title: "Livin' on a Prayer",
-                artist: "Bon Jovi",
-                progress: 80
-              },
-              {
-                cohortId: cohort.id,
-                title: "Sweet Child O' Mine",
-                artist: "Guns N' Roses",
-                progress: 60
-              },
-              {
-                cohortId: cohort.id,
-                title: "Jump",
-                artist: "Van Halen",
-                progress: 40
-              }
-            ]
-          });
+      student = await prisma.student.create({
+        data: {
+          id: studentId,
+          userId: `mock-auth0-${studentId}`,
+          name: studentName,
+          emailEncrypted: emailEnc,
+          emailHash: emailHash,
+          hubId: targetHub.id,
+          cohortId: null, // Keep them UNASSIGNED initially so they see the Enrollment Wizard
+          stripeCustomerId: `cus_${Math.random().toString(36).substring(2, 10)}`,
+          subscriptionStatus: 'ACTIVE',
+          instrument: 'Keyboard',
+          age: 15
         }
+      });
+    }
+
+    // 8. If they already have a cohort, seed setlist songs for it
+    if (student.cohortId) {
+      const cohort = await prisma.bandCohort.findUnique({
+        where: { id: student.cohortId },
+        include: { setlistSongs: true }
+      });
+
+      if (cohort && cohort.setlistSongs.length === 0) {
+        await prisma.setlistSong.createMany({
+          data: [
+            {
+              cohortId: cohort.id,
+              title: "Livin' on a Prayer",
+              artist: "Bon Jovi",
+              progress: 80
+            },
+            {
+              cohortId: cohort.id,
+              title: "Sweet Child O' Mine",
+              artist: "Guns N' Roses",
+              progress: 60
+            },
+            {
+              cohortId: cohort.id,
+              title: "Jump",
+              artist: "Van Halen",
+              progress: 40
+            }
+          ]
+        });
       }
     }
   } catch (err) {

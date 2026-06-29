@@ -251,6 +251,94 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Our Locations Section */}
+      <section id="locations" className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/85">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <span className="text-[10px] font-black uppercase tracking-widest text-pink-500 cyber-badge-pink px-3 py-1">
+              Studio Locations
+            </span>
+            <h2 className="text-3xl font-heading font-black uppercase tracking-wider mt-4">
+              Our Locations
+            </h2>
+            <p className="text-slate-400 text-xs uppercase tracking-widest mt-2">
+              Select your nearest studio hub to register for local bands.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Thornton Studio */}
+            <Link 
+              href="/signup?location=Thornton"
+              onClick={() => playBeep(900, 0.1, 'sine')}
+              className="cyber-card p-6 bg-[#0b0813]/95 border-cyan-500/20 relative group hover:border-pink-500/40 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-full bg-pink-500/10 border border-pink-500/35 flex items-center justify-center text-pink-500 text-sm mb-4 group-hover:glow-pulse-pink">
+                  <i className="fa-solid fa-location-dot"></i>
+                </div>
+                <h3 className="font-heading text-lg font-black text-slate-100 uppercase tracking-wide mb-2">Thornton Hub</h3>
+                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-mono mb-4">
+                  1280 Civic Center Dr, Thornton, CO
+                </p>
+                <p className="text-xs text-slate-400 leading-relaxed mb-6">
+                  Equipped with premium backline amps, multi-instrument setups, and specialized drum tracking bays.
+                </p>
+              </div>
+              <span className="py-2.5 text-center cyber-btn-cyan text-[9px] font-black uppercase tracking-widest block">
+                Select Thornton Roster
+              </span>
+            </Link>
+
+            {/* Westminster Studio */}
+            <Link 
+              href="/signup?location=Westminster"
+              onClick={() => playBeep(900, 0.1, 'sine')}
+              className="cyber-card p-6 bg-[#0b0813]/95 border-cyan-500/20 relative group hover:border-pink-500/40 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-full bg-pink-500/10 border border-pink-500/35 flex items-center justify-center text-pink-500 text-sm mb-4 group-hover:glow-pulse-pink">
+                  <i className="fa-solid fa-location-dot"></i>
+                </div>
+                <h3 className="font-heading text-lg font-black text-slate-100 uppercase tracking-wide mb-2">Westminster Hub</h3>
+                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-mono mb-4">
+                  8800 Sheridan Blvd, Westminster, CO
+                </p>
+                <p className="text-xs text-slate-400 leading-relaxed mb-6">
+                  Features acoustically-isolated rehearsal rooms, digital workstation bays, and vocal tracking studios.
+                </p>
+              </div>
+              <span className="py-2.5 text-center cyber-btn-cyan text-[9px] font-black uppercase tracking-widest block">
+                Select Westminster Roster
+              </span>
+            </Link>
+
+            {/* Broomfield Studio */}
+            <Link 
+              href="/signup?location=Broomfield"
+              onClick={() => playBeep(900, 0.1, 'sine')}
+              className="cyber-card p-6 bg-[#0b0813]/95 border-cyan-500/20 relative group hover:border-pink-500/40 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-full bg-pink-500/10 border border-pink-500/35 flex items-center justify-center text-pink-500 text-sm mb-4 group-hover:glow-pulse-pink">
+                  <i className="fa-solid fa-location-dot"></i>
+                </div>
+                <h3 className="font-heading text-lg font-black text-slate-100 uppercase tracking-wide mb-2">Broomfield Hub</h3>
+                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-mono mb-4">
+                  3000 E 1st Ave, Broomfield, CO
+                </p>
+                <p className="text-xs text-slate-400 leading-relaxed mb-6">
+                  Equipped with a full live showcase performance stage, stage monitors, lighting rigs, and keyboard workstations.
+                </p>
+              </div>
+              <span className="py-2.5 text-center cyber-btn-cyan text-[9px] font-black uppercase tracking-widest block">
+                Select Broomfield Roster
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* The Ecosystem of Music Section */}
       <section className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/60">
         <div className="max-w-5xl mx-auto px-6">

@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { cookies } from 'next/headers';
 import prisma from '@/lib/prisma';
 import { getIAMProfile } from '@/lib/iam';
 import { seedIfNeeded } from '@/lib/dbSeeder';
@@ -9,8 +9,13 @@ export default async function StudentDashboard() {
   const profile = await getIAMProfile();
   if (!profile) return null;
 
+  // Read cookies for selected location and user name
+  const cookieStore = await cookies();
+  const selectedHubCity = cookieStore.get('selected_hub_city')?.value || 'Thornton';
+  const mockUserName = cookieStore.get('mock_user_name')?.value || profile.name;
+
   // Run auto-seeding if first load or database is empty
-  await seedIfNeeded(profile.id);
+  await seedIfNeeded(profile.id, selectedHubCity, mockUserName);
 
   // Fetch student details with relations
   const student = await prisma.student.findUnique({
@@ -45,11 +50,43 @@ export default async function StudentDashboard() {
     take: 10
   });
 
+  // Fetch all Hubs & Cohorts for Roster Enrollment Chart
+  const hubs = await prisma.hub.findMany({
+    orderBy: { city: 'asc' }
+  });
+
+  const cohorts = await prisma.bandCohort.findMany({
+    include: {
+      students: { select: { id: true } }
+    },
+    orderBy: { name: 'asc' }
+  });
+
+  const allHubs = hubs.map(h => ({
+    id: h.id,
+    name: h.name,
+    city: h.city,
+    address: h.address
+  }));
+
+  const allCohorts = cohorts.map(c => ({
+    id: c.id,
+    name: c.name,
+    ageGroup: c.ageGroup,
+    scheduleDay: c.scheduleDay,
+    scheduleSlot: c.scheduleSlot,
+    hubId: c.hubId,
+    showcaseTheme: c.showcaseTheme,
+    showcaseVenue: c.showcaseVenue,
+    rosterCount: c.students.length
+  }));
+
   // Formulate student info
   const studentInfo = {
     id: student?.id || profile.id,
     name: student?.name || profile.name,
-    instrument: student?.instrument || 'Not Chosen',
+    instrument: student?.instrument || 'Keyboard',
+    cohortId: student?.cohortId || null,
     director: student?.cohort?.director?.name || 'Unassigned',
     directorEmail: student?.cohort?.director?.email || '',
     showcase: student?.cohort?.showcaseTheme || 'Winter Showcase (TBA)',
@@ -65,7 +102,10 @@ export default async function StudentDashboard() {
   return (
     <DashboardClient 
       studentInfo={studentInfo} 
-      profileName={profile.name}
+      profileName={mockUserName}
+      allHubs={allHubs}
+      allCohorts={allCohorts}
+      initialSelectedHubCity={selectedHubCity}
     />
   );
 }
