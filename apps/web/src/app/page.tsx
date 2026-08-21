@@ -37,9 +37,9 @@ export default function LandingPage() {
       <div 
         className="absolute top-0 left-0 w-full h-[110vh] pointer-events-none z-0"
         style={{
-          backgroundImage: `linear-gradient(rgba(6, 4, 10, 0.65), rgba(6, 4, 10, 0.98)), url('/logo.jpg')`,
+          backgroundImage: `linear-gradient(rgba(6, 4, 10, 0.75), rgba(6, 4, 10, 0.99)), url('/logo.jpg')`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center 80px',
           backgroundAttachment: 'fixed'
         }}
       />
