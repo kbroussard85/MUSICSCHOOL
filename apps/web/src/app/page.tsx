@@ -383,9 +383,14 @@ export default function LandingPage() {
               </span>
             </h3>
 
-            <p className="text-xs md:text-sm text-slate-300 leading-relaxed uppercase tracking-wider font-semibold mb-10">
-              Our three-pillar approach ensures you graduate from bedroom practice to center stage spotlight.
-            </p>
+            <div className="space-y-4 mb-10 text-xs md:text-sm text-slate-300 leading-relaxed font-semibold uppercase tracking-wider">
+              <p>
+                Our three-pillar approach ensures you graduate from bedroom practice to center stage
+              </p>
+              <p className="text-slate-400 font-medium normal-case tracking-normal">
+                Next Stages Music Academy focuses on the community experience and was specifically created to bring musicians together. We understand that the next stage of development in learning an instrument is playing and performing with other musicians. Our program is a hybrid-learning, performance-based system that provides coached rehearsals and multiple live performances, while also granting access to a massive vault of online lesson material, including videos, tabs, sheet music, masterclasses, and more. Our upgraded package includes online zero-latency one-on-one or group lessons and jam sessions using Lutefish hardware.
+              </p>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-[11px] font-mono text-slate-400 border-t border-cyan-500/10 pt-8">
               <div>
