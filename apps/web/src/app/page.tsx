@@ -100,10 +100,10 @@ export default function LandingPage() {
       </header>
 
       {/* Raised Main Splash / Hero Section - designed to be fully above the fold */}
-      <section className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-8 flex flex-col items-center text-center justify-center min-h-[calc(100vh-80px)]">
+      <section className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-8 flex flex-col items-center text-center justify-center min-h-[calc(100vh-80px)]">
         
         {/* Logo and Mission Statement Row */}
-        <div className="flex flex-col md:flex-row gap-6 items-center justify-center w-full mb-6 max-w-4xl text-left">
+        <div className="flex flex-col md:flex-row gap-8 items-center justify-between w-full mb-6 max-w-5xl text-left">
           {/* Logo Accent on the left */}
           <img src="/logo.jpg" alt="Next Stage Logo" className="h-28 w-auto rounded-xl border border-pink-500/20 object-contain shadow-xl shadow-pink-500/10 shrink-0" />
 
@@ -119,7 +119,7 @@ export default function LandingPage() {
         </div>
 
         {/* Shortened Copy Update */}
-        <p className="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed mb-8 uppercase tracking-wider font-extrabold bg-[#06040a]/70 p-4 border border-cyan-500/10 backdrop-blur-sm">
+        <p className="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed mb-8 uppercase tracking-wider font-extrabold">
           Bridging the gap between digital practice and physical performance. Next Stages Music Academy combines world-class technical instruction with professional stage experience.
         </p>
 
