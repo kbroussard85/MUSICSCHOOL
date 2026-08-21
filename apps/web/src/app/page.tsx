@@ -45,9 +45,9 @@ export default function LandingPage() {
       />
 
       <header 
-        className="sticky top-0 z-40 border-b border-cyan-500/15 bg-[#0b0813]/85 backdrop-blur-md overflow-hidden relative animate-fade-in"
+        className="sticky top-0 z-40 border-b border-cyan-500/15 bg-[#0b0813]/70 backdrop-blur-md overflow-hidden relative animate-fade-in"
         style={{
-          backgroundImage: `linear-gradient(rgba(11, 8, 19, 0.85), rgba(11, 8, 19, 0.92)), url('/stage_lights.png')`,
+          backgroundImage: `linear-gradient(rgba(11, 8, 19, 0.4), rgba(11, 8, 19, 0.55)), url('/stage_lights.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
