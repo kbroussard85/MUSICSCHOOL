@@ -38,7 +38,7 @@ export default function LandingPage() {
         style={{
           backgroundImage: `linear-gradient(rgba(6, 4, 10, 0.6), rgba(6, 4, 10, 0.95)), url('/logo.jpg')`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center 0px',
+          backgroundPosition: 'center -1.2in',
           backgroundAttachment: 'fixed'
         }}
       />
