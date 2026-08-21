@@ -55,7 +55,7 @@ export default function LandingPage() {
           </span>
         </div>
         
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between relative">
           <div className="flex items-center gap-3">
             <Link 
               href="/" 
@@ -70,12 +70,12 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Center Instrument Silhouette Icons with Gradient */}
-          <div className="hidden md:flex items-center gap-6 text-base bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent select-none font-black">
-            <i className="fa-solid fa-drum hover:scale-125 hover:-rotate-12 transition-transform duration-300 cursor-help" title="Drums"></i>
-            <i className="fa-solid fa-guitar hover:scale-125 hover:rotate-12 transition-transform duration-300 cursor-help" title="Guitar"></i>
-            <i className="fa-solid fa-keyboard hover:scale-125 hover:-rotate-6 transition-transform duration-300 cursor-help" title="Keys"></i>
-            <i className="fa-solid fa-microphone hover:scale-125 hover:rotate-12 transition-transform duration-300 cursor-help" title="Vocals"></i>
+          {/* Center Instrument Silhouette Icons with Gradient - enlarged, centered, no interactions */}
+          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-2xl bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent select-none font-black pointer-events-none">
+            <i className="fa-solid fa-drum" title="Drums"></i>
+            <i className="fa-solid fa-guitar" title="Guitar"></i>
+            <i className="fa-solid fa-keyboard" title="Keys"></i>
+            <i className="fa-solid fa-microphone" title="Vocals"></i>
           </div>
 
           <nav className="flex items-center gap-6 text-xs font-black uppercase tracking-widest text-slate-300">
