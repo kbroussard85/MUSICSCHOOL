@@ -70,6 +70,14 @@ export default function LandingPage() {
             </div>
           </div>
 
+          {/* Center Instrument Silhouette Icons with Gradient */}
+          <div className="hidden md:flex items-center gap-6 text-base bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent select-none font-black">
+            <i className="fa-solid fa-drum hover:scale-125 hover:-rotate-12 transition-transform duration-300 cursor-help" title="Drums"></i>
+            <i className="fa-solid fa-guitar hover:scale-125 hover:rotate-12 transition-transform duration-300 cursor-help" title="Guitar"></i>
+            <i className="fa-solid fa-keyboard hover:scale-125 hover:-rotate-6 transition-transform duration-300 cursor-help" title="Keys"></i>
+            <i className="fa-solid fa-microphone hover:scale-125 hover:rotate-12 transition-transform duration-300 cursor-help" title="Vocals"></i>
+          </div>
+
           <nav className="flex items-center gap-6 text-xs font-black uppercase tracking-widest text-slate-300">
             <Link 
               href="/signup?action=contact" 
