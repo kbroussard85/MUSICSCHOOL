@@ -102,17 +102,20 @@ export default function LandingPage() {
       {/* Raised Main Splash / Hero Section - designed to be fully above the fold */}
       <section className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-8 flex flex-col items-center text-center justify-center min-h-[calc(100vh-80px)]">
         
-        {/* Compact Logo Accent */}
-        <img src="/logo.jpg" alt="Next Stage Logo" className="h-28 w-auto rounded-xl border border-pink-500/20 object-contain mb-6 shadow-xl shadow-pink-500/10" />
+        {/* Logo and Mission Statement Row */}
+        <div className="flex flex-col md:flex-row gap-6 items-center justify-center w-full mb-6 max-w-4xl text-left">
+          {/* Logo Accent on the left */}
+          <img src="/logo.jpg" alt="Next Stage Logo" className="h-28 w-auto rounded-xl border border-pink-500/20 object-contain shadow-xl shadow-pink-500/10 shrink-0" />
 
-        {/* Motto Block - reduced padding for vertical space saving */}
-        <div className="p-6 border-l-4 border-pink-500 bg-[#0b0813]/85 backdrop-blur-md shadow-2xl mb-6 text-left relative overflow-hidden w-full">
-          <div className="absolute top-0 right-0 p-2 text-[8px] font-mono text-cyan-400/35 tracking-widest uppercase">
-            Academy Motto
+          {/* Motto Block - reduced padding for vertical space saving */}
+          <div className="p-6 border-l-4 border-pink-500 bg-[#0b0813]/85 backdrop-blur-md shadow-2xl relative overflow-hidden flex-1 w-full">
+            <div className="absolute top-0 right-0 p-2 text-[8px] font-mono text-cyan-400/35 tracking-widest uppercase">
+              Academy Motto
+            </div>
+            <p className="text-base md:text-xl font-heading font-black italic text-[#f8fafc] leading-snug uppercase tracking-wide">
+              "Anyone can learn how to play an instrument online, but you have to play with other musicians to learn how to jam!"
+            </p>
           </div>
-          <p className="text-lg md:text-2xl font-heading font-black italic text-[#f8fafc] leading-snug uppercase tracking-wide">
-            "Anyone can learn how to play an instrument online, but you have to play with other musicians to learn how to jam!"
-          </p>
         </div>
 
         {/* Shortened Copy Update */}
@@ -264,7 +267,7 @@ export default function LandingPage() {
         id="locations" 
         className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/65"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.85)), url('/lesson_private.png')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.85)), url('/guitar_teen_lesson.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed'
