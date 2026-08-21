@@ -33,11 +33,11 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen text-[#f1ecff] font-sans antialiased overflow-x-hidden relative bg-[#06040a]">
       
-      {/* Background Hero Image with Parallax fixed attachment */}
+      {/* Background Hero Image with Parallax fixed attachment using official Logo cover */}
       <div 
-        className="absolute top-0 left-0 w-full h-screen pointer-events-none z-0"
+        className="absolute top-0 left-0 w-full h-[110vh] pointer-events-none z-0"
         style={{
-          backgroundImage: `linear-gradient(rgba(6, 4, 10, 0.7), rgba(6, 4, 10, 0.99)), url('/band_adults.png')`,
+          backgroundImage: `linear-gradient(rgba(6, 4, 10, 0.65), rgba(6, 4, 10, 0.98)), url('/logo.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed'
@@ -128,7 +128,7 @@ export default function LandingPage() {
             onMouseEnter={() => playBeep(1000, 0.04)}
             onClick={() => playBeep(850, 0.12, 'square')}
           >
-            Sign up for your 3 day trial
+            Sign up for your free trial
           </Link>
           <Link 
             href="/login" 
@@ -142,8 +142,16 @@ export default function LandingPage() {
 
       </section>
 
-      {/* Choose your band Section with demographic appropriate images */}
-      <section className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/85">
+      {/* Choose your band Section with demographic appropriate images & Parallax fixed background */}
+      <section 
+        className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/60"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.85)), url('/band_rockers.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
             <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400 cyber-badge-cyan px-3 py-1">
@@ -251,8 +259,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Our Locations Section */}
-      <section id="locations" className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/85">
+      {/* Our Locations Section with Parallax fixed background */}
+      <section 
+        id="locations" 
+        className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/65"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.85)), url('/lesson_private.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
             <span className="text-[10px] font-black uppercase tracking-widest text-pink-500 cyber-badge-pink px-3 py-1">
