@@ -35,12 +35,11 @@ export default function LandingPage() {
       
       {/* Background Hero Image with Parallax fixed attachment using official Logo cover */}
       <div 
-        className="absolute top-0 left-0 w-full h-[110vh] pointer-events-none z-0"
+        className="absolute top-[72px] left-0 w-full h-[calc(100vh-72px)] pointer-events-none z-0"
         style={{
           backgroundImage: `linear-gradient(rgba(6, 4, 10, 0.6), rgba(6, 4, 10, 0.95)), url('/logo.jpg')`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center 50px',
-          backgroundAttachment: 'fixed'
+          backgroundPosition: 'center top'
         }}
       />
 
