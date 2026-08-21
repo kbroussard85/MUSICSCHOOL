@@ -56,16 +56,18 @@ export default function LandingPage() {
         </div>
         
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex flex-col gap-0.5 justify-start">
+          <div className="flex items-center gap-3">
             <Link 
               href="/" 
-              className="flex items-center gap-2.5 text-base font-black tracking-widest text-[#f1ecff]"
+              className="shrink-0 animate-fade-in"
               onMouseEnter={() => playBeep(1000, 0.04)}
             >
-              <img src="/logo.jpg" alt="NS Logo" className="w-8 h-8 rounded-full border border-pink-500/40 object-cover glow-pulse-magenta shadow-md shadow-pink-500/10 shrink-0" />
-              <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-wider">Next Stage</span>
+              <img src="/logo.jpg" alt="Next Stage Logo" className="h-10 w-auto rounded-lg border border-pink-500/20 object-contain shadow-md shadow-pink-500/5" />
             </Link>
-            <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest leading-none glow-pulse-cyan">Music Academy</span>
+            <div className="flex flex-col gap-0.5 justify-start">
+              <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Next Stage</span>
+              <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music Academy</span>
+            </div>
           </div>
 
           <nav className="flex items-center gap-6 text-xs font-black uppercase tracking-widest text-slate-300">
@@ -100,8 +102,8 @@ export default function LandingPage() {
       {/* Raised Main Splash / Hero Section - designed to be fully above the fold */}
       <section className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-8 flex flex-col items-center text-center justify-center min-h-[calc(100vh-80px)]">
         
-        {/* Compact Logo Icon Accent */}
-        <img src="/logo.jpg" alt="Next Stage Logo" className="w-16 h-16 rounded-full border border-pink-500/40 object-cover mb-4 glow-pulse-magenta shadow-lg shadow-pink-500/15" />
+        {/* Compact Logo Accent */}
+        <img src="/logo.jpg" alt="Next Stage Logo" className="h-28 w-auto rounded-xl border border-pink-500/20 object-contain mb-6 shadow-xl shadow-pink-500/10" />
 
         {/* Motto Block - reduced padding for vertical space saving */}
         <div className="p-6 border-l-4 border-pink-500 bg-[#0b0813]/85 backdrop-blur-md shadow-2xl mb-6 text-left relative overflow-hidden w-full">
@@ -385,12 +387,12 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-cyan-500/15 bg-[#06040a] py-12">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500 uppercase tracking-widest font-bold">
-          <div className="flex flex-col gap-0.5 justify-start">
-            <div className="flex items-center gap-2.5 text-lg font-black tracking-widest text-[#f1ecff]">
-              <img src="/logo.jpg" alt="NS Logo" className="w-8 h-8 rounded-full border border-pink-500/30 object-cover shrink-0" />
-              <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Next Stage</span>
+          <div className="flex items-center gap-3">
+            <img src="/logo.jpg" alt="Next Stage Logo" className="h-10 w-auto rounded-lg border border-pink-500/15 object-contain shrink-0" />
+            <div className="flex flex-col gap-0.5 justify-start">
+              <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Next Stage</span>
+              <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music Academy</span>
             </div>
-            <span className="text-[9px] font-black text-cyan-400 tracking-widest leading-none">Music Academy</span>
           </div>
           <p>&copy; 2026 Next Stage Music Academy. Cancel anytime, no obligation.</p>
           <div className="flex gap-6 font-bold">

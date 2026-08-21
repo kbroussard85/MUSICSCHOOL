@@ -71,12 +71,12 @@ export default function SignupPage() {
       {/* Main Signup Form Container */}
       <div className="w-full max-w-lg p-8 cyber-card shadow-2xl relative bg-[#0b0813]/85">
         {/* Logo Header */}
-        <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-2xl font-black tracking-widest text-[#f1ecff]">
-            <i className="fa-solid fa-music text-pink-500 glow-pulse-pink"></i>
-            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase">Next Stage</span>
+        <div className="text-center mb-6 flex flex-col items-center">
+          <Link href="/" className="flex flex-col items-center gap-3">
+            <img src="/logo.jpg" alt="Next Stage Logo" className="h-16 w-auto rounded-xl border border-pink-500/20 object-contain shadow-md shadow-pink-500/10 mb-1" />
+            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase text-2xl font-black tracking-widest leading-none">Next Stage</span>
           </Link>
-          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1 glow-pulse-cyan leading-none">Music Academy</div>
+          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1.5 leading-none">Music Academy</div>
           <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-wider">Create your student account & secure your roster spot</p>
         </div>
 
