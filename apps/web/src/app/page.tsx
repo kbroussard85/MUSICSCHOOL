@@ -44,10 +44,16 @@ export default function LandingPage() {
         }}
       />
 
-      {/* Navigation Header */}
-      <header className="sticky top-0 z-40 border-b border-cyan-500/15 bg-[#0b0813]/90 backdrop-blur-md">
+      <header 
+        className="sticky top-0 z-40 border-b border-cyan-500/15 bg-[#0b0813]/85 backdrop-blur-md overflow-hidden relative animate-fade-in"
+        style={{
+          backgroundImage: `linear-gradient(rgba(11, 8, 19, 0.85), rgba(11, 8, 19, 0.92)), url('/stage_lights.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         {/* Top studio status bar */}
-        <div className="w-full bg-[#06040a] border-b border-cyan-500/5 px-6 py-1 flex justify-between text-[9px] font-mono tracking-widest text-slate-500">
+        <div className="w-full bg-[#06040a]/40 border-b border-cyan-500/5 px-6 py-1 flex justify-between text-[9px] font-mono tracking-widest text-slate-500">
           <span>ACADEMY STATUS: ENROLLMENT ACTIVE</span>
           <span className="flex items-center gap-1.5">
             <span className="indicator-dot"></span>
@@ -59,7 +65,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <Link 
               href="/" 
-              className="shrink-0 animate-fade-in"
+              className="shrink-0"
               onMouseEnter={() => playBeep(1000, 0.04)}
             >
               <img src="/logo.jpg" alt="Next Stage Logo" className="h-10 w-auto rounded-lg border border-pink-500/20 object-contain shadow-md shadow-pink-500/5" />
@@ -68,14 +74,6 @@ export default function LandingPage() {
               <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Next Stage</span>
               <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music Academy</span>
             </div>
-          </div>
-
-          {/* Center Instrument Silhouette Icons with Gradient - enlarged, centered, no interactions */}
-          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-2xl bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent select-none font-black pointer-events-none">
-            <i className="fa-solid fa-drum" title="Drums"></i>
-            <i className="fa-solid fa-guitar" title="Guitar"></i>
-            <i className="fa-solid fa-keyboard" title="Keys"></i>
-            <i className="fa-solid fa-microphone" title="Vocals"></i>
           </div>
 
           <nav className="flex items-center gap-6 text-xs font-black uppercase tracking-widest text-slate-300">
