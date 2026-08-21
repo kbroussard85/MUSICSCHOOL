@@ -93,6 +93,7 @@ export default function DashboardClient({
   const [searchQuery, setSearchQuery] = useState('');
   const [bulletinNotes, setBulletinNotes] = useState<BulletinNote[]>(studentInfo.bulletinNotes);
   const [newNoteContent, setNewNoteContent] = useState('');
+  const [likedNoteIds, setLikedNoteIds] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Roster Enrollment Wizard States
@@ -617,63 +618,134 @@ export default function DashboardClient({
         </div>
 
         <h2 className="text-2xl font-heading font-black uppercase text-slate-100 tracking-wider mb-2">
-          Academy Bulletin Board
+          Academy Feed
         </h2>
-        <p className="text-xs text-slate-400 uppercase tracking-widest mb-8">
-          Leave notes, ask questions, or share tips with instructors and classmates.
+        <p className="text-xs text-slate-400 uppercase tracking-widest mb-6">
+          Share updates, tips, or ask questions with classmates and instructors.
         </p>
 
-        {/* Note posting form */}
-        <form onSubmit={handlePostNote} className="mb-8 p-4 bg-[#121722]/45 border border-white/5">
-          <span className="text-[9px] font-black text-violet-400 uppercase tracking-widest block mb-2">
-            Leave a Note
-          </span>
-          <textarea
-            required
-            rows={2}
-            value={newNoteContent}
-            onChange={(e) => setNewNoteContent(e.target.value)}
-            placeholder="Type your note here..."
-            className="w-full bg-slate-950 border border-white/10 px-3 py-2 text-xs text-[#f1ecff] focus:outline-none focus:border-violet-400 font-mono mb-3 resize-none"
-          />
-          <button 
-            type="submit" 
-            disabled={isSubmitting}
-            className="py-2 px-5 stitch-btn-violet text-[10px] font-black uppercase tracking-widest disabled:opacity-50 cursor-pointer"
-          >
-            {isSubmitting ? 'Posting Note...' : 'Pin Note to Board'}
-          </button>
-        </form>
+        {/* Facebook-style Create Post box */}
+        <div className="mb-6 p-5 bg-[#121722]/65 border border-white/10 rounded-xl">
+          <form onSubmit={handlePostNote} className="space-y-4">
+            <div className="flex gap-3 items-start">
+              {/* Avatar indicator */}
+              <div className="w-10 h-10 rounded-full bg-violet-600/30 border border-violet-500/45 flex items-center justify-center text-violet-300 text-xs font-black shrink-0">
+                {profileName ? profileName.slice(0,2).toUpperCase() : 'ME'}
+              </div>
+              <textarea
+                required
+                rows={2}
+                value={newNoteContent}
+                onChange={(e) => setNewNoteContent(e.target.value)}
+                placeholder={`What's on your mind, ${profileName.split(' ')[0]}?`}
+                className="w-full bg-slate-950/70 border border-white/10 rounded-xl px-4 py-3 text-xs text-[#f1ecff] placeholder-slate-500 focus:outline-none focus:border-violet-500 font-sans resize-none"
+              />
+            </div>
+            <div className="flex justify-between items-center border-t border-white/5 pt-3">
+              {/* Mock post attachment buttons */}
+              <div className="flex gap-4 text-slate-500 text-[10px] uppercase font-mono">
+                <button type="button" className="hover:text-pink-500 flex items-center gap-1 cursor-pointer">
+                  <i className="fa-solid fa-image"></i> Photo/Video
+                </button>
+                <button type="button" className="hover:text-cyan-500 flex items-center gap-1 cursor-pointer">
+                  <i className="fa-solid fa-tag"></i> Tag Band
+                </button>
+              </div>
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="py-2 px-6 bg-violet-600 hover:bg-violet-700 text-white text-[10px] font-black uppercase tracking-widest rounded-full transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                {isSubmitting ? 'Posting...' : 'Post'}
+              </button>
+            </div>
+          </form>
+        </div>
 
-        {/* Sticky Notes Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Scrollable feed list */}
+        <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 flex flex-col">
           {bulletinNotes.length === 0 ? (
-            <div className="md:col-span-3 p-8 border border-dashed border-white/10 text-center text-xs text-slate-500 uppercase tracking-wider font-mono">
-              The bulletin board is empty. Be the first to pin a note!
+            <div className="p-8 border border-dashed border-white/10 text-center text-xs text-slate-500 uppercase tracking-wider font-mono rounded-xl">
+              The academy feed is empty. Be the first to share an update!
             </div>
           ) : (
             bulletinNotes.map((note) => {
               const isInstructor = note.authorRole === 'INSTRUCTOR' || note.authorRole === 'DIRECTOR';
+              const baseLikes = (note.id.charCodeAt(0) % 8) + (isInstructor ? 5 : 1);
+              const isLiked = likedNoteIds.includes(note.id);
+              const totalLikes = baseLikes + (isLiked ? 1 : 0);
+
+              const toggleLike = (noteId: string) => {
+                if (likedNoteIds.includes(noteId)) {
+                  setLikedNoteIds(likedNoteIds.filter(id => id !== noteId));
+                } else {
+                  setLikedNoteIds([...likedNoteIds, noteId]);
+                }
+              };
+
               return (
                 <div 
                   key={note.id} 
-                  className={`p-5 relative rounded-sm flex flex-col justify-between ${
+                  className={`p-5 border bg-[#0b0813]/90 rounded-xl flex flex-col justify-between ${
                     isInstructor 
-                      ? 'bg-gradient-to-br from-[#2a1122]/40 to-[#121722]/45 border border-pink-500/20 shadow-md shadow-pink-500/5' 
-                      : 'bg-gradient-to-br from-[#1b122e]/40 to-[#121722]/45 border border-violet-500/20'
+                      ? 'border-pink-500/25 shadow-md shadow-pink-500/5' 
+                      : 'border-white/10'
                   }`}
                 >
-                  <p className="text-xs text-slate-300 font-mono leading-relaxed mb-6 whitespace-pre-wrap">
-                    "{note.content}"
+                  {/* Post Header */}
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <div className="flex gap-3 items-center">
+                      {/* Avatar */}
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+                        isInstructor 
+                          ? 'bg-pink-500/20 text-pink-400 border border-pink-500/40' 
+                          : 'bg-violet-600/20 text-violet-400 border border-violet-500/40'
+                      }`}>
+                        {note.authorName ? note.authorName.split(' ').map((n: string) => n[0]).join('').slice(0,2).toUpperCase() : 'ST'}
+                      </div>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-xs font-black text-slate-200 font-sans">{note.authorName}</span>
+                          <span className={`text-[8px] font-mono font-black uppercase px-2 py-0.5 rounded-full ${
+                            isInstructor ? 'bg-pink-500/10 text-pink-400 border border-pink-500/20' : 'bg-violet-500/10 text-violet-400 border border-violet-500/20'
+                          }`}>
+                            {note.authorRole}
+                          </span>
+                        </div>
+                        <span className="text-[8px] text-slate-500 font-mono block mt-0.5">
+                          {new Date(note.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Post Content */}
+                  <p className="text-xs text-slate-300 font-sans leading-relaxed mb-4 whitespace-pre-wrap">
+                    {note.content}
                   </p>
-                  
-                  <div className="border-t border-white/5 pt-3 flex items-center justify-between text-[9px] font-mono uppercase">
-                    <span className={`font-black ${isInstructor ? 'text-pink-400' : 'text-violet-400'}`}>
-                      {note.authorName}
-                    </span>
-                    <span className="text-slate-600 font-bold">
-                      {note.authorRole}
-                    </span>
+
+                  {/* Like Count Banner */}
+                  {totalLikes > 0 && (
+                    <div className="flex items-center gap-1.5 text-[9px] text-slate-500 font-mono border-t border-white/5 pt-3 pb-2">
+                      <i className="fa-solid fa-thumbs-up text-cyan-400"></i>
+                      <span>{totalLikes} {totalLikes === 1 ? 'person' : 'people'} liked this</span>
+                    </div>
+                  )}
+
+                  {/* Interactive Action Tab */}
+                  <div className={`flex items-center justify-around border-t border-white/5 pt-2 text-[10px] font-bold text-slate-400 font-sans ${totalLikes === 0 ? 'mt-2 pt-3' : ''}`}>
+                    <button 
+                      onClick={() => toggleLike(note.id)}
+                      className={`flex items-center justify-center gap-1.5 py-1.5 flex-1 hover:bg-white/5 rounded-lg transition-colors cursor-pointer ${isLiked ? 'text-cyan-400' : ''}`}
+                    >
+                      <i className="fa-regular fa-thumbs-up"></i> {isLiked ? 'Liked' : 'Like'}
+                    </button>
+                    <button className="flex items-center justify-center gap-1.5 py-1.5 flex-1 hover:bg-white/5 rounded-lg transition-colors cursor-pointer">
+                      <i className="fa-regular fa-message"></i> Comment
+                    </button>
+                    <button className="flex items-center justify-center gap-1.5 py-1.5 flex-1 hover:bg-white/5 rounded-lg transition-colors cursor-pointer">
+                      <i className="fa-regular fa-share-from-square"></i> Share
+                    </button>
                   </div>
                 </div>
               );

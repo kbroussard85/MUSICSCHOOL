@@ -41,9 +41,15 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.05em;
 }
 
-/* Force hard corners globally as required */
+/* Rounded corners globally as requested */
 *, *::before, *::after {
-  border-radius: 0px !important;
+  border-radius: 12px;
+}
+button, select, input, textarea, a, .cyber-card, .stitch-card {
+  border-radius: 10px;
+}
+.rounded-full, img.rounded-full, div.rounded-full, .indicator-dot, .indicator-dot-pink, .w-10.h-10, .w-16.h-16 {
+  border-radius: 9999px !important;
 }
 
 /* Parallax scroll stock image cell container */

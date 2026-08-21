@@ -59,10 +59,10 @@ export default function LandingPage() {
           <div className="flex flex-col gap-0.5 justify-start">
             <Link 
               href="/" 
-              className="flex items-center gap-2 text-base font-black tracking-widest text-[#f1ecff]"
+              className="flex items-center gap-2.5 text-base font-black tracking-widest text-[#f1ecff]"
               onMouseEnter={() => playBeep(1000, 0.04)}
             >
-              <i className="fa-solid fa-music text-pink-500 glow-pulse-pink shrink-0"></i>
+              <img src="/logo.jpg" alt="NS Logo" className="w-8 h-8 rounded-full border border-pink-500/40 object-cover glow-pulse-magenta shadow-md shadow-pink-500/10 shrink-0" />
               <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-wider">Next Stage</span>
             </Link>
             <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest leading-none glow-pulse-cyan">Music Academy</span>
@@ -101,9 +101,7 @@ export default function LandingPage() {
       <section className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-8 flex flex-col items-center text-center justify-center min-h-[calc(100vh-80px)]">
         
         {/* Compact Logo Icon Accent */}
-        <div className="w-12 h-12 rounded-full bg-pink-500/10 border border-pink-500/35 flex items-center justify-center text-pink-500 text-xl mb-4 glow-pulse-pink">
-          <i className="fa-solid fa-music"></i>
-        </div>
+        <img src="/logo.jpg" alt="Next Stage Logo" className="w-16 h-16 rounded-full border border-pink-500/40 object-cover mb-4 glow-pulse-magenta shadow-lg shadow-pink-500/15" />
 
         {/* Motto Block - reduced padding for vertical space saving */}
         <div className="p-6 border-l-4 border-pink-500 bg-[#0b0813]/85 backdrop-blur-md shadow-2xl mb-6 text-left relative overflow-hidden w-full">
@@ -388,8 +386,8 @@ export default function LandingPage() {
       <footer className="relative z-10 border-t border-cyan-500/15 bg-[#06040a] py-12">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500 uppercase tracking-widest font-bold">
           <div className="flex flex-col gap-0.5 justify-start">
-            <div className="flex items-center gap-2 text-lg font-black tracking-widest text-[#f1ecff]">
-              <i className="fa-solid fa-music text-pink-500 shrink-0"></i>
+            <div className="flex items-center gap-2.5 text-lg font-black tracking-widest text-[#f1ecff]">
+              <img src="/logo.jpg" alt="NS Logo" className="w-8 h-8 rounded-full border border-pink-500/30 object-cover shrink-0" />
               <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Next Stage</span>
             </div>
             <span className="text-[9px] font-black text-cyan-400 tracking-widest leading-none">Music Academy</span>
