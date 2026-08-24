@@ -199,7 +199,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Our Locations Section with clean light background */}
+      {/* Our Locations Section with clean light background & hub images */}
       <section id="locations" className="relative z-10 py-20 border-t border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
@@ -219,70 +219,160 @@ export default function LandingPage() {
             <Link 
               href="/signup?location=Thornton"
               onClick={() => playBeep(900, 0.1, 'sine')}
-              className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl p-6 relative group"
+              className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl overflow-hidden relative group"
             >
-              <div>
-                <div className="w-10 h-10 rounded-full bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-600 text-sm mb-4">
-                  <i className="fa-solid fa-location-dot"></i>
-                </div>
-                <h3 className="font-heading text-lg font-black text-slate-900 uppercase tracking-wide mb-2">Thornton Hub</h3>
-                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-mono mb-4">
-                  1280 Civic Center Dr, Thornton, CO
-                </p>
-                <p className="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
-                  Equipped with premium backline amps, multi-instrument setups, and specialized drum tracking bays.
-                </p>
+              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+                <img 
+                  src="/thornton_hub.png" 
+                  alt="Thornton Hub" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                />
               </div>
-              <span className="py-2.5 text-center bg-slate-900 text-white hover:bg-slate-800 text-[9px] font-black uppercase tracking-widest block rounded-lg transition-colors">
-                Select Thornton Roster
-              </span>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-lg font-black text-slate-900 uppercase tracking-wide mb-2">Thornton Hub</h3>
+                  <p className="text-[11px] text-slate-500 uppercase tracking-widest font-mono mb-4">
+                    1280 Civic Center Dr, Thornton, CO
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
+                    Equipped with premium backline amps, multi-instrument setups, and specialized drum tracking bays.
+                  </p>
+                </div>
+                <span className="py-2.5 text-center bg-slate-900 text-white hover:bg-slate-800 text-[9px] font-black uppercase tracking-widest block rounded-lg transition-colors">
+                  Select Thornton Roster
+                </span>
+              </div>
             </Link>
 
             {/* Westminster Studio */}
             <Link 
               href="/signup?location=Westminster"
               onClick={() => playBeep(900, 0.1, 'sine')}
-              className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl p-6 relative group"
+              className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl overflow-hidden relative group"
             >
-              <div>
-                <div className="w-10 h-10 rounded-full bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-600 text-sm mb-4">
-                  <i className="fa-solid fa-location-dot"></i>
-                </div>
-                <h3 className="font-heading text-lg font-black text-slate-900 uppercase tracking-wide mb-2">Westminster Hub</h3>
-                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-mono mb-4">
-                  8800 Sheridan Blvd, Westminster, CO
-                </p>
-                <p className="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
-                  Features acoustically-isolated rehearsal rooms, digital workstation bays, and vocal tracking studios.
-                </p>
+              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+                <img 
+                  src="/westminster_hub.png" 
+                  alt="Westminster Hub" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                />
               </div>
-              <span className="py-2.5 text-center bg-slate-900 text-white hover:bg-slate-800 text-[9px] font-black uppercase tracking-widest block rounded-lg transition-colors">
-                Select Westminster Roster
-              </span>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-lg font-black text-slate-900 uppercase tracking-wide mb-2">Westminster Hub</h3>
+                  <p className="text-[11px] text-slate-500 uppercase tracking-widest font-mono mb-4">
+                    8800 Sheridan Blvd, Westminster, CO
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
+                    Features acoustically-isolated rehearsal rooms, digital workstation bays, and vocal tracking studios.
+                  </p>
+                </div>
+                <span className="py-2.5 text-center bg-slate-900 text-white hover:bg-slate-800 text-[9px] font-black uppercase tracking-widest block rounded-lg transition-colors">
+                  Select Westminster Roster
+                </span>
+              </div>
             </Link>
 
             {/* Broomfield Studio */}
             <Link 
               href="/signup?location=Broomfield"
               onClick={() => playBeep(900, 0.1, 'sine')}
-              className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl p-6 relative group"
+              className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl overflow-hidden relative group"
             >
-              <div>
-                <div className="w-10 h-10 rounded-full bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-600 text-sm mb-4">
-                  <i className="fa-solid fa-location-dot"></i>
-                </div>
-                <h3 className="font-heading text-lg font-black text-slate-900 uppercase tracking-wide mb-2">Broomfield Hub</h3>
-                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-mono mb-4">
-                  3000 E 1st Ave, Broomfield, CO
-                </p>
-                <p className="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
-                  Equipped with a full live showcase performance stage, stage monitors, lighting rigs, and keyboard workstations.
-                </p>
+              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+                <img 
+                  src="/broomfield_hub.png" 
+                  alt="Broomfield Hub" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                />
               </div>
-              <span className="py-2.5 text-center bg-slate-900 text-white hover:bg-slate-800 text-[9px] font-black uppercase tracking-widest block rounded-lg transition-colors">
-                Select Broomfield Roster
-              </span>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-lg font-black text-slate-900 uppercase tracking-wide mb-2">Broomfield Hub</h3>
+                  <p className="text-[11px] text-slate-500 uppercase tracking-widest font-mono mb-4">
+                    3000 E 1st Ave, Broomfield, CO
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
+                    Equipped with a full live showcase performance stage, stage monitors, lighting rigs, and keyboard workstations.
+                  </p>
+                </div>
+                <span className="py-2.5 text-center bg-slate-900 text-white hover:bg-slate-800 text-[9px] font-black uppercase tracking-widest block rounded-lg transition-colors">
+                  Select Broomfield Roster
+                </span>
+              </div>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* What Makes Us Different Section with Parallax fixed background */}
+      <section 
+        className="relative z-10 py-20 border-t border-cyan-500/15 bg-black/70"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.88)), url('/live_performance_bg.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="text-[10px] font-black uppercase tracking-widest text-pink-500 cyber-badge-pink px-3 py-1 rounded-full">
+              Why Next Stage?
+            </span>
+            <h2 className="text-3xl md:text-4xl font-heading font-black uppercase tracking-wider mt-4 text-white">
+              What Makes Us Different
+            </h2>
+            <p className="text-slate-400 text-xs uppercase tracking-widest mt-2 font-semibold">
+              The ultimate music learning experience built for modern musicians.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Bullet Point 1: Massive Online Vault Access */}
+            <div className="cyber-card bg-[#0b0813]/90 border-pink-500/20 rounded-xl overflow-hidden flex flex-col justify-between">
+              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-pink-500/15">
+                <img src="/vault_showcase.png" alt="Video Lesson Vault" className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-lg font-black text-slate-100 uppercase tracking-wide mb-3 bg-gradient-to-r from-pink-500 to-purple-400 bg-clip-text text-transparent">Massive Online Vault Access</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed font-semibold">
+                    Gain unlimited 24/7 entry to a vast, regularly updated library of video lessons, masterclasses, detailed play-along drum tabs, sheet music, and custom lesson files. Learn and practice from home with the industry's best digital resources.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bullet Point 2: Performance & Community Focus */}
+            <div className="cyber-card bg-[#0b0813]/90 border-purple-500/20 rounded-xl overflow-hidden flex flex-col justify-between">
+              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-purple-500/15">
+                <img src="/performance_focus.png" alt="Band Rehearsal" className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-lg font-black text-slate-100 uppercase tracking-wide mb-3 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Performance & Community</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed font-semibold">
+                    We focus on bringing musicians together to rehearse, jam, and perform live on stage together. Our certified ensemble coaches guide the entire process, providing a path from private practice to performing in real venue showcases.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bullet Point 3: Zero-Latency Lutefish Partnership */}
+            <div className="cyber-card bg-[#0b0813]/90 border-cyan-500/20 rounded-xl overflow-hidden flex flex-col justify-between">
+              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-cyan-500/15">
+                <img src="/lutefish_jam.png" alt="Lutefish Remote Jamming" className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-lg font-black text-slate-100 uppercase tracking-wide mb-3 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">State-of-the-Art Remote Jams</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed font-semibold">
+                    Our Lutefish partnership enables zero-latency online lessons and jam session capabilities. Play together in real time from home with zero audio lag—exactly like being in the same room. Less commute, accurate real-time lessons, schedule jam sessions online with classmates, and perform up to 16 live shows per year!
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
