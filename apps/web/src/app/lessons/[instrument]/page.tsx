@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -136,8 +137,10 @@ const instrumentData: Record<string, {
   }
 };
 
-export default function LessonDetailPage({ params }: { params: { instrument: string } }) {
-  const instrument = params.instrument?.toLowerCase() || 'guitar';
+export default function LessonDetailPage() {
+  const routeParams = useParams();
+  const rawInstrument = routeParams?.instrument;
+  const instrument = (typeof rawInstrument === 'string' ? rawInstrument : Array.isArray(rawInstrument) ? rawInstrument[0] : '')?.toLowerCase() || 'guitar';
   const data = instrumentData[instrument] || instrumentData.guitar;
 
   return (

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -104,8 +105,10 @@ const pricingTierData: Record<string, {
   }
 };
 
-export default function PricingDetailPage({ params }: { params: { tier: string } }) {
-  const tier = params.tier?.toLowerCase() || 'basic-access';
+export default function PricingDetailPage() {
+  const routeParams = useParams();
+  const rawTier = routeParams?.tier;
+  const tier = (typeof rawTier === 'string' ? rawTier : Array.isArray(rawTier) ? rawTier[0] : '')?.toLowerCase() || 'basic-access';
   const data = pricingTierData[tier] || pricingTierData['basic-access'];
 
   return (
