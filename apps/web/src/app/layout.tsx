@@ -13,9 +13,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Next Stage Music Academy | The Ecosystem of Music",
-  description: "Next Stage Music Academy combines world-class technical instruction with professional stage experience. We don't just teach notes. We teach the ecosystem of music, preparing you for the stage and studio.",
-  keywords: "music school, learn music, rock band, jam session, next stage music academy, stage music academy, live music lessons, piano lessons, guitar lessons, violin lessons",
+  title: "Nxt Stage Music | The Ecosystem of Music",
+  description: "Nxt Stage Music combines world-class technical instruction with professional stage experience. We don't just teach notes. We teach the ecosystem of music, preparing you for the stage and studio.",
+  keywords: "music school, learn music, rock band, jam session, nxt stage music, live music lessons, piano lessons, guitar lessons, violin lessons",
 };
 
 export default function RootLayout({

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
             currency: 'usd',
             recurring: { interval: 'month' },
             product_data: {
-              name: 'Stage Music Academy Enrollment',
+              name: 'Nxt Stage Music Enrollment',
               description: 'Cancel anytime. Access to live rehearsals, 1-on-1 private lessons, and masterclasses.',
             },
             unit_amount: 29900, // $299.00

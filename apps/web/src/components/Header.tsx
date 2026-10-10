@@ -62,7 +62,7 @@ export default function Header() {
       >
         {/* Top studio status bar */}
         <div className="w-full bg-[#06040a]/40 border-b border-cyan-500/5 px-6 py-1 flex justify-between text-[9px] font-mono tracking-widest text-slate-500">
-          <span>ACADEMY STATUS: ENROLLMENT ACTIVE</span>
+          <span>NXT STAGE MUSIC: ENROLLMENT ACTIVE</span>
           <span className="flex items-center gap-1.5">
             <span className="indicator-dot"></span>
             ACTIVE REHEARSAL STUDIOS
@@ -76,11 +76,11 @@ export default function Header() {
               className="shrink-0"
               onMouseEnter={() => playBeep(1000, 0.04)}
             >
-              <img src="/logo.jpg" alt="Next Stage Logo" className="h-10 w-auto rounded-lg border border-pink-500/20 object-contain shadow-md shadow-pink-500/5" />
+              <img src="/logo.jpg" alt="Nxt Stage Music Logo" className="h-10 w-auto rounded-lg border border-pink-500/20 object-contain shadow-md shadow-pink-500/5" />
             </Link>
             <div className="flex flex-col gap-0.5 justify-start">
-              <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Next Stage</span>
-              <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music Academy</span>
+              <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Nxt Stage</span>
+              <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music</span>
             </div>
           </div>
 

@@ -45,8 +45,8 @@ export default function Sidebar({ profile }: SidebarProps) {
             <img src="/logo.jpg" alt="NS Logo" className="h-10 w-auto rounded-lg border border-pink-500/20 object-contain shadow-md shadow-pink-500/5" />
           </Link>
           <div className="flex flex-col gap-0.5 justify-start leading-none">
-            <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase">Next Stage</span>
-            <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest">Music Academy</span>
+            <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase">Nxt Stage</span>
+            <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest">Music</span>
             <span className="text-[7px] self-start px-1.5 py-0.5 bg-pink-500/10 border border-pink-500/30 text-pink-400 font-extrabold uppercase tracking-widest mt-1">
               {profile.role}
             </span>

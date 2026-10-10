@@ -445,7 +445,7 @@ export default function AdminDashboardClient({
       <div className="flex justify-between items-start">
         <div>
           <span className="text-xs font-black uppercase tracking-widest text-pink-500 glow-pulse-pink">Stage Control Telemetry</span>
-          <h1 className="font-heading text-3xl md:text-5xl font-black mt-1 bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-wider glow-pulse-cyan">Stage Music Academy</h1>
+          <h1 className="font-heading text-3xl md:text-5xl font-black mt-1 bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase tracking-wider glow-pulse-cyan">NXT STAGE MUSIC</h1>
           <p className="text-sm text-slate-400 mt-2">
             Secure client encryption stack enabled. Drag students to instructor slots to execute 1-on-1 private lesson assignments.
           </p>

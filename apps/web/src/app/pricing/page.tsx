@@ -47,7 +47,7 @@ const pricingTiers = [
     price: '$299',
     period: '/ month',
     tagline: 'Collaborate, rehearse, and play on stage.',
-    description: 'The core Next Stage experience. Join a local rehearsing band cohort, jam once a week, and perform 2 live showcases per season.',
+    description: 'The core Nxt Stage Music experience. Join a local rehearsing band cohort, jam once a week, and perform 2 live showcases per season.',
     cta: 'Claim Band Slot',
     color: 'border-pink-500/35 hover:border-pink-500 hover:shadow-pink-500/5',
     badge: 'Most Popular',
@@ -100,7 +100,7 @@ export default function PricingDirectoryPage() {
             Membership Packages
           </span>
           <h1 className="text-4xl md:text-5xl font-heading font-black uppercase tracking-wider mb-4">
-            Select Your <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Academy Tier</span>
+            Select Your <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Program Tier</span>
           </h1>
           <p className="text-sm md:text-base text-slate-300 max-w-2xl mx-auto font-medium uppercase tracking-wide leading-relaxed">
             Choose the program that fits your goals, whether you are seeking solo practice vault entry or elite showcase touring slots.

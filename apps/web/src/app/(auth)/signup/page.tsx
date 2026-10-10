@@ -73,10 +73,10 @@ export default function SignupPage() {
         {/* Logo Header */}
         <div className="text-center mb-6 flex flex-col items-center">
           <Link href="/" className="flex flex-col items-center gap-3">
-            <img src="/logo.jpg" alt="Next Stage Logo" className="h-16 w-auto rounded-xl border border-pink-500/20 object-contain shadow-md shadow-pink-500/10 mb-1" />
-            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase text-2xl font-black tracking-widest leading-none">Next Stage</span>
+            <img src="/logo.jpg" alt="Nxt Stage Music Logo" className="h-16 w-auto rounded-xl border border-pink-500/20 object-contain shadow-md shadow-pink-500/10 mb-1" />
+            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent uppercase text-2xl font-black tracking-widest leading-none">Nxt Stage</span>
           </Link>
-          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1.5 leading-none">Music Academy</div>
+          <div className="text-[9px] font-black text-cyan-400 uppercase tracking-widest mt-1.5 leading-none">Music</div>
           <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-wider">Create your student account & secure your roster spot</p>
         </div>
 
@@ -220,7 +220,7 @@ export default function SignupPage() {
               <i className="fa-solid fa-location-crosshairs"></i>
             </div>
             
-            <span className="text-[9px] font-black text-pink-500 uppercase tracking-widest block mb-1">Academy Enrollment</span>
+            <span className="text-[9px] font-black text-pink-500 uppercase tracking-widest block mb-1">Nxt Stage Music Enrollment</span>
             <h3 className="text-xl font-heading font-black uppercase text-slate-200 tracking-wider mb-2">
               Select Your Studio Hub
             </h3>

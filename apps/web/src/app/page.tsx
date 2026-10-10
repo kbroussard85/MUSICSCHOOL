@@ -53,12 +53,12 @@ export default function LandingPage() {
         {/* Logo and Mission Statement Row */}
         <div className="flex flex-col md:flex-row gap-8 items-center justify-between w-full mb-6 max-w-5xl text-left">
           {/* Logo Accent on the left */}
-          <img src="/logo.jpg" alt="Next Stage Logo" className="h-28 w-auto rounded-xl border border-pink-500/20 object-contain shadow-xl shadow-pink-500/10 shrink-0" />
+          <img src="/logo.jpg" alt="Nxt Stage Music Logo" className="h-28 w-auto rounded-xl border border-pink-500/20 object-contain shadow-xl shadow-pink-500/10 shrink-0" />
 
           {/* Motto Block - reduced padding for vertical space saving */}
           <div className="p-6 border-l-4 border-pink-500 bg-[#0b0813]/85 backdrop-blur-md shadow-2xl relative overflow-hidden flex-1 w-full">
             <div className="absolute top-0 right-0 p-2 text-[8px] font-mono text-cyan-400/35 tracking-widest uppercase">
-              Academy Motto
+              Our Motto
             </div>
             <p className="text-base md:text-xl font-heading font-black italic text-[#f8fafc] leading-snug uppercase tracking-wide">
               "Anyone can learn how to play an instrument online, but you have to play with other musicians to learn how to jam!"
@@ -68,7 +68,7 @@ export default function LandingPage() {
 
         {/* Shortened Copy Update */}
         <p className="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed mb-8 uppercase tracking-wider font-extrabold">
-          Bridging the gap between digital practice and physical performance. Next Stages Music Academy combines world-class technical instruction with professional stage experience.
+          Bridging the gap between digital practice and physical performance. Nxt Stage Music combines world-class technical instruction with professional stage experience.
         </p>
 
         {/* Access CTAs (Sign up for 3 day trial is highlighted, fully visible above fold) */}
@@ -318,7 +318,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="text-[10px] font-black uppercase tracking-widest text-pink-500 cyber-badge-pink px-3 py-1 rounded-full">
-              Why Next Stage?
+              Why Nxt Stage Music?
             </span>
             <h2 className="text-3xl md:text-4xl font-heading font-black uppercase tracking-wider mt-4 text-white">
               What Makes Us Different
@@ -398,7 +398,7 @@ export default function LandingPage() {
                 Our three-pillar approach ensures you graduate from bedroom practice to center stage
               </p>
               <p className="text-slate-400 font-medium normal-case tracking-normal">
-                Next Stages Music Academy focuses on the community experience and was specifically created to bring musicians together. We understand that the next stage of development in learning an instrument is playing and performing with other musicians. Our program is a hybrid-learning, performance-based system that provides coached rehearsals and multiple live performances, while also granting access to a massive vault of online lesson material, including videos, tabs, sheet music, masterclasses, and more. Our upgraded package includes online zero-latency one-on-one or group lessons and jam sessions using Lutefish hardware.
+                Nxt Stage Music focuses on the community experience and was specifically created to bring musicians together. We understand that the next stage of development in learning an instrument is playing and performing with other musicians. Our program is a hybrid-learning, performance-based system that provides coached rehearsals and multiple live performances, while also granting access to a massive vault of online lesson material, including videos, tabs, sheet music, masterclasses, and more. Our upgraded package includes online zero-latency one-on-one or group lessons and jam sessions using Lutefish hardware.
               </p>
             </div>
 

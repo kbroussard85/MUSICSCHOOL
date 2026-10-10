@@ -433,7 +433,7 @@ export default function DashboardClient({
             Welcome Back, <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">{profileName}</span>
           </h1>
           <p className="text-slate-400 text-xs uppercase tracking-widest mt-1">
-            Focus: <span className="text-violet-400 font-extrabold">{studentInfo.instrument}</span> &bull; Band: <span className="text-pink-400 font-extrabold">Next Stage Roster</span>
+            Focus: <span className="text-violet-400 font-extrabold">{studentInfo.instrument}</span> &bull; Band: <span className="text-pink-400 font-extrabold">Nxt Stage Roster</span>
           </p>
         </div>
 
