@@ -197,7 +197,7 @@ export default function SignupPage() {
           <button 
             type="submit"
             disabled={!agreed}
-            className={`w-full py-3 font-black text-xs uppercase tracking-widest transition-all mt-4 cursor-pointer ${
+            className={`w-full py-3 font-black text-xs uppercase tracking-widest transition-all mt-4 cursor-pointer text-center flex items-center justify-center ${
               agreed 
                 ? 'cyber-btn-pink shadow-lg' 
                 : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-cyan-500/5'
@@ -206,6 +206,11 @@ export default function SignupPage() {
             Authorize Membership Checkout
           </button>
         </form>
+
+        <div className="text-center mt-6 text-xs text-slate-500 uppercase tracking-wider">
+          <span>Already have an account? </span>
+          <Link href="/login" className="text-cyan-400 font-bold hover:underline">Log In</Link>
+        </div>
       </div>
 
       {/* Location Selector Popup Modal (Stitch Glassmorphic Design) */}

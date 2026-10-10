@@ -114,7 +114,7 @@ export default function Header() {
             </button>
             <Link 
               href="/login" 
-              className="hover:text-cyan-400 transition-colors py-1 cursor-pointer"
+              className="hover:text-cyan-400 transition-colors py-1 cursor-pointer text-center inline-flex items-center justify-center"
               onMouseEnter={() => playBeep(1100, 0.03)}
               onClick={handleNavClick}
             >
@@ -122,7 +122,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/signup" 
-              className="px-5 py-2.5 cyber-btn-pink text-xs font-black"
+              className="px-5 py-2.5 cyber-btn-pink text-xs font-black text-center inline-flex items-center justify-center"
               onMouseEnter={() => playBeep(1200, 0.04)}
               onClick={handleNavClick}
             >

@@ -75,7 +75,7 @@ export default function LandingPage() {
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
           <Link 
             href="/signup" 
-            className="flex-1 py-3 text-center cyber-btn-pink text-xs font-black tracking-widest cursor-pointer shadow-lg shadow-pink-500/15"
+            className="flex-1 py-3 text-center cyber-btn-pink text-xs font-black tracking-widest cursor-pointer shadow-lg shadow-pink-500/15 flex items-center justify-center"
             onMouseEnter={() => playBeep(1000, 0.04)}
             onClick={() => playBeep(850, 0.12, 'square')}
           >
@@ -83,7 +83,7 @@ export default function LandingPage() {
           </Link>
           <Link 
             href="/login" 
-            className="flex-1 py-3 text-center cyber-btn-cyan text-xs font-black tracking-widest cursor-pointer bg-[#0b0813]/70"
+            className="flex-1 py-3 text-center cyber-btn-cyan text-xs font-black tracking-widest cursor-pointer bg-[#0b0813]/70 flex items-center justify-center"
             onMouseEnter={() => playBeep(1000, 0.04)}
             onClick={() => playBeep(850, 0.12, 'square')}
           >

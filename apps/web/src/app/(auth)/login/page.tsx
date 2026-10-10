@@ -31,16 +31,18 @@ export default function LoginPage() {
           <button 
             type="button"
             onClick={() => { document.cookie = `mock_user_email=google-user@gmail.com; path=/`; window.location.href = '/dashboard'; }}
-            className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+            className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center text-center gap-2.5 transition-all cursor-pointer"
           >
-            <i className="fa-brands fa-google text-pink-500"></i> Continue with Google
+            <i className="fa-brands fa-google text-pink-500"></i>
+            <span>Continue with Google</span>
           </button>
           <button 
             type="button"
             onClick={() => { document.cookie = `mock_user_email=facebook-user@facebook.com; path=/`; window.location.href = '/dashboard'; }}
-            className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+            className="w-full py-2.5 bg-[#120e24] border border-cyan-500/20 hover:border-cyan-500/40 text-slate-200 text-xs font-black uppercase tracking-widest flex items-center justify-center text-center gap-2.5 transition-all cursor-pointer"
           >
-            <i className="fa-brands fa-facebook text-cyan-400"></i> Continue with Facebook
+            <i className="fa-brands fa-facebook text-cyan-400"></i>
+            <span>Continue with Facebook</span>
           </button>
         </div>
 
@@ -80,9 +82,9 @@ export default function LoginPage() {
 
           <button 
             type="submit" 
-            className="w-full py-3 cyber-btn-pink text-xs font-black tracking-widest shadow-lg mt-4 cursor-pointer"
+            className="w-full py-3 cyber-btn-pink text-xs font-black tracking-widest shadow-lg mt-4 cursor-pointer text-center flex items-center justify-center"
           >
-            Authenticate Portal
+            Log In
           </button>
         </form>
 

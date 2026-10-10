@@ -96,6 +96,7 @@ button, select, input, textarea, .cyber-card, .stitch-card {
   box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  text-align: center;
 }
 
 .cyber-btn-pink:hover {
@@ -113,6 +114,7 @@ button, select, input, textarea, .cyber-card, .stitch-card {
   font-weight: 800;
   letter-spacing: 0.1em;
   transition: all 0.25s ease;
+  text-align: center;
 }
 
 .cyber-btn-cyan:hover {
@@ -126,6 +128,7 @@ button, select, input, textarea, .cyber-card, .stitch-card {
   background: rgba(11, 8, 20, 0.5);
   color: var(--cyber-cyan);
   transition: all 0.25s ease;
+  text-align: center;
 }
 
 .cyber-btn-border:hover {
