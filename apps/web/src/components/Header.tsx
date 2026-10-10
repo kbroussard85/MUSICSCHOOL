@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import BrandLogo from './BrandLogo';
 
 const playBeep = (freq = 800, duration = 0.08, type: OscillatorType = 'sine') => {
   if (typeof window === 'undefined') return;
@@ -70,19 +71,7 @@ export default function Header() {
         </div>
         
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between relative">
-          <div className="flex items-center gap-3">
-            <Link 
-              href="/" 
-              className="shrink-0"
-              onMouseEnter={() => playBeep(1000, 0.04)}
-            >
-              <img src="/logo.jpg" alt="Nxt Stage Music Logo" className="h-10 w-auto rounded-lg border border-pink-500/20 object-contain shadow-md shadow-pink-500/5" />
-            </Link>
-            <div className="flex flex-col gap-0.5 justify-start">
-              <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Nxt Stage</span>
-              <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music</span>
-            </div>
-          </div>
+          <BrandLogo size="md" />
 
           <nav className="flex items-center gap-6 text-xs font-black uppercase tracking-widest text-slate-300">
             {/* Lessons Dropdown */}

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import BrandLogo from './BrandLogo';
 
 const playBeep = (freq = 800, duration = 0.08, type: OscillatorType = 'sine') => {
   if (typeof window === 'undefined') return;
@@ -29,13 +30,7 @@ export default function Footer() {
   return (
     <footer className="relative z-10 border-t border-slate-200 bg-[#06040a] py-12 w-full mt-auto">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500 uppercase tracking-widest font-bold">
-        <div className="flex items-center gap-3">
-          <img src="/logo.jpg" alt="Nxt Stage Music Logo" className="h-10 w-auto rounded-lg border border-pink-500/15 object-contain shrink-0" />
-          <div className="flex flex-col gap-0.5 justify-start">
-            <span className="text-sm font-black tracking-widest text-[#f1ecff] uppercase leading-none">Nxt Stage</span>
-            <span className="text-[8px] font-black text-cyan-400 uppercase tracking-widest leading-none mt-0.5">Music</span>
-          </div>
-        </div>
+        <BrandLogo size="sm" />
         <p>&copy; 2026 Nxt Stage Music. Cancel anytime, no obligation.</p>
         <div className="flex gap-6 font-bold">
           <Link 
