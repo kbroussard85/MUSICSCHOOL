@@ -10,28 +10,6 @@ interface BrandLogoProps {
   showEqualizer?: boolean;
 }
 
-const playBeep = (freq = 1000, duration = 0.04, type: OscillatorType = 'sine') => {
-  if (typeof window === 'undefined') return;
-  try {
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-    setTimeout(() => {
-      audioCtx.close();
-    }, duration * 1000 + 100);
-  } catch (e) {
-    // Audio Context blocked
-  }
-};
-
 export default function BrandLogo({
   size = 'md',
   withLink = true,
@@ -66,7 +44,6 @@ export default function BrandLogo({
   const content = (
     <div
       className={`group flex items-center ${sizeConfig.gap} select-none transition-transform duration-200 ${className}`}
-      onMouseEnter={() => playBeep(1050, 0.04)}
     >
       {/* Illuminated Emblem Frame */}
       <div className="relative shrink-0">

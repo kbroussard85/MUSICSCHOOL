@@ -32,28 +32,6 @@ interface InstructorDetail {
   image: string;
 }
 
-const playBeep = (freq = 800, duration = 0.08, type: OscillatorType = 'sine') => {
-  if (typeof window === 'undefined') return;
-  try {
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-    setTimeout(() => {
-      audioCtx.close();
-    }, duration * 1000 + 100);
-  } catch (e) {
-    // Ignore audio context block
-  }
-};
-
 export default function CatalogPage() {
   const [activeTab, setActiveTab] = useState<'bands' | 'courses' | 'instructors'>('bands');
   const [activeBand, setActiveBand] = useState<string>('adults');
@@ -161,7 +139,6 @@ export default function CatalogPage() {
 
   const handleTabChange = (tab: 'bands' | 'courses' | 'instructors') => {
     setActiveTab(tab);
-    playBeep(800, 0.08, 'triangle');
   };
 
   return (
@@ -216,7 +193,7 @@ export default function CatalogPage() {
                 {Object.entries(bandPrograms).map(([key, item]) => (
                   <button
                     key={key}
-                    onClick={() => { setActiveBand(key); playBeep(900, 0.05); }}
+                    onClick={() => setActiveBand(key)}
                     className={`w-full text-left p-4 border transition-all flex items-center justify-between cursor-pointer ${
                       activeBand === key 
                         ? 'border-pink-500 bg-pink-500/15 text-white shadow-lg shadow-pink-500/10' 
@@ -283,7 +260,7 @@ export default function CatalogPage() {
             {Object.entries(syllabus).map(([key, item]) => (
               <button
                 key={key}
-                onClick={() => { setActiveCourse(key); playBeep(700, 0.1, 'triangle'); }}
+                onClick={() => setActiveCourse(key)}
                 className={`w-full py-3.5 px-6 border text-xs font-black uppercase tracking-widest transition-all text-left cursor-pointer flex items-center justify-between ${
                   activeCourse === key
                     ? 'bg-cyan-500/10 border-cyan-400 text-cyan-400'

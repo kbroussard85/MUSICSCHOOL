@@ -4,28 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import BrandLogo from './BrandLogo';
 
-const playBeep = (freq = 800, duration = 0.08, type: OscillatorType = 'sine') => {
-  if (typeof window === 'undefined') return;
-  try {
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-    setTimeout(() => {
-      audioCtx.close();
-    }, duration * 1000 + 100);
-  } catch (e) {
-    // Audio Context blocked
-  }
-};
-
 export default function Header() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -36,13 +14,8 @@ export default function Header() {
     message: ''
   });
 
-  const handleNavClick = () => {
-    playBeep(900, 0.1, 'sine');
-  };
-
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    playBeep(1200, 0.15, 'triangle');
     setIsSubmitted(true);
     setTimeout(() => {
       setIsContactOpen(false);
@@ -103,28 +76,20 @@ export default function Header() {
             </div>
 
             <button 
-              onClick={() => {
-                playBeep(900, 0.1, 'sine');
-                setIsContactOpen(true);
-              }}
+              onClick={() => setIsContactOpen(true)}
               className="hover:text-cyan-400 transition-colors py-1 cursor-pointer text-left"
-              onMouseEnter={() => playBeep(1100, 0.03)}
             >
               Contact
             </button>
             <Link 
               href="/login" 
               className="hover:text-cyan-400 transition-colors py-1 cursor-pointer text-center inline-flex items-center justify-center"
-              onMouseEnter={() => playBeep(1100, 0.03)}
-              onClick={handleNavClick}
             >
               Log In
             </Link>
             <Link 
               href="/signup" 
               className="px-5 py-2.5 cyber-btn-pink text-xs font-black text-center inline-flex items-center justify-center"
-              onMouseEnter={() => playBeep(1200, 0.04)}
-              onClick={handleNavClick}
             >
               Sign Up
             </Link>
@@ -138,10 +103,7 @@ export default function Header() {
           <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-8 shadow-2xl relative text-slate-800 mx-4">
             {/* Close Button */}
             <button 
-              onClick={() => {
-                playBeep(900, 0.08, 'sine');
-                setIsContactOpen(false);
-              }}
+              onClick={() => setIsContactOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors text-lg"
             >
               <i className="fa-solid fa-xmark"></i>

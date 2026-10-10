@@ -283,4 +283,20 @@ button, select, input, textarea, .cyber-card, .stitch-card {
   box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
 }
 
+/* Standardized Global Image Zoom Animation */
+.img-zoom-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.img-zoom-target {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  will-change: transform;
+}
+
+.img-zoom-container:hover .img-zoom-target,
+.group:hover .img-zoom-target {
+  transform: scale(1.08);
+}
+
 

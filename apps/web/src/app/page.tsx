@@ -5,33 +5,7 @@ import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const playBeep = (freq = 800, duration = 0.08, type: OscillatorType = 'sine') => {
-  if (typeof window === 'undefined') return;
-  try {
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.02, audioCtx.currentTime); // Low volume so it's pleasant
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-    setTimeout(() => {
-      audioCtx.close();
-    }, duration * 1000 + 100);
-  } catch (e) {
-    // Audio context might be blocked initially
-  }
-};
-
 export default function LandingPage() {
-  const handleNavClick = () => {
-    playBeep(900, 0.1, 'sine');
-  };
-
   return (
     <div className="min-h-screen text-[#f1ecff] font-sans antialiased overflow-x-hidden relative bg-[#06040a]">
       
@@ -76,16 +50,12 @@ export default function LandingPage() {
           <Link 
             href="/signup" 
             className="flex-1 py-3 text-center cyber-btn-pink text-xs font-black tracking-widest cursor-pointer shadow-lg shadow-pink-500/15 flex items-center justify-center"
-            onMouseEnter={() => playBeep(1000, 0.04)}
-            onClick={() => playBeep(850, 0.12, 'square')}
           >
             Sign up for your free trial
           </Link>
           <Link 
             href="/login" 
             className="flex-1 py-3 text-center cyber-btn-cyan text-xs font-black tracking-widest cursor-pointer bg-[#0b0813]/70 flex items-center justify-center"
-            onMouseEnter={() => playBeep(1000, 0.04)}
-            onClick={() => playBeep(850, 0.12, 'square')}
           >
             Log In
           </Link>
@@ -111,14 +81,13 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Teen Rock (Ages 13-17) - with image */}
             <div 
-              className="bg-white border border-slate-200 shadow-md hover:border-pink-500/30 transition-all cursor-pointer overflow-hidden flex flex-col justify-between rounded-xl"
-              onMouseEnter={() => playBeep(1100, 0.04)}
+              className="bg-white border border-slate-200 shadow-md hover:border-pink-500/30 transition-all cursor-pointer overflow-hidden flex flex-col justify-between rounded-xl group"
             >
-              <div className="h-48 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+              <div className="h-48 w-full relative shrink-0 border-b border-slate-200 img-zoom-container">
                 <img 
                   src="/band_teens.png" 
                   alt="Teen Rock Band" 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-cover img-zoom-target" 
                 />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -140,14 +109,13 @@ export default function LandingPage() {
 
             {/* All Stars (Audition Only) - with image */}
             <div 
-              className="bg-white border border-slate-200 shadow-md hover:border-pink-500/30 transition-all cursor-pointer overflow-hidden flex flex-col justify-between rounded-xl"
-              onMouseEnter={() => playBeep(1100, 0.04)}
+              className="bg-white border border-slate-200 shadow-md hover:border-pink-500/30 transition-all cursor-pointer overflow-hidden flex flex-col justify-between rounded-xl group"
             >
-              <div className="h-48 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+              <div className="h-48 w-full relative shrink-0 border-b border-slate-200 img-zoom-container">
                 <img 
                   src="/band_rockers.png" 
                   alt="All Stars Performance Band" 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-cover img-zoom-target" 
                 />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -169,14 +137,13 @@ export default function LandingPage() {
 
             {/* Adult Jam (Ages 18+) - with image */}
             <div 
-              className="bg-white border border-slate-200 shadow-md hover:border-pink-500/30 transition-all cursor-pointer overflow-hidden flex flex-col justify-between rounded-xl"
-              onMouseEnter={() => playBeep(1100, 0.04)}
+              className="bg-white border border-slate-200 shadow-md hover:border-pink-500/30 transition-all cursor-pointer overflow-hidden flex flex-col justify-between rounded-xl group"
             >
-              <div className="h-48 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+              <div className="h-48 w-full relative shrink-0 border-b border-slate-200 img-zoom-container">
                 <img 
                   src="/band_adults.png" 
                   alt="Adult Jam Band" 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-cover img-zoom-target" 
                 />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -218,14 +185,13 @@ export default function LandingPage() {
             {/* Thornton Studio */}
             <Link 
               href="/signup?location=Thornton"
-              onClick={() => playBeep(900, 0.1, 'sine')}
               className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl overflow-hidden relative group"
             >
-              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+              <div className="h-44 w-full relative shrink-0 border-b border-slate-200 img-zoom-container">
                 <img 
                   src="/thornton_hub.png" 
                   alt="Thornton Hub" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  className="w-full h-full object-cover img-zoom-target" 
                 />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -247,14 +213,13 @@ export default function LandingPage() {
             {/* Westminster Studio */}
             <Link 
               href="/signup?location=Westminster"
-              onClick={() => playBeep(900, 0.1, 'sine')}
               className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl overflow-hidden relative group"
             >
-              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+              <div className="h-44 w-full relative shrink-0 border-b border-slate-200 img-zoom-container">
                 <img 
                   src="/westminster_hub.png" 
                   alt="Westminster Hub" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  className="w-full h-full object-cover img-zoom-target" 
                 />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -276,14 +241,13 @@ export default function LandingPage() {
             {/* Broomfield Studio */}
             <Link 
               href="/signup?location=Broomfield"
-              onClick={() => playBeep(900, 0.1, 'sine')}
               className="bg-slate-50 border border-slate-200 shadow-md hover:border-pink-500/30 transition-all flex flex-col justify-between rounded-xl overflow-hidden relative group"
             >
-              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-slate-200">
+              <div className="h-44 w-full relative shrink-0 border-b border-slate-200 img-zoom-container">
                 <img 
                   src="/broomfield_hub.png" 
                   alt="Broomfield Hub" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  className="w-full h-full object-cover img-zoom-target" 
                 />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
@@ -330,9 +294,9 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Bullet Point 1: Massive Online Vault Access */}
-            <div className="cyber-card bg-[#0b0813]/90 border-pink-500/20 rounded-xl overflow-hidden flex flex-col justify-between">
-              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-pink-500/15">
-                <img src="/vault_showcase.png" alt="Video Lesson Vault" className="w-full h-full object-cover" />
+            <div className="cyber-card bg-[#0b0813]/90 border-pink-500/20 rounded-xl overflow-hidden flex flex-col justify-between group">
+              <div className="h-44 w-full relative shrink-0 border-b border-pink-500/15 img-zoom-container">
+                <img src="/vault_showcase.png" alt="Video Lesson Vault" className="w-full h-full object-cover img-zoom-target" />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
@@ -345,9 +309,9 @@ export default function LandingPage() {
             </div>
 
             {/* Bullet Point 2: Performance & Community Focus */}
-            <div className="cyber-card bg-[#0b0813]/90 border-purple-500/20 rounded-xl overflow-hidden flex flex-col justify-between">
-              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-purple-500/15">
-                <img src="/performance_focus.png" alt="Band Rehearsal" className="w-full h-full object-cover" />
+            <div className="cyber-card bg-[#0b0813]/90 border-purple-500/20 rounded-xl overflow-hidden flex flex-col justify-between group">
+              <div className="h-44 w-full relative shrink-0 border-b border-purple-500/15 img-zoom-container">
+                <img src="/performance_focus.png" alt="Band Rehearsal" className="w-full h-full object-cover img-zoom-target" />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
@@ -360,9 +324,9 @@ export default function LandingPage() {
             </div>
 
             {/* Bullet Point 3: Zero-Latency Lutefish Partnership */}
-            <div className="cyber-card bg-[#0b0813]/90 border-cyan-500/20 rounded-xl overflow-hidden flex flex-col justify-between">
-              <div className="h-44 w-full relative overflow-hidden shrink-0 border-b border-cyan-500/15">
-                <img src="/lutefish_jam.png" alt="Lutefish Remote Jamming" className="w-full h-full object-cover" />
+            <div className="cyber-card bg-[#0b0813]/90 border-cyan-500/20 rounded-xl overflow-hidden flex flex-col justify-between group">
+              <div className="h-44 w-full relative shrink-0 border-b border-cyan-500/15 img-zoom-container">
+                <img src="/lutefish_jam.png" alt="Lutefish Remote Jamming" className="w-full h-full object-cover img-zoom-target" />
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
